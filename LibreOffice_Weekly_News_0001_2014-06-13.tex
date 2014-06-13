@@ -1,0 +1,268 @@
+\documentclass{article}
+\usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm]{geometry}
+\usepackage{url}
+
+% Add periods after title numbers (chapters and sections and in table of contents)
+\usepackage{titlesec}
+\titleformat{\section}{\bfseries\large}{\thesection}{.5em}{}[\hrule]
+\renewcommand{\thesection}{\thechapter\arabic{section}.}
+\renewcommand{\thesubsection}{\thesection\arabic{subsection}.}
+
+% As we won't use paragraph{} statement, we are gonna have to redefine the
+% inter-line space.
+\usepackage{setspace}
+%\singlespacing
+\onehalfspacing
+
+% Indent the beginning of every section
+\usepackage{indentfirst}
+
+% Ask to have space between 2 paragraphs.
+\usepackage{parskip}
+
+\usepackage{listings}
+\lstset{
+    basicstyle=\normalsize\ttfamily,
+    frame=single,
+    columns=flexible,
+    breaklines=true,
+    % Used because the Vim LaTeX colorscheme is buggy, using a $ character will
+    % break the colorscheme. Defining a <dollar> statement avoids to use
+    % a $ character.
+    literate={<dollar>}{\$}1
+}
+
+\begin{document}
+
+\title{LibreOffice Dev Weekly}
+\author{William Gathoye}
+\date{13 June 2014}
+\maketitle
+
+
+\section{Welcome to LibreOffice Dev Weekly!}
+
+Welcome to this first edition!
+
+LibreOffice has plenty of communication channels for its developers and contributors to exchange messages: mailing lists, social networks, wiki and an ask (question/answers) instance. This configuration is not ideal for the developer to see a global overview of the progress made in the LibreOffice development. Since I subscribed most of the LibreOffice mailing lists and usually take the time to read all messages I receive in my mailbox, and after a request made by Michal Meeks, I decided to take up this challenge.
+
+\begin{lstlisting}
+(2014-06-13 15:21:44) mmeeks: wget: incidentally - one thing we would love to have is a summary of the highlights of the lists / git commits etc.
+\end{lstlisting}
+
+Like \emph{Linux Weekly News} at its early life, LibreOffice Dev Weekly consists of a weekly issue gathering interresant development reported in discussions (mailing lists or IRC), Q/A and git commits made over the past week. This summary will emphase on the developer point of view; so do not expect to have a popularized article, and please do not complain about nerdy stuff (if any), since it is written by a computer science student (me) for developers. 
+
+I will publish this summary on the LibreOffice developer mailing list each week on Sunday nights. In that way, developers not working on LibreOffice during the week-end can even get the evolution made throughout the weekend.
+
+
+\section{GUI}
+
+The conversion towards the .ui glade dialogs is now continuing\cite{gladeUi1,gladeUi2,gladeUi3}.
+
+Seems like the new start center is still considered as "unfinished"
+regarding the request we have from users. These one are asking for an
+option to disable document thumbnail on the new start screen\cite{startCenterHidePreview1}\cite{startCenterHidePreview2}. Maybe this should be considered as an easy hack?
+
+As now, we have still no news from the team responsible for the Sifr icon theme. The problem for now is that we have 2 inconsistent repositories for Sifr:
+\begin{listing}
+\item the freedesktop official where all the libreoffice code is hosted
+\item and a Github account created to help people accustomed to use Github, but scared about freedesktop, to get involved more easily.
+\end{listing}
+
+The initial idea was to merge the Github account into freedesktop. According to an answer late in this week\cite{sifrGithub1}, icon designers are using SparkleShare with Github. SparkleShare is an application acting like DropBox but with a commit each time a file is pushed or modified. The GitHub account has thus uncompleted work, because it is used like a drive in the cloud. We have to handle this issue, by creating 2 branches, keep both repos in sync and give designers commit right only to the sifr folder on freedesktop.
+
+\section{Security.}
+
+OpenSSL patches from Fedora have been committed on the libreoffice-4-2 branch.
+
+\section{Code base evolution}
+
+Since Chrom(e|ium) dropped the old NPAPI and Firefox is moving away from
+browser extensions\cite{npapiMozilla}, it was high time for LibreOffice to remove that
+old code, not working in some scenarii\cite{npapiLibONotWorking}.
+
+There is still a bunch of features that are copied/implemented at
+different locations in the LibreOffice code base. We saw some progress on a copy/paste code detector tool\cite{copyPasteDetectorBug}. The tool "CCFinderX core" available on github under MIT license could suit LibreOffice nicelly\cite{copyPasteDetectorGithub}.
+
+Access2Base\cite{access2BaseDefinition} is now included in libreoffice 4.2 and later. In order to keep extension compatibility with other LibreOffice/OO.o forks, Access2Base will be provided as an extension to them. It was not possible to provide Access2Base as an extention for LibreOffice 4.2 and latter because, LibreOffice is refusing to override internal parts of LibreOffice. Thanks to this patch\cite{access2BaseOverridePatch}, it is now possible for extensions to override Access2Base.
+
+We see that the problem of extensions is critical\cite{extensionsCompatibility}.
+
+\section{Build environment}
+
+This week, we have seen an initial discussion about reducing build time on Windows by using more native tools.
+
+To be built on Windows, LibreOffice still uses Cygwin. As Cygwin provides a rather great package management, installing dependencies on Windows is quite easy [9]. So dropping Cygwin in favor of smaller/native tools like GnuWin32 or busybox is out of scope for now (otherwize this would require the dev of a one-click tool to install the needed dependencies \cite{winBuidDependenciesTool} and maybe reopen this bug\cite{winBuildDependenciesInstall}.
+
+Providing upstream patches to 'make' came up during the discussion.
+
+But now, the discussion seems limited to this question: are we gonna replace gmake from a Cygwin-running version to a native-version provided by GnuWin32 which should provide speedup improvement over Cygwin. If it works on Windows tinderbuilds, this could be added as an autodetection option to autogen: defining MAKE or a GNUMAKE environment variable manually could do the trick. In this case there is no need for a synchronization/d-day\cite{winBuildGmakeReplaceGnuWin32}.
+
+Cross compilation on Linux with MinGW is rather annoying since it break compatibility with ABI and extensions used on Cygwin/VisualC++ builds.
+
+For a reminder about the differences between Cygwin, GNUWin32 and MSYS, you can read this\cite{winBuildCygwinMsysGnuWin32Comparison}.
+
+
+Sometimes we have bug appearing in some languages while most of others have no problem. Since localization takes much time, it has been disabled on tinderboxes. After a request, thinderbox nb 51 compiling for Windows will now produce builds for \lstinline{master} and \lstinline{libreoffice-4-3} branch with the following languages:
+\begin{itemize}
+    \item de (as one language with long labels);
+    \item ar (as RTL language);
+    \item ja (as CJK representative);
+    \item and qtz (keyID-pseudo-language).
+\end{itemize}
+
+LibreOffice is now buildable on FreeBSD again\cite{freeBsdBuild1}\cite{freeBsdBuild2}.
+
+\section{Unit tests}
+
+We now have the results of a memcheck run against 20k documents that can
+be used to find nasty problem in future development\cite{memcheckTests}. Two problems
+have been fixed during these operations: (according to a chat with
+mmeeks) 4x the current speed in Writer when trying to open large documents.
+
+\begin{lstlisting}
+(03:17:03 PM) ***mmeeks has a 4x speedup for loading large writer files he's working on finishing =)
+\end{lstlisting}
+
+
+\section{Other issues}
+
+The MySQL/MariaDB connector appears to be broken on OS X. Using homebrew
+is discouraged. ODBC code assumes Unicode char is 2 bytes which is wrong.
+
+
+An issue stating that Writer doesn't memorize the default printer
+defined as it in Windows has been reported. After investigations, it
+appears, this is due to the fact that some printer information are
+actually stored in the document itself when the latter has been saved
+after it has been printed. If the printer doesn't exist any more, the
+fall back is the default one\cite{writerPrinter1}. The print shorcut might use the
+default WIndows printer\cite{writerPrinter2}. But the user is able to choose if he wants
+to load the printer settings from the document\cite{writerPrinter3}.
+
+A new default font for LibreOffice for Arabic?\cite{arabicFont}
+
+
+Implement regex for the REPLACE function in Calc to be OpenFormula
+compliant. (this could be proposed as an easy hack)\cite{replaceRegexOpenFormula}.
+
+
+\section{GSoC.}
+
+Refactor god objects weekly report $\rightarrow$ pushed to master and
+IDocumentChartDataProviderAccess has been nearly refactored.
+
+Persona: the user can select the theme he wants from the gallery and can
+be applied to the UI.
+Needs to be done: run the application of the theme in a separate thread
+to avoid the UI from hanging + little changes to the UI.
+
+OneDrive : all is serialized, need to write file and folder UI
+representation. Now writing unit tests.
+
+
+
+\section{Hackfests and conferences.}
+
+After the hacfest from Paris (Montreuil) hold on June 27-28th, Toulouse
+has been confirmed to hold a hackfest on November 15-16th\cite{hackfestToulouse1}.
+
+In 2015 linux.conf.au will be held 12-16 January in Auckland, New
+Zealand, at the University of Auckland Business School.
+Call for Proposals opened 9 June 2014, closes 13 July 2014\cite{linuxConfAuckland1}. There will not have a LibreOffice booth during the conference itself, only on the open day\cite{linuxConfAuckland2}.
+
+\begin{thebibliography}{30}
+
+\bibitem{gladeUi1}
+\url{https://gerrit.libreoffice.org/9699}
+
+\bibitem{gladeUi2}
+\url{https://gerrit.libreoffice.org/9680}
+
+\bibitem{gladeUi3}
+\url{https://gerrit.libreoffice.org/9726}
+
+\bibitem{sifrGithub1}
+\url{http://listarchives.libreoffice.org/global/design/msg06641.html}
+
+\bibitem{startCenterHidePreview1}
+\url{https://bugs.freedesktop.org/show_bug.cgi?id=74834}
+
+\bibitem{startCenterHidePreview2}
+\url{http://listarchives.libreoffice.org/global/design/msg06640.html}
+
+\bibitem{npapiMozilla}
+\url{https://blog.mozilla.org/security/2014/02/28/update-on-plugin-activation/}
+
+\bibitem{npapiLibONotWorking}
+\url{http://lists.freedesktop.org/archives/libreoffice/2014-June/061635.html}
+
+\bibitem{copyPasteDetectorBug}
+\url{https://bugs.freedesktop.org/show_bug.cgi?id=39593}
+
+\bibitem{copyPasteDetectorGithub}
+\url{https://github.com/petersenna/ccfinderx-core}
+
+\bibitem{access2BaseDefinition}
+\url{http://www.access2base.com/access2base.html}
+
+\bibitem{access2BaseOverridePatch}
+\url{https://gerrit.libreoffice.org/#/c/9756/}
+
+\bibitem{extensionsCompatibility}
+\url{http://listarchives.libreoffice.org/global/users/msg39416.html}
+
+\bibitem{winBuildDependencies}
+\url{http://lists.freedesktop.org/archives/libreoffice/2014-June/061742.html}
+
+\bibitem{winBuildDependenciesTool}
+\url{http://lists.freedesktop.org/archives/libreoffice/2014-June/061748.html}
+
+\bibitem{winBuildDependenciesInstall}
+\url{https://bugs.freedesktop.org/show_bug.cgi?id=32426}
+
+\bibitem{winBuildGmakeReplaceGnuWin32}
+\url{http://lists.freedesktop.org/archives/libreoffice/2014-June/061758.html}
+
+\bibitem{winBuildCygwinMsysGnuWin32Comparison}
+\url{http://stackoverflow.com/a/10712976}
+
+\bibitem{localizedBuild}
+\url{http://lists.freedesktop.org/archives/libreoffice/2014-June/061762.html}
+
+\bibitem{freeBsdBuild1}
+\url{https://gerrit.libreoffice.org/9714}
+
+\bibitem{freeBsdBuild2}
+\url{https://gerrit.libreoffice.org/9722}
+
+\bibitem{memcheckTests}
+\url{http://lists.freedesktop.org/archives/libreoffice/2014-June/061717.html}
+
+\bibitem{writerPrinter1}
+\url{http://listarchives.libreoffice.org/global/users/msg39393.html}
+
+\bibitem{writerPrinter2}
+\url{http://listarchives.libreoffice.org/global/users/msg39395.html}
+
+\bibitem{writerPrinter3}
+\url{http://listarchives.libreoffice.org/global/users/msg39396.html}
+
+\bibitem{arabicFont}
+\url{http://lists.freedesktop.org/archives/libreoffice/2014-June/061751.html}
+
+\bibitem{replaceRegexOpenFormula}
+\url{http://listarchives.libreoffice.org/global/users/msg39399.html}
+
+\bibitem{hackfestToulouse1}
+\url{http://lists.freedesktop.org/archives/libreoffice/2014-June/061694.html}
+
+\bibitem{linuxConfAuckland1}
+\url{http://listarchives.libreoffice.org/global/marketing/msg16979.html}
+
+\bibitem{linuxConfAuckland2}
+\url{http://listarchives.libreoffice.org/global/marketing/msg16979.html}
+
+\end{thebibliography}
+
+\end{document}
