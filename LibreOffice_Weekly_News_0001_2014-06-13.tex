@@ -34,76 +34,69 @@
 
 \begin{document}
 
-\title{LibreOffice Dev Weekly}
+\title{\underline{L}ibre\underline{O}ffice \underline{W}eekly \underline{N}ews}
 \author{William Gathoye}
-\date{13 June 2014}
+\date{\today}
 \maketitle
 
 
-\section{Welcome to LibreOffice Dev Weekly!}
-
-Welcome to this first edition!
+\section{Welcome to this first edition of \underline{L}ibre\underline{O}ffice \underline{W}eekly \underline{N}ews!}
 
 LibreOffice has plenty of communication channels for its developers and contributors to exchange messages: mailing lists, social networks, wiki and an ask (question/answers) instance. This configuration is not ideal for the developer to see a global overview of the progress made in the LibreOffice development. Since I subscribed most of the LibreOffice mailing lists and usually take the time to read all messages I receive in my mailbox, and after a request made by Michal Meeks, I decided to take up this challenge.
 
-\begin{lstlisting}
-(2014-06-13 15:21:44) mmeeks: wget: incidentally - one thing we would love to have is a summary of the highlights of the lists / git commits etc.
-\end{lstlisting}
+Like \emph{Linux Weekly News} at its early life, LibreOffice Dev Weekly consists of a weekly issue gathering interesting development reported in discussions (mailing lists or IRC), Q/A and git commits made over the past week. This summary will emphase on the developer point of view; so do not expect to have a popularized article, and please do not complain about nerdy stuff (if any), since it is written by a computer science student (me) for developers. 
 
-Like \emph{Linux Weekly News} at its early life, LibreOffice Dev Weekly consists of a weekly issue gathering interresant development reported in discussions (mailing lists or IRC), Q/A and git commits made over the past week. This summary will emphase on the developer point of view; so do not expect to have a popularized article, and please do not complain about nerdy stuff (if any), since it is written by a computer science student (me) for developers. 
+I will publish this summary on the LibreOffice developer mailing list each week on Sunday nights. In that way, developers not working on LibreOffice during the week-end can even get the evolution made throughout the weekend. A beta version of the article will be made available on my github account\cite{wgetGithub} on Fridays evening. In that way, if someone wants to proofread this writing and apply corrections before the final version released on Sundays, he is more than welcome.
 
-I will publish this summary on the LibreOffice developer mailing list each week on Sunday nights. In that way, developers not working on LibreOffice during the week-end can even get the evolution made throughout the weekend.
-
+This week in LibreOffice\ldots
 
 \section{GUI}
 
-The conversion towards the .ui glade dialogs is now continuing\cite{gladeUi1,gladeUi2,gladeUi3}.
+The conversion towards the .ui glade dialogs is now continuing (thanks Szymon Kłois!) \cite{gladeUi1,gladeUi2,gladeUi3}.
 
 Seems like the new start center is still considered as "unfinished"
 regarding the request we have from users. These one are asking for an
 option to disable document thumbnail on the new start screen\cite{startCenterHidePreview1}\cite{startCenterHidePreview2}. Maybe this should be considered as an easy hack?
 
-As now, we have still no news from the team responsible for the Sifr icon theme. The problem for now is that we have 2 inconsistent repositories for Sifr:
-\begin{lstlisting}
+As now, we have still no news from the team responsible for the (great!) Sifr icon theme. The problem for now is that we have 2 inconsistent repositories for Sifr:
+\begin{itemize}
 \item the freedesktop official where all the libreoffice code is hosted
 \item and a Github account created to help people accustomed to use Github, but scared about freedesktop, to get involved more easily.
-\end{lstlisting}
+\end{itemize}
 
 The initial idea was to merge the Github account into freedesktop. According to an answer late in this week\cite{sifrGithub1}, icon designers are using SparkleShare with Github. SparkleShare is an application acting like DropBox but with a commit each time a file is pushed or modified. The GitHub account has thus uncompleted work, because it is used like a drive in the cloud. We have to handle this issue, by creating 2 branches, keep both repos in sync and give designers commit right only to the sifr folder on freedesktop.
 
 \section{Security.}
 
-OpenSSL patches from Fedora have been committed on the libreoffice-4-2 branch.
+OpenSSL patches from Fedora have been committed\cite{opensslPatches} (Caolán McNamara) to the libreoffice-4-2 branch. As future branches (\lstinline{libreoffice-4-3} and \lstinline{master}) are using newer and unaffected OpenSSL version, there was no need to include them.
 
-\section{Code base evolution}
+\section{Code base evolution.}
 
-Since Chrom(e|ium) dropped the old NPAPI and Firefox is moving away from
+Since Chrom(e$\vert$ium) dropped the old NPAPI and Firefox is moving away from
 browser extensions\cite{npapiMozilla}, it was high time for LibreOffice to remove that
-old code, not working in some scenarii\cite{npapiLibONotWorking}.
+old code\cite{removeNpapiPatch} (thanks Bryan Quigley), not working in some scenarii\cite{npapiLibONotWorking}.
 
 There is still a bunch of features that are copied/implemented at
 different locations in the LibreOffice code base. We saw some progress on a copy/paste code detector tool\cite{copyPasteDetectorBug}. The tool "CCFinderX core" available on github under MIT license could suit LibreOffice nicelly\cite{copyPasteDetectorGithub}.
 
-Access2Base\cite{access2BaseDefinition} is now included in libreoffice 4.2 and later. In order to keep extension compatibility with other LibreOffice/OO.o forks, Access2Base will be provided as an extension to them. It was not possible to provide Access2Base as an extention for LibreOffice 4.2 and latter because, LibreOffice is refusing to override internal parts of LibreOffice. Thanks to this patch\cite{access2BaseOverridePatch}, it is now possible for extensions to override Access2Base.
+Access2Base (see \cite{access2BaseDefinition} for a definition) is now included in libreoffice 4.2 and later. In order to keep extension compatibility with other LibreOffice/OO.o forks, Access2Base will be provided as an extension to them. It was not possible to provide Access2Base as an extension for LibreOffice 4.2 and latter because, LibreOffice is refusing to override internal parts of LibreOffice (this still generates discussions with great argumentation weighing pros and cons\cite{coreOverrideArguments}). Thanks to this patch\cite{access2BaseOverridePatch} (Lionel Elie Mamane), it is now possible for extensions to override Access2Base.
 
-We see that the problem of extensions is critical\cite{extensionsCompatibility}.
 
-\section{Build environment}
+\section{Build environment.}
 
 This week, we have seen an initial discussion about reducing build time on Windows by using more native tools.
 
-To be built on Windows, LibreOffice still uses Cygwin. As Cygwin provides a rather great package management, installing dependencies on Windows is quite easy [9]. So dropping Cygwin in favor of smaller/native tools like GnuWin32 or busybox is out of scope for now (otherwize this would require the dev of a one-click tool to install the needed dependencies \cite{winBuidDependenciesTool} and maybe reopen this bug\cite{winBuildDependenciesInstall}.
+To be built on Windows, LibreOffice still uses Cygwin. As Cygwin provides a rather great package management, installing dependencies on Windows is quite easy [9]. So dropping Cygwin in favor of smaller/native tools like GnuWin32 or busybox is out of scope for now (otherwize this would require the dev of a one-click tool to install the needed dependencies\cite{winBuildDependenciesTool} and maybe reopen this bug\cite{winBuildDependenciesInstall}.
 
 Providing upstream patches to 'make' came up during the discussion.
 
 But now, the discussion seems limited to this question: are we gonna replace gmake from a Cygwin-running version to a native-version provided by GnuWin32 which should provide speedup improvement over Cygwin. If it works on Windows tinderbuilds, this could be added as an autodetection option to autogen: defining MAKE or a GNUMAKE environment variable manually could do the trick. In this case there is no need for a synchronization/d-day\cite{winBuildGmakeReplaceGnuWin32}.
 
-Cross compilation on Linux with MinGW is rather annoying since it break compatibility with ABI and extensions used on Cygwin/VisualC++ builds.
+Cross compilation on Linux with MinGW is rather annoying since it break compatibility with ABI and extensions used on Cygwin/VisualC++ builds. And we can see how this compatibility problem of extensions could be critical\cite{extensionsCompatibility}.
 
 For a reminder about the differences between Cygwin, GNUWin32 and MSYS, you can read this\cite{winBuildCygwinMsysGnuWin32Comparison}.
 
-
-Sometimes we have bug appearing in some languages while most of others have no problem. Since localization takes much time, it has been disabled on tinderboxes. After a request, thinderbox nb 51 compiling for Windows will now produce builds for \lstinline{master} and \lstinline{libreoffice-4-3} branch with the following languages:
+Sometimes we have bug appearing in some languages while most of others have no problem. Since localization takes much time, it has been disabled on tinderboxes. After a request, thinderbox nb 51 compiling for Windows will now produce builds for \lstinline{libreoffice-4-3} and \lstinline{master} branches with the following languages:
 \begin{itemize}
     \item de (as one language with long labels);
     \item ar (as RTL language);
@@ -113,23 +106,21 @@ Sometimes we have bug appearing in some languages while most of others have no p
 
 LibreOffice is now buildable on FreeBSD again\cite{freeBsdBuild1}\cite{freeBsdBuild2}.
 
-\section{Unit tests}
+\section{Unit tests.}
 
-We now have the results of a memcheck run against 20k documents that can
+We now have the results (thanks Markus Mohrhard!) of a memcheck run against 20k documents that can
 be used to find nasty problem in future development\cite{memcheckTests}. Two problems
 have been fixed during these operations: (according to a chat with
 mmeeks) 4x the current speed in Writer when trying to open large documents.
 
 \begin{lstlisting}
-(03:17:03 PM) ***mmeeks has a 4x speedup for loading large writer files he's working on finishing =)
+(2014-06-13 15:17:03) ***mmeeks has a 4x speedup for loading large writer files he's working on finishing =)
 \end{lstlisting}
-
 
 \section{Other issues}
 
 The MySQL/MariaDB connector appears to be broken on OS X. Using homebrew
-is discouraged. ODBC code assumes Unicode char is 2 bytes which is wrong.
-
+is discouraged. ODBC code assumes Unicode char is 2 bytes which is wrong\cite{sqlConnectorOsx1}\cite{sqlConnectorOsx2}.
 
 An issue stating that Writer doesn't memorize the default printer
 defined as it in Windows has been reported. After investigations, it
@@ -142,36 +133,39 @@ to load the printer settings from the document\cite{writerPrinter3}.
 
 A new default font for LibreOffice for Arabic?\cite{arabicFont}
 
-
 Implement regex for the REPLACE function in Calc to be OpenFormula
 compliant. (this could be proposed as an easy hack)\cite{replaceRegexOpenFormula}.
 
-
 \section{GSoC.}
 
-Refactor god objects weekly report $\rightarrow$ pushed to master and
+Refactor god objects (Valentin): weekly report $\rightarrow$ pushed to master and
 IDocumentChartDataProviderAccess has been nearly refactored.
 
-Persona: the user can select the theme he wants from the gallery and can
+Improve Usability of Personas (Rachit Gupta): the user can select the theme he wants from the gallery and can
 be applied to the UI.
 Needs to be done: run the application of the theme in a separate thread
 to avoid the UI from hanging + little changes to the UI.
 
-OneDrive : all is serialized, need to write file and folder UI
-representation. Now writing unit tests.
+Connection to SharePoint and Microsoft OneDrive (Mihai Varga): all OneDrive is serialized, a file and folder UI
+representation still needs to be writen. Now writing unit tests.
 
+Calc / Impress tiled rendering support (Andrzej Hunt): renamed to LibreOfficeKit. For more details about the current implementation, please read \cite{tiledRenderingArticle}.
 
+As a reminder, tiled rendering is the ability to be able to paint (render) a specific part of a document (a tile) to anywhere. This is really useful to plug LibreOffice into various new scenarios where the traditional LO UI cannot be used (mobile devices,\ldots).
 
 \section{Hackfests and conferences.}
 
-After the hacfest from Paris (Montreuil) hold on June 27-28th, Toulouse
-has been confirmed to hold a hackfest on November 15-16th\cite{hackfestToulouse1}.
+After the hackfest from Paris (Montreuil) hold on June 27-28th, Toulouse
+has been confirmed to hold a hackfest on November 15-16th\cite{hackfestToulouse} (thanks Arnaud Versini). More to come at \cite{hackfestToulouseWiki}.
 
 In 2015 linux.conf.au will be held 12-16 January in Auckland, New
 Zealand, at the University of Auckland Business School.
 Call for Proposals opened 9 June 2014, closes 13 July 2014\cite{linuxConfAuckland1}. There will not have a LibreOffice booth during the conference itself, only on the open day\cite{linuxConfAuckland2}.
 
 \begin{thebibliography}{30}
+
+\bibitem{wgetGithub}
+\url{https://github.com/wget/lown}
 
 \bibitem{gladeUi1}
 \url{https://gerrit.libreoffice.org/9699}
@@ -197,6 +191,9 @@ Call for Proposals opened 9 June 2014, closes 13 July 2014\cite{linuxConfAucklan
 \bibitem{npapiLibONotWorking}
 \url{http://lists.freedesktop.org/archives/libreoffice/2014-June/061635.html}
 
+\bibitem{removeNpapiPatch}
+    \url{https://gerrit.libreoffice.org/#/c/9644/}
+
 \bibitem{copyPasteDetectorBug}
 \url{https://bugs.freedesktop.org/show_bug.cgi?id=39593}
 
@@ -208,6 +205,9 @@ Call for Proposals opened 9 June 2014, closes 13 July 2014\cite{linuxConfAucklan
 
 \bibitem{access2BaseOverridePatch}
 \url{https://gerrit.libreoffice.org/#/c/9756/}
+
+\bibitem{coreOverrideArguments}
+\url{http://lists.freedesktop.org/archives/libreoffice/2014-June/061795.html}
 
 \bibitem{extensionsCompatibility}
 \url{http://listarchives.libreoffice.org/global/users/msg39416.html}
@@ -239,6 +239,12 @@ Call for Proposals opened 9 June 2014, closes 13 July 2014\cite{linuxConfAucklan
 \bibitem{memcheckTests}
 \url{http://lists.freedesktop.org/archives/libreoffice/2014-June/061717.html}
 
+\bibitem{sqlConnectorOsx1}
+\url{http://lists.freedesktop.org/archives/libreoffice/2014-June/061700.html}
+
+\bibitem{sqlConnectorOsx2}
+\url{http://lists.freedesktop.org/archives/libreoffice/2014-June/061708.html}
+
 \bibitem{writerPrinter1}
 \url{http://listarchives.libreoffice.org/global/users/msg39393.html}
 
@@ -254,14 +260,23 @@ Call for Proposals opened 9 June 2014, closes 13 July 2014\cite{linuxConfAucklan
 \bibitem{replaceRegexOpenFormula}
 \url{http://listarchives.libreoffice.org/global/users/msg39399.html}
 
-\bibitem{hackfestToulouse1}
+\bibitem{hackfestToulouse}
 \url{http://lists.freedesktop.org/archives/libreoffice/2014-June/061694.html}
+
+\bibitem{hackfestToulouseWiki}
+\url{https://wiki.documentfoundation.org/Hackfest/Toulouse2014}
 
 \bibitem{linuxConfAuckland1}
 \url{http://listarchives.libreoffice.org/global/marketing/msg16979.html}
 
 \bibitem{linuxConfAuckland2}
 \url{http://listarchives.libreoffice.org/global/marketing/msg16979.html}
+
+\bibitem{opensslPatches}
+\url{https://gerrit.libreoffice.org/#/c/9713/}
+
+\bibitem{tiledRenderingArticle}
+\url{http://www.ahunt.org/2014/05/tiled-rendering-with-libreofficekit/}
 
 \end{thebibliography}
 
