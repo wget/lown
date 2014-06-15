@@ -87,6 +87,7 @@ Last week, we spoke about a copy paste code detector. Now we are beginning to ha
 
 An user has reported that LibreOffice couldn't work with DEVONThink, a FOSS document organizer and previewer for OS X, while other old branches of LibreOffice (OO.o and NeoOffice) were able to do so. Is seems like the reason comes from the removal of a quicklook plugin into LibreOffice. The seldom bugs found Bugzilla don't come in handy this time\cite{quicklookPlugin}
 
+Florian Reisinger wrote a trivial document explaining why assertions (which could be used in unit tests) are so much important to avoid and detect bugs. He gave the example of a linked list. To manipulate this list, we have methods like \lstinline{addElement}. Three conditions are playing a role in a method: the precondition (the input), the postcondition (output) but in this case mostly invariance. Invariance is  typically what should be valid at the beginning and ant the end of the method. These 2 locations will be used to put an \lstinline{assert} and detect if an error occured. In this example, if the linked list had 9 elements, after we called the method, the list should have still 9 elements (if the argument was invalid for example; in Object-Oriented Programming, object's methods must check inputs to protect the object integrity, see encapsulation) or more element, otherwise, something goes wrong\cite{assertionsUnitTest}.
 
 \section{GSoC.}
 
@@ -182,6 +183,9 @@ day\cite{linuxConfAuckland2}.
 
 \bibitem{gsocTemplateManager}
     \url{http://lists.freedesktop.org/archives/libreoffice/2014-June/061809.html}
+
+\bibitem{assertionUnitTest}
+    \url{http://flosmind.wordpress.com/2014/06/15/assertion-errors-not-only-for-devs/}
 
 \end{thebibliography}
 
