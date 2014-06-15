@@ -2,4 +2,4 @@
 
 
 
-rm *.aux *.log *.pdf
+rm *.aux *.log *.pdf *.out
