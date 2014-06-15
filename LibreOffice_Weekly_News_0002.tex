@@ -1,0 +1,188 @@
+\documentclass{article}
+\usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm]{geometry}
+\usepackage{hyperref}
+
+% Add periods after title numbers (chapters and sections and in table of contents)
+\usepackage{titlesec}
+\titleformat{\section}{\bfseries\large}{\thesection}{.5em}{}[\hrule]
+\renewcommand{\thesection}{\thechapter\arabic{section}.}
+\renewcommand{\thesubsection}{\thesection\arabic{subsection}.}
+
+% As we won't use paragraph{} statement, we are gonna have to redefine the
+% inter-line space.
+\usepackage{setspace}
+%\singlespacing
+\onehalfspacing
+
+% Indent the beginning of every section
+\usepackage{indentfirst}
+
+% Ask to have space between 2 paragraphs.
+\usepackage{parskip}
+
+\usepackage{listings}
+\lstset{
+    basicstyle=\normalsize\ttfamily,
+    frame=single,
+    columns=flexible,
+    breaklines=true,
+    % Used because the Vim LaTeX colorscheme is buggy, using a $ character will
+    % break the colorscheme. Defining a <dollar> statement avoids to use
+    % a $ character.
+    literate={<dollar>}{\$}1
+}
+
+\begin{document}
+
+\title{\underline{L}ibre\underline{O}ffice \underline{W}eekly \underline{N}ews \#2}
+\author{William Gathoye}
+\date{June 20, 2014}
+\maketitle
+
+
+
+\emph{LibreOffice Weekly News consists of a weekly issue, published at the end of
+each week, gathering interesting development reported in discussions (mailing
+lists or IRC), Q/A and git commits made over the past week. This summary will
+emphase on the developer point of view.
+This week in LibreOffice\ldots}
+
+
+
+\section{GUI.}
+
+The conversion towards the .ui glade dialogs is still continuing (thanks Mihály Palenik!) \cite{gladeUi1,gladeUi2,gladeUi3}.
+
+Do not forget wehave a GSoC student, in charge of the dialog widget conversion too\cite{gsocDialogConversion}. LibreOffice will use even more .ui dilaog in the future. Thanks Szymon Kłos.
+
+
+It has been discussed to add the ability to select the color of non printable characters since the light blue color which is currently used is too difficult to be read when using a white page (the most common configuration)\cite{lightBlueCharacter}. Since LibreOffice 4.3 UI is freezed, it should be added to 4.4, and definitely considered as an easy\cite{lightBlueCharacterEasyHackProposal}.
+
+\section{License and FOSS.}
+
+LibreOffice has been mentioned in Fortune\cite{fortuneTime}, the business magazine published by Time Inc, editor of the famous TIME magazine. A LibreOffice contributor reacted on the mailing list\cite{fortuneTimeReaction}, and precised that patent and copyrights are 2 different concepts: stating that even if LibreOffice is a FOSS like any similar projects, it is still copyrighted, but not patented. 
+
+
+\section{Code base evolution.}
+
+Fix the JDK dependency on OS X for Rhino\cite{javaDepRhino1}\cite{javaDepRhino2}, a FOSS implementation of Javascript written in Java\cite{rhinoDefinition} (thanks Robert Antoni Buj i Gelonch). JDK > 1.6 and JDK 1.8 can now be used on OS X.
+
+If you wonder where such a Javascript implementation would be needed: for UNO bridges. See this article to know more about UNO bridges\cite{unoBridges}.
+
+
+Last week, we spoke about a copy paste code detector. Now we are beginning to have some great results from that tool. Duplicated code has been found and will be merged\cite{duplicateFound}.
+
+
+\section{Build environment.}
+
+
+
+
+\section{Unit tests.}
+
+
+
+
+\section{Other issues.}
+
+An user has reported that LibreOffice couldn't work with DEVONThink, a FOSS document organizer and previewer for OS X, while other old branches of LibreOffice (OO.o and NeoOffice) were able to do so. Is seems like the reason comes from the removal of a quicklook plugin into LibreOffice. The seldom bugs found Bugzilla don't come in handy this time\cite{quicklookPlugin}
+
+
+\section{GSoC.}
+
+Improvements to the Template manager (Efe Gürkan YALAMAN)\cite{gsocTemplateManager}.
+
+
+\subsection{OLD content.}
+
+Refactor god objects (Valentin): weekly report $\rightarrow$ pushed to master
+and IDocumentChartDataProviderAccess has been nearly refactored.
+
+Improve Usability of Personas (Rachit Gupta): the user can select the theme he
+wants from the gallery and can be applied to the UI.  Needs to be done: run the
+application of the theme in a separate thread to avoid the UI from hanging
++ little changes to the UI.
+
+Connection to SharePoint and Microsoft OneDrive (Mihai Varga): all OneDrive is
+serialized, a file and folder UI representation still needs to be writen. Now
+writing unit tests.
+
+Calc / Impress tiled rendering support (Andrzej Hunt): renamed to
+LibreOfficeKit. For more details about the current implementation, please read
+\cite{tiledRenderingArticle}.
+
+As a reminder, tiled rendering is the ability to be able to paint (render)
+a specific part of a document (a tile) to anywhere. This is really useful to
+plug LibreOffice into various new scenarios where the traditional LO UI cannot
+be used (mobile devices,\ldots).
+
+
+
+\section{Hackfests and conferences.}
+
+After the hackfest from Paris (Montreuil) hold on June 27-28th (thanks
+Charles-H Schultz and Sophie Gautier), Toulouse has been confirmed to hold
+a hackfest on November 15-16th\cite{hackfestToulouse} (thanks Arnaud Versini).
+More to come at \cite{hackfestToulouseWiki}.
+
+In 2015 linux.conf.au will be held 12-16 January in Auckland, New Zealand, at
+the University of Auckland Business School.  Call for Proposals opened 9 June
+2014, closes 13 July 2014\cite{linuxConfAuckland1}. There will not have
+a LibreOffice booth during the conference itself, only on the open
+day\cite{linuxConfAuckland2}.
+
+
+
+\begin{thebibliography}{30}
+
+\bibitem{wgetGithub}
+\url{https://github.com/wget/lown}
+
+\bibitem{quicklookPlugin}
+    \url{http://listarchives.libreoffice.org/global/users/msg39426.html}
+
+\bibitem{lightBlueCharacter}
+    \url{http://listarchives.libreoffice.org/global/design/msg06643.html}
+
+\bibitem{lightBlueCharacterEasyHackProposal}
+    \url{http://listarchives.libreoffice.org/global/design/msg06646.html}
+
+\bibitem{rhinoDefinition}
+    \url{https://developer.mozilla.org/en-US/docs/Mozilla/Projects/Rhino}
+
+\bibitem{javaDepRhino1}
+    \url{https://gerrit.libreoffice.org/#/c/9784/}
+
+\bibitem{javaDepRhino2}
+    \url{https://gerrit.libreoffice.org/#/c/9785/}
+
+\bibitem{unoBridges}
+    \url{https://wiki.openoffice.org/wiki/Uno/Article/About_Bridges}
+
+\bibitem{gladeUi1}
+    \url{https://gerrit.libreoffice.org/#/c/9696/}
+
+\bibitem{gladeUi2}
+    \url{https://gerrit.libreoffice.org/#/c/9696/}
+
+\bibitem{gladeUi3}
+    \url{https://gerrit.libreoffice.org/#/c/9779/}
+
+\bibitem{gsocDialogConversion}
+    \url{https://www.google-melange.com/gsoc/project/details/google/gsoc2014/sk94/5685265389584384}
+
+\bibitem{fortuneTime}
+    \url{http://fortune.com/2014/06/13/the-one-asterisk-on-teslas-patent-giveaway/}
+
+\bibitem{fortuneTimeReaction}
+    \url{http://listarchives.libreoffice.org/global/marketing/msg16993.html}
+
+\bibitem{duplicateFound}
+    \url{https://bugs.freedesktop.org/show_bug.cgi?id=39593#c18}
+
+\bibitem{gsocTemplateManager}
+    \url{http://lists.freedesktop.org/archives/libreoffice/2014-June/061809.html}
+
+\end{thebibliography}
+
+\end{document}
