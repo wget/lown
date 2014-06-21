@@ -40,104 +40,241 @@
 \maketitle
 
 
-
 \emph{LibreOffice Weekly News consists of a weekly issue, published at the end of
 each week, gathering interesting development reported in discussions (mailing
 lists or IRC), Q/A and git commits made over the past week. This summary will
 emphase on the developer point of view.
 This week in LibreOffice\ldots}
 
+\tableofcontents
+
+
+
+\section{Releases.}
+
+This week, we released:
+
+\begin{itemize}
+    \item LibreOffice 4.2.5 fixing over 150 bugs and regressions over our previous release\cite{libo425};
+    \item The first release candidate of LibreOffice 4.3\cite{libo43rc1};
+\end{itemize}
+
+Aside these software releases, we have also seen a great one from a team most of us tend to forget: the Documentation team. Indeed, the Documentation for the LibreOffice 4.2 branch has been fully completed and has been released\cite{doc42}. Great news for people who intent to evaluate the possibility to migrate from proprietary Office suites to LibreOffice and see if alternative features are available and how to use them.
+
 
 
 \section{GUI.}
 
-The conversion towards the .ui glade dialogs is still continuing (thanks Mihály Palenik!) \cite{gladeUi1,gladeUi2,gladeUi3}.
+\subsection{UI glade dialogs.}
+
+The conversion towards the .ui glade dialogs is still continuing (thanks Mihály Palenik!) \cite{gladeUi1,gladeUi2,gladeUi3,gladeUi4}.
 
 Do not forget wehave a GSoC student, in charge of the dialog widget conversion too\cite{gsocDialogConversion}. LibreOffice will use even more .ui dilaog in the future. Thanks Szymon Kłos.
 
+\subsection{Non printable characters color.}
 
 It has been discussed to add the ability to select the color of non printable characters since the light blue color which is currently used is too difficult to be read when using a white page (the most common configuration)\cite{lightBlueCharacter}. Since LibreOffice 4.3 UI is freezed, it should be added to 4.4, and definitely considered as an easy\cite{lightBlueCharacterEasyHackProposal}.
+
+
 
 \section{License and FOSS.}
 
 LibreOffice has been mentioned in Fortune\cite{fortuneTime}, the business magazine published by Time Inc, editor of the famous TIME magazine. A LibreOffice contributor reacted on the mailing list\cite{fortuneTimeReaction}, and precised that patent and copyrights are 2 different concepts: stating that even if LibreOffice is a FOSS like any similar projects, it is still copyrighted, but not patented. 
 
 
+
 \section{Code base evolution.}
+
+\subsection{JDK.}
 
 Fix the JDK dependency on OS X for Rhino\cite{javaDepRhino1}\cite{javaDepRhino2}, a FOSS implementation of Javascript written in Java\cite{rhinoDefinition} (thanks Robert Antoni Buj i Gelonch). JDK > 1.6 and JDK 1.8 can now be used on OS X.
 
 If you wonder where such a Javascript implementation would be needed: for UNO bridges. See this article to know more about UNO bridges\cite{unoBridges}.
 
+\subsection{Copy-paste code detector.}
 
 Last week, we spoke about a copy paste code detector. Now we are beginning to have some great results from that tool. Duplicated code has been found and will be merged\cite{duplicateFound}.
+
+\subsection{Access2Base.}
+
+The discussion about Access2Base has made no progress this week, because the discussion on the mailing list has turned into a bunch of strong arguments about this question ``should we let Access2Base be upgraded 'outside-of-cycle' by the administrator, but in that case LibreOffice internals have to be overriden by the user (or administrators), this could make the install instable or even worse bypass password protected files, yes but we can anyway override any part by overriding the \lstinline|LD_PRELOAD| environnment variable,\ldots blablabla''. The main discussion is basically now ``should we let the user screw up this computer or not''. Nothing new then regarding last week, the decision is still the same ``Access2Base will be bundled with LibreOffice as an extension that could be overridden. This override will stay the only exception.''
+
+``We should revert the exception, Access2Base doesn't need to be released quick.`` (Julien Nabet)
+
+\subsection{LibreOffice UNO interface.}
+
+According to the question asked by Lionel Elie Mamane, the LibreOffice UNO interface is really badly typed, the pointers always need to be casted to be dereferenced. With his work, the code will be easier readable, by removing all this dynamic cast, NULL pointer check, and avoid ``generic'' pointers to be exception safe\cite{unoTypeRefactor}.
+
+\subsection{Comment translations.}
+
+On the comment translation from German to English, some progress\cite{german1,german2} here too. Thanks Philipp Weissenbacher!
+
 
 
 \section{Build environment.}
 
+\subsection{Build on Windows.}
+
+\label{fixWindowsBuildInstructions}
+According to the reaction we had on the mailing list, building LibreOffice with Visual Studio for contributors who are unfamiliar with Linux isn't as straightforward as we can think\cite{visualStudioProject}. After a look at the wiki, we can understand this contributor's disarray: the ''Build on Windows'' article\cite{windowsBuildMess} is split in several parts and doesn't take the newcomer by the hand. We should rewrite it. Help is welcome on this topic.
+
+\subsection{MinGW port.}
+
+The MinGW port of LibreOffice is now dead\cite{mingwDead}, the only way to compile LibreOffice for Windows now it to compile it on Windows itself and having Visual Studio (at least 2010). Yet another reason why upgrading the Windows build instruction on the wiki is so important.\ref{fixWindowsBuildInstructions} 
+
+\subsection{Reduce compilation time on Windows.}
+
+Last week talked about the possibility to reduce compilation time on Windows. Several solutions have been proposed MinGW, GnuWin32, busybox, keep Cygwin and use a more native gmake utility provided by GnuWin32, or use MSYS. 
+
+This week, Michael Stahl made some MSYS tests. His first feelings about it are quite off-putting: this is quite different from Cygwin and has some huge problems with paths, which are hanging in the first step of the compilation: launching the \lstinline|autogen.sh| file\cite{msysTest}.
 
 
 
-\section{Unit tests.}
+\section{Other.}
 
-
-
-
-\section{Other issues.}
+\subsection{DEVONThink plugin.}
 
 An user has reported that LibreOffice couldn't work with DEVONThink, a FOSS document organizer and previewer for OS X, while other old branches of LibreOffice (OO.o and NeoOffice) were able to do so. Is seems like the reason comes from the removal of a quicklook plugin into LibreOffice. The seldom bugs found Bugzilla don't come in handy this time\cite{quicklookPlugin}
 
+\subsection{Assertions and invariance.}
+
 Florian Reisinger wrote a trivial document explaining why assertions (which could be used in unit tests) are so much important to avoid and detect bugs. He gave the example of a linked list. To manipulate this list, we have methods like \lstinline{addElement}. Three conditions are playing a role in a method: the precondition (the input), the postcondition (output) but in this case mostly invariance. Invariance is  typically what should be valid at the beginning and ant the end of the method. These 2 locations will be used to put an \lstinline{assert} and detect if an error occured. In this example, if the linked list had 9 elements, after we called the method, the list should have still 9 elements (if the argument was invalid for example; in Object-Oriented Programming, object's methods must check inputs to protect the object integrity, see encapsulation) or more element, otherwise, something goes wrong\cite{assertionsUnitTest}.
+
+
+
+\section{QA - Quality Assurance.}
+
+\subsection{Bug hunting.}
+
+A first round of bug hunting has been organized before the beta of LibreOffice 4.3. As the latter is now out, a new bug hunting session will be held before the first release candidate gets released. To get involved, just play with a pre-release builds you can install from here\cite{preReleaseLink}. If you detects a bug, just report it on the \hyperref[bugTracker]bug tracker''\cite{bugHuntingRc11}\cite{bugHuntingRc12}.
+
+\subsection{Profiling.}
+
+Matus published a spreadsheet of the evolution of the time it takes for LibreOffice to import/export some test documents over the time of development. As we interpret the graph, we see that we gained some time over the past few months then lost it again. Let's fix that for 4.3.\cite{profiling} 
+
+
 
 \section{GSoC.}
 
-Improvements to the Template manager (Efe Gürkan YALAMAN)\cite{gsocTemplateManager}.
+For all Google Summer of Code projects that have been accepted by Google, please read the Google Melange website\cite{gsocLink}.
 
+The mid-term evaluation will be held on next week. (Cedric Bosdonnat)
+(If we had to evaluate mentors too, Cedric is definitely aheaad of schedule ;-) \cite{gsocMidTermEval})
 
-\subsection{OLD content.}
+\subsection{Improvements to the Template manager (Efe Gürkan YALAMAN)}
 
-Refactor god objects (Valentin): weekly report $\rightarrow$ pushed to master
-and IDocumentChartDataProviderAccess has been nearly refactored.
+\cite{gsocTemplateManager}.
 
-Improve Usability of Personas (Rachit Gupta): the user can select the theme he
-wants from the gallery and can be applied to the UI.  Needs to be done: run the
-application of the theme in a separate thread to avoid the UI from hanging
-+ little changes to the UI.
+\subsection{Dialog Widget Conversion (Mihály Palenik).}
 
-Connection to SharePoint and Microsoft OneDrive (Mihai Varga): all OneDrive is
-serialized, a file and folder UI representation still needs to be writen. Now
-writing unit tests.
+This project is basically converting the remaining .src files using fixed sizes and positions into the new .ui Glade format. Last week, some progress has been made on this subject: \lstinline|RID_SANE_DIALOG|, \lstinline|GRID_DIALOG| and \lstinline|RID_DLG_MAPPING| are now converted\cite{gsocDialogWidgetWeek4}.
 
-Calc / Impress tiled rendering support (Andrzej Hunt): renamed to
-LibreOfficeKit. For more details about the current implementation, please read
-\cite{tiledRenderingArticle}.
+\subsection{Improved Color Selection (Krisztian Pinter).}
 
-As a reminder, tiled rendering is the ability to be able to paint (render)
-a specific part of a document (a tile) to anywhere. This is really useful to
-plug LibreOffice into various new scenarios where the traditional LO UI cannot
-be used (mobile devices,\ldots).
+The work on this topic has just started a week ago. The first step consists of having the colors of the currently opened document available as a color palette.
+
+Unlike what was written in the task description, the methods from \lstinline|SvxColorDockingWindow|\cite{gsocColorSelectionMethod1} are not called when clicking the color toolbar. Instead the \lstinline|SvxColorToolBoxControl|\cite{gsocColorSelectionMethod2} and \lstinline|SvxLineColorToolBoxControl| methods are called when the color toolbar is used in Writer\cite{gsocColorSelection1}.
+
+The code of the color floating window \lstinline|SvxColorWindow_Impl| can be found in the \lstinline|tbcontrl.cxx| file. It sets the palette in the ctor, and also receives palette changes via UNO using 
+\lstinline|.uno:ColorTableState/SID_COLOR_TABLE|.
+Most of the sidebar color pickers (except the ones from 
+the ``Character'' panel) are actually using a different code that can be found 
+at \lstinline|svx/source/sidebar/tools/ColorControl.cxx|.
+
+\subsection{Calc / Impress tiled rendering support (Andrzej Hunt).}
+
+We talked about this subject on the last LOWN edition. If you still don't know what tiled rendering is about, please read LOWN 1. The tiled rendering tool is called LibreOfficeKit. This is a GTK widget which call liblibreoffice to parse documents. This widget could be used to preview all LibreOffice supported files in other applications like Evince or Okular. The latter aims to become an all-in-one previewer like Aperçu on OS X. Okular could drop its ``not so well working'' code and rely on a well-tried code for the future: LibreOfficeKit\cite{libreofficeKit}\cite{gsocLibreOfficeKit}.
+
+\subsection{Refactor god objects (Valentin).}
+
+Weekly report $\rightarrow$ refactored \lstinline|IDocumentTimerAccess| and \lstinline|IDocumentLinksAdministrator| out of \lstinline|SwDoc| and pushed to master.
+
+\subsection{Improve Usability of Personas (Rachit Gupta).}
+
+What has been achieved this week\cite{gsocPersona}:
+\begin{itemize}
+    \item The complete theme is downloaded in a separate folder, allowing multiple themes to be stored in the system.
+    \item As promised last week, the header and footer files of the selected theme are now downloaded in a separate thread. The UI is now no more blocked.
+    \item Fixed many bugs introduced by the code.
+    \item Added error messages in case anything goes wrong (no Internet or no results)
+
+\end{itemize}
+
+What will be on focus for the coming weeks will be:
+\begin{itemize}
+    \item Terminating the transfer if the user clicks on Cancel while the theme is downloading.
+    \item Improving the performance so the search results are shown quickly.
+\end{itemize}
+
+\subsection{Enhancing text frames in Draw (Matteo Campanelli).}
+
+``Last week, the focus has been on exploring the problems related with finding the source of the issue for the text background color not working in non-edit mode.
+Currently the problem has been identified in the drawinglayer module\cite{gsocTextFrameDrawMl}.
+
+The main task of this week is closing the subgoals in the thread cited above, thus getting solid text background working also in non-edit mode.``\cite{gsocTextFrameDraw}
+
+\subsection{Connection to SharePoint and Microsoft OneDrive (Mihai Varga).}
+
+Last week, Michai has worked on OneDrive folder and file representation. Now implementing.\cite{gsocOneDrive}
 
 
 
 \section{Hackfests and conferences.}
+
+\subsection{Paris Hackfest.}
 
 After the hackfest from Paris (Montreuil) hold on June 27-28th (thanks
 Charles-H Schultz and Sophie Gautier), Toulouse has been confirmed to hold
 a hackfest on November 15-16th\cite{hackfestToulouse} (thanks Arnaud Versini).
 More to come at \cite{hackfestToulouseWiki}.
 
+\subsection{LibO Conf.}
+
+``The call for the next LibreOffice Conference location for 2015 will be
+closed by the end of the month, don't miss it, send your proposal now!'' (Sophie Gautier) \cite{liboConf2015}
+
+\subsection{Linux.conf.au.}
+
 In 2015 linux.conf.au will be held 12-16 January in Auckland, New Zealand, at
-the University of Auckland Business School.  Call for Proposals opened 9 June
-2014, closes 13 July 2014\cite{linuxConfAuckland1}. There will not have
-a LibreOffice booth during the conference itself, only on the open
-day\cite{linuxConfAuckland2}.
+the University of Auckland Business School. 
+
+Last week, we said LibreOffice will not have a dedicated booth during the conference itself, but only one on the open day\cite{linuxConfAuckland2}. If you can attend and want to, by your relations and influence, make LibreOffice presence shine for this event, please show yourself now. The call for Proposals opened on 9 June 2014 and will close on 13 July 2014\cite{linuxConfAuckland1}. 
+
+
+
+\section{Design team.}
+
+According to 
+
+
+
+\section{Users.}
+
+This week we saw a rather quite large discussion on the user mailing list regarding the ability to launch a presentation as an executable. The user asking this question wanted to make a presentation on the school computers which do not allow any software installation.
+
+The solution we had was to use a portable LibreOffice version\cite{liboPortable} which does not require any installation at all, and which could be easily brought along on a USB thumb drive.
+
+During that discussion which digressed to ODF viewers, since ODF fat-client\cite{fatClient} viewers\cite{odfViewers} are quite outdated (2006!)\cite{odfViewersOutdated}, Florian Reisinger came with an idea of a web based viewer (with editor capabilities) : WebODF. Using such online and self-hosted solution, since it is a tiny Javascript file, would be great in this use case: no installation required, no need to handle administration policies, you just need web browser.
+
+Even more interesting in comparison to fat-clients, if your presentation has videos in it, just use a container like Webm or MP4 with supported codec for your videos. These are supported nowadays by all recent browsers. No need to check if your platform will be able to play your video, depending of the backend used (do you remember that bug with Gstreamer on Linux?\cite{impressVideoBug,impressVideoBug2}).
 
 
 
 \begin{thebibliography}{30}
+\bibliographystyle{unsrt}
+\bibliographystyle{plainnat}
 
 \bibitem{wgetGithub}
 \url{https://github.com/wget/lown}
+
+\bibitem{libo425}
+    \url{http://blog.documentfoundation.org/2014/06/20/libreoffice-4-2-5-hits-the-marketplace/}
+
+\bibitem{libo43rc1}
+    \url{http://lists.freedesktop.org/archives/libreoffice/2014-June/061919.html}
+
+\bibitem{doc42}
+    \url{http://listarchives.libreoffice.org/global/documentation/msg17353.html}
 
 \bibitem{quicklookPlugin}
     \url{http://listarchives.libreoffice.org/global/users/msg39426.html}
@@ -169,6 +306,15 @@ day\cite{linuxConfAuckland2}.
 \bibitem{gladeUi3}
     \url{https://gerrit.libreoffice.org/#/c/9779/}
 
+\bibitem{gladeUi4}
+    \url{https://gerrit.libreoffice.org/#/c/9834/}
+
+\bibitem{german1}
+    \url{https://gerrit.libreoffice.org/#/c/9831/}
+
+\bibitem{german2}
+    \url{https://gerrit.libreoffice.org/#/c/9832/}
+
 \bibitem{gsocDialogConversion}
     \url{https://www.google-melange.com/gsoc/project/details/google/gsoc2014/sk94/5685265389584384}
 
@@ -186,6 +332,97 @@ day\cite{linuxConfAuckland2}.
 
 \bibitem{assertionUnitTest}
     \url{http://flosmind.wordpress.com/2014/06/15/assertion-errors-not-only-for-devs/}
+
+\bibitem{preReleaseLink}
+    \url{http://www.libreoffice.org/download/pre-releases/}
+
+\bibitem{bugHuntingRc11}
+    \url{http://lists.freedesktop.org/archives/libreoffice/2014-June/061857.html}
+
+\bibitem{bugHuntingRc12}
+    \url{http://listarchives.documentfoundation.org/www/announce/msg00192.html}
+
+\bibitem{gsocLink}
+    \url{https://www.google-melange.com/gsoc/org2/google/gsoc2014/libreoffice}
+
+\bibitem{gsocDialogWidgetWeek4}
+    \url{http://lists.freedesktop.org/archives/libreoffice/2014-June/061840.html}
+
+\bibitem{gsocColorSelection}
+    \url{http://lists.freedesktop.org/archives/libreoffice/2014-June/061841.html}
+
+\bibitem{gsocColorSelectionMethod1}
+    \url{http://opengrok.libreoffice.org/xref/core/svx/source/tbxctrls/colrctrl.cxx}
+
+\bibitem{gsocColorSelectionMethod2}
+    \url{http://opengrok.libreoffice.org/xref/core/svx/source/tbxctrls/tbcontrl.cxx#2315}
+
+\bibitem{visualStudioProject}
+    \url{http://lists.freedesktop.org/archives/libreoffice/2014-June/061877.html}
+
+\bibitem{windowsBuildMess}
+    \url{https://wiki.documentfoundation.org/Development/BuildingOnWindows}
+
+\bibitem{libreofficeKit}
+    \url{http://www.ahunt.org/2014/06/libreofficekit-gtk-viewer-widget/}
+
+\bibitem{liboConf2015}
+    \url{http://listarchives.libreoffice.org/global/marketing/msg17001.html}
+
+\bibitem{gsocMidTermEval}
+    \url{http://lists.freedesktop.org/archives/libreoffice/2014-June/061875.html}
+
+\bibitem{mingwDead}
+    \url{https://bugs.freedesktop.org/show_bug.cgi?id=41883#c17}
+
+\bibitem{gsocPersona}
+    \url{http://lists.freedesktop.org/archives/libreoffice/2014-June/061854.html}
+
+\bibitem{gsocLibreOfficeKit}
+    \url{http://lists.freedesktop.org/archives/libreoffice/2014-June/061853.html}
+
+\bibitem{msysTest}
+    \url{http://lists.freedesktop.org/archives/libreoffice/2014-June/061852.html}
+
+\bibitem{gsocTextFrameDrawMl}
+    \url{http://lists.freedesktop.org/archives/libreoffice/2014-June/061806.html}
+
+\bibitem{gsocTextFrameDraw}
+    \url{http://lists.freedesktop.org/archives/libreoffice/2014-June/061849.html}
+
+\bibitem{gsocOneDrive}
+    \url{http://lists.freedesktop.org/archives/libreoffice/2014-June/061848.html}
+
+\bibitem{profiling}
+    \url{http://lists.freedesktop.org/archives/libreoffice/2014-June/061890.html}
+
+\bibitem{unoTypeRefactor}
+    \url{http://lists.freedesktop.org/archives/libreoffice/2014-June/061898.html}
+
+\bibitem{fatClient}
+    \url{https://en.wikipedia.org/wiki/Fat_client}
+
+\bibitem{odfViewers}
+    \url{http://opendocumentfellowship.com/odfviewer}
+
+\bibitem{odfViewersOutdated}
+    \url{https://code.google.com/p/odfviewer/downloads/list}
+
+\bibitem{liboPortable}
+    \url{https://www.libreoffice.org/download/portable-versions/}
+
+\bibitem{impressVideoBug}
+    \url{http://lists.freedesktop.org/archives/libreoffice/2014-June/061593.html}
+
+\bibitem{impressVideoBug2}
+    \url{http://listarchives.libreoffice.org/global/users/msg39480.html}
+
+\bibitem{linuxConfAuckland1}
+    \url{http://listarchives.libreoffice.org/global/marketing/msg16979.html}
+
+\bibitem{linuxConfAuckland2}
+    \url{http://listarchives.libreoffice.org/global/marketing/msg16979.html}
+
 
 \end{thebibliography}
 
