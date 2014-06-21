@@ -1,10 +1,14 @@
 \documentclass{article}
+\usepackage[utf8]{inputenc} 
+% Used to use > < = directly and not use tex syntax like \textless and \textgreater
+\usepackage[T1]{fontenc}
 \usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm]{geometry}
 \usepackage{hyperref}
 
 % Add periods after title numbers (chapters and sections and in table of contents)
 \usepackage{titlesec}
 \titleformat{\section}{\bfseries\large}{\thesection}{.5em}{}[\hrule]
+\titleformat{\subsection}{\bfseries\large}{\thesubsection}{.5em}{}[\hrule]
 \renewcommand{\thesection}{\thechapter\arabic{section}.}
 \renewcommand{\thesubsection}{\thesection\arabic{subsection}.}
 
@@ -36,7 +40,7 @@
 
 \title{\underline{L}ibre\underline{O}ffice \underline{W}eekly \underline{N}ews \#2}
 \author{William Gathoye}
-\date{June 20, 2014}
+\date{June 21, 2014}
 \maketitle
 
 
@@ -55,7 +59,7 @@ This week in LibreOffice\ldots}
 This week, we released:
 
 \begin{itemize}
-    \item LibreOffice 4.2.5 fixing over 150 bugs and regressions over our previous release\cite{libo425};
+    \item LibreOffice 4.2.5, fixing over 150 bugs and regressions over our previous release\cite{libo425};
     \item The first release candidate of LibreOffice 4.3\cite{libo43rc1};
 \end{itemize}
 
@@ -69,17 +73,17 @@ Aside these software releases, we have also seen a great one from a team most of
 
 The conversion towards the .ui glade dialogs is still continuing (thanks Mihály Palenik!) \cite{gladeUi1,gladeUi2,gladeUi3,gladeUi4}.
 
-Do not forget wehave a GSoC student, in charge of the dialog widget conversion too\cite{gsocDialogConversion}. LibreOffice will use even more .ui dilaog in the future. Thanks Szymon Kłos.
+Do not forget we have two GSoC students (Mihály Palenik and Szymon Kłos) in charge of the dialog widget conversion too\cite{gsocDialogConversion}. LibreOffice will use even more .ui dialog in the future.
 
 \subsection{Non printable characters color.}
 
-It has been discussed to add the ability to select the color of non printable characters since the light blue color which is currently used is too difficult to be read when using a white page (the most common configuration)\cite{lightBlueCharacter}. Since LibreOffice 4.3 UI is freezed, it should be added to 4.4, and definitely considered as an easy\cite{lightBlueCharacterEasyHackProposal}.
+It has been discussed to add the ability to select the color of non printable characters, since the light blue color, which is currently used, is too difficult to be read when using a white page (the most common configuration)\cite{lightBlueCharacter}. Since LibreOffice 4.3 UI is freezed, it should be added to 4.4, and definitely considered as an easy\cite{lightBlueCharacterEasyHackProposal}.
 
 
 
 \section{License and FOSS.}
 
-LibreOffice has been mentioned in Fortune\cite{fortuneTime}, the business magazine published by Time Inc, editor of the famous TIME magazine. A LibreOffice contributor reacted on the mailing list\cite{fortuneTimeReaction}, and precised that patent and copyrights are 2 different concepts: stating that even if LibreOffice is a FOSS like any similar projects, it is still copyrighted, but not patented. 
+LibreOffice has been mentioned in Fortune\cite{fortuneTime}, the business magazine published by Time Inc, editor of the famous TIME magazine. A LibreOffice contributor reacted on the mailing list\cite{fortuneTimeReaction} to clarify the situation: patent and copyrights are 2 different concepts. Even if LibreOffice is a FOSS like many similar projects, it is still copyrighted, but is not patented. 
 
 
 
@@ -93,40 +97,66 @@ If you wonder where such a Javascript implementation would be needed: for UNO br
 
 \subsection{Copy-paste code detector.}
 
-Last week, we spoke about a copy paste code detector. Now we are beginning to have some great results from that tool. Duplicated code has been found and will be merged\cite{duplicateFound}.
+Last week, we spoke about a copy-paste code detector. Now we are beginning to have some great results from that tool. Duplicated code has been found and will be merged\cite{duplicateFound}.
 
 \subsection{Access2Base.}
 
-The discussion about Access2Base has made no progress this week, because the discussion on the mailing list has turned into a bunch of strong arguments about this question ``should we let Access2Base be upgraded 'outside-of-cycle' by the administrator, but in that case LibreOffice internals have to be overriden by the user (or administrators), this could make the install instable or even worse bypass password protected files, yes but we can anyway override any part by overriding the \lstinline|LD_PRELOAD| environnment variable,\ldots blablabla''. The main discussion is basically now ``should we let the user screw up this computer or not''. Nothing new then regarding last week, the decision is still the same ``Access2Base will be bundled with LibreOffice as an extension that could be overridden. This override will stay the only exception.''
+The discussion about Access2Base has made no progress this week, because the discussion on the mailing list has turned into a bunch of strong arguments about this question ``should we let Access2Base be upgraded 'outside-of-cycle' by the administrator, but in that case LibreOffice internals have to be overridden by the user (or administrators), this could make the install instable or even worse bypass password protected files, yes but we can anyway override any part by overriding the \lstinline|LD_PRELOAD| environment variable,\ldots blablabla''. The main discussion is basically now ``should we let the user screw up this computer or not''. Nothing new then regarding last week, the decision is still the same ``Access2Base will be bundled with LibreOffice as an extension that could be overridden. This override will stay the only exception.''
 
-``We should revert the exception, Access2Base doesn't need to be released quick.`` (Julien Nabet)
+\emph{We should revert the exception, Access2Base doesn't need to be released quick.} (Julien Nabet)
 
 \subsection{LibreOffice UNO interface.}
 
-According to the question asked by Lionel Elie Mamane, the LibreOffice UNO interface is really badly typed, the pointers always need to be casted to be dereferenced. With his work, the code will be easier readable, by removing all this dynamic cast, NULL pointer check, and avoid ``generic'' pointers to be exception safe\cite{unoTypeRefactor}.
+According to the question asked by Lionel Elie Mamane, the LibreOffice UNO interface\cite{unoInterface} is really badly typed, the pointers always need to be casted to be dereferenced. With his work, the code will be easier readable, by removing all this dynamic cast, NULL pointer check, and avoid ``generic'' pointers to be exception safe\cite{unoTypeRefactor}.
+
+\subsection{Plugin NPAPI drop.}
+
+The NPAPI LibreOffice plugins is used by less than 5\% of our current user base, we need to have more accurate statistics about this subject. In the future, this number will still be reduced: all current browsers tend to block them by default, unless the user click on the content to play the plugin.
+
+Currently, there is no alternative to the NPAPI plugin. "We have confirmed that PPAPI will not work because while Chrome supports it they don't provide any way for third parties to install PPAPI plugins. The only method of doing so involves a command-line argument, which is unsuitable for most purposes\cite{ppapiNotSuitable}." 
+
+Last week, we announced the NPAPI support has been dropped from LibreOffice. Currently, it will still be present in 4.3, but not in 4.4.
+
+LibreOffice requires the NPAPI for 2 features:
+\begin{itemize}
+    \item to be able to read LibreOffice documents into a web browser itself;
+    \item read embedded Flash content into Impress presentations.
+\end{itemize}
+
+For this last feature, LibreOffice might not drop the NPAPI after all. This has not been decided yet and the decision is still open.
+
+As a workaround to still provide the first feature, if the NPAPI would come to really disappear for 4.4, the idea to reuse the LibreOffice Online project has been brought to the table, but nothing more.
 
 \subsection{Comment translations.}
 
-On the comment translation from German to English, some progress\cite{german1,german2} here too. Thanks Philipp Weissenbacher!
+About the translation of German comments to English, we saw some great progress here too\cite{german1,german2}. Thanks Philipp Weissenbacher!
 
 
 
 \section{Build environment.}
 
+\subsection{Cross-compilation.}
+
+You might wonder how LibreOffice is cross-compiled for all majors OS? I asked this question on IRC, since the Wiki is not enough complete on this regard.
+
+\begin{lstlisting}
+(2014-06-11 17:33:39) cloph: wget: windows builds for 4.2 and below are done on Windows Server 2008R2 with Visual Studio 2010, for 4.3 and later it is Windows Server 2012 with Visual Studio 2012. Mac OSX release builds are done on Mac OSX 10.6, with xcode 3.something, and Linux builds are done on CentOS 5.10 (with gcc 4.4)
+\end{lstlisting}
+
 \subsection{Build on Windows.}
 
 \label{fixWindowsBuildInstructions}
-According to the reaction we had on the mailing list, building LibreOffice with Visual Studio for contributors who are unfamiliar with Linux isn't as straightforward as we can think\cite{visualStudioProject}. After a look at the wiki, we can understand this contributor's disarray: the ''Build on Windows'' article\cite{windowsBuildMess} is split in several parts and doesn't take the newcomer by the hand. We should rewrite it. Help is welcome on this topic.
+According to the reaction we had on the mailing list, building LibreOffice with Visual Studio for contributors who are unfamiliar with Linux isn't as straightforward as we can think\cite{visualStudioProject}. After a look at the wiki, we can understand this contributor's disarray: the ``Build on Windows'' article\cite{windowsBuildMess} is split in several parts and doesn't take the newcomer by the hand. We should rewrite it. Help is welcome on this topic.
 
 \subsection{MinGW port.}
 
-The MinGW port of LibreOffice is now dead\cite{mingwDead}, the only way to compile LibreOffice for Windows now it to compile it on Windows itself and having Visual Studio (at least 2010). Yet another reason why upgrading the Windows build instruction on the wiki is so important.\ref{fixWindowsBuildInstructions} 
+The MinGW port of LibreOffice is now dead\cite{mingwDead}, the only way to generate LibreOffice builds for Windows is to compile it on Windows itself using the Visual C++ compiler from Visual Studio (at least 2010). Yet another reason why upgrading the Windows build instruction on the wiki is so important.\ref{fixWindowsBuildInstructions} 
 
 \subsection{Reduce compilation time on Windows.}
 
-Last week talked about the possibility to reduce compilation time on Windows. Several solutions have been proposed MinGW, GnuWin32, busybox, keep Cygwin and use a more native gmake utility provided by GnuWin32, or use MSYS. 
+Last week, we talked about the possibility to reduce compilation time on Windows. Several solutions have been proposed MinGW, GnuWin32, busybox, keep Cygwin and use a more native gmake utility provided by GnuWin32, or use MSYS. 
 
-This week, Michael Stahl made some MSYS tests. His first feelings about it are quite off-putting: this is quite different from Cygwin and has some huge problems with paths, which are hanging in the first step of the compilation: launching the \lstinline|autogen.sh| file\cite{msysTest}.
+This week, Michael Stahl made some MSYS tests. His first feelings about it are quite off-putting: this is quite different from Cygwin and he has some huge problems with paths. These paths were making the first step of the compilation, the \lstinline|autogen.sh| file, hang\cite{msysTest}.
 
 
 
@@ -134,11 +164,15 @@ This week, Michael Stahl made some MSYS tests. His first feelings about it are q
 
 \subsection{DEVONThink plugin.}
 
-An user has reported that LibreOffice couldn't work with DEVONThink, a FOSS document organizer and previewer for OS X, while other old branches of LibreOffice (OO.o and NeoOffice) were able to do so. Is seems like the reason comes from the removal of a quicklook plugin into LibreOffice. The seldom bugs found Bugzilla don't come in handy this time\cite{quicklookPlugin}
+An user has reported that LibreOffice couldn't work with DEVONThink, a FOSS document organizer and previewer for OS X, while other old branches of LibreOffice (OO.o and NeoOffice) were able to do so. Is seems like the reason comes from the removal of a quicklook plugin into LibreOffice. The seldom bugs found Bugzilla did not come in handy this time\cite{quicklookPlugin}.
 
 \subsection{Assertions and invariance.}
 
-Florian Reisinger wrote a trivial document explaining why assertions (which could be used in unit tests) are so much important to avoid and detect bugs. He gave the example of a linked list. To manipulate this list, we have methods like \lstinline{addElement}. Three conditions are playing a role in a method: the precondition (the input), the postcondition (output) but in this case mostly invariance. Invariance is  typically what should be valid at the beginning and ant the end of the method. These 2 locations will be used to put an \lstinline{assert} and detect if an error occured. In this example, if the linked list had 9 elements, after we called the method, the list should have still 9 elements (if the argument was invalid for example; in Object-Oriented Programming, object's methods must check inputs to protect the object integrity, see encapsulation) or more element, otherwise, something goes wrong\cite{assertionsUnitTest}.
+Florian Reisinger wrote a trivial document explaining why assertions (which could be used in unit tests) are so much important to avoid and detect bugs. He gave the example of a linked list. To manipulate this list, we have methods like \lstinline{addElement}.
+
+Three conditions are playing a role in a method: the precondition (the input), the postcondition (output) and the invariance. Invariance is typically what should be valid at the beginning and at the end of the method. Invariance is playing a huge role in this bug hunting context. These 2 locations (begin and end of method) will be used to put an \lstinline{assert} and detect if an error occurred.
+
+In this example, if the linked list had 9 elements, after we called the method, the list should have still 9 elements (if the argument was invalid for example; in Object-Oriented Programming, object's methods must check inputs to protect the object integrity, see encapsulation) or more element, otherwise, something goes wrong\cite{assertionsUnitTest}.
 
 
 
@@ -146,7 +180,9 @@ Florian Reisinger wrote a trivial document explaining why assertions (which coul
 
 \subsection{Bug hunting.}
 
-A first round of bug hunting has been organized before the beta of LibreOffice 4.3. As the latter is now out, a new bug hunting session will be held before the first release candidate gets released. To get involved, just play with a pre-release builds you can install from here\cite{preReleaseLink}. If you detects a bug, just report it on the \hyperref[bugTracker]bug tracker''\cite{bugHuntingRc11}\cite{bugHuntingRc12}.
+A first round of bug hunting has been organized before the beta of LibreOffice 4.3. As the latter is now out, a new bug hunting session will be held before the first release candidate gets released. To get involved, just play with a pre-release builds you can install from here\cite{preReleaseLink}. ``If you detects a bug, just report it on the \hyperref[bugTracker]bug tracker''\cite{bugHuntingRc11}\cite{bugHuntingRc12}.
+
+You can also join our webchat, 15 contributors are able to help you report bugs, please join us NOW!\cite{qaWebchat}
 
 \subsection{Profiling.}
 
@@ -159,21 +195,23 @@ Matus published a spreadsheet of the evolution of the time it takes for LibreOff
 For all Google Summer of Code projects that have been accepted by Google, please read the Google Melange website\cite{gsocLink}.
 
 The mid-term evaluation will be held on next week. (Cedric Bosdonnat)
-(If we had to evaluate mentors too, Cedric is definitely aheaad of schedule ;-) \cite{gsocMidTermEval})
+
+(If we had to evaluate mentors too, Cedric was definitely ahead of schedule ;-) \cite{gsocMidTermEval})
 
 \subsection{Improvements to the Template manager (Efe Gürkan YALAMAN)}
 
-\cite{gsocTemplateManager}.
+Basically the template manager is moved to the start center. For more technical information, please read there \cite{gsocTemplateManager}.
 
-\subsection{Dialog Widget Conversion (Mihály Palenik).}
+\subsection{Dialog Widget Conversion (Mihály Palenik and Szymon Kłos).}
 
-This project is basically converting the remaining .src files using fixed sizes and positions into the new .ui Glade format. Last week, some progress has been made on this subject: \lstinline|RID_SANE_DIALOG|, \lstinline|GRID_DIALOG| and \lstinline|RID_DLG_MAPPING| are now converted\cite{gsocDialogWidgetWeek4}.
+\label{dialogWidgetConversion}
+This project is basically converting the remaining .src files using fixed sizes and positions into the new .ui Glade format. Last week, some progress has been made on this subject: \lstinline|RID_SANE_DIALOG|, \lstinline|GRID_DIALOG|, \lstinline|RID_DLG_MAPPING| \lstinline|RID_FORMULADLG_FORMULA| and \lstinline|RID_SVXDLG_NEWHYPERLINK| are now converted\cite{gsocDialogWidgetWeek4}.
 
 \subsection{Improved Color Selection (Krisztian Pinter).}
 
 The work on this topic has just started a week ago. The first step consists of having the colors of the currently opened document available as a color palette.
 
-Unlike what was written in the task description, the methods from \lstinline|SvxColorDockingWindow|\cite{gsocColorSelectionMethod1} are not called when clicking the color toolbar. Instead the \lstinline|SvxColorToolBoxControl|\cite{gsocColorSelectionMethod2} and \lstinline|SvxLineColorToolBoxControl| methods are called when the color toolbar is used in Writer\cite{gsocColorSelection1}.
+Unlike what was written in the task description, the methods from \lstinline|SvxColorDockingWindow|\cite{gsocColorSelectionMethod1} are not called when clicking the color toolbar. Instead the \lstinline|SvxColorToolBoxControl|\cite{gsocColorSelectionMethod2} and \lstinline|SvxLineColorToolBoxControl| methods are called when the color toolbar is used in Writer\cite{gsocColorSelection}.
 
 The code of the color floating window \lstinline|SvxColorWindow_Impl| can be found in the \lstinline|tbcontrl.cxx| file. It sets the palette in the ctor, and also receives palette changes via UNO using 
 \lstinline|.uno:ColorTableState/SID_COLOR_TABLE|.
@@ -215,7 +253,7 @@ The main task of this week is closing the subgoals in the thread cited above, th
 
 \subsection{Connection to SharePoint and Microsoft OneDrive (Mihai Varga).}
 
-Last week, Michai has worked on OneDrive folder and file representation. Now implementing.\cite{gsocOneDrive}
+Last week, Michai has worked on OneDrive folder and file representation. He is now working on the implementation.\cite{gsocOneDrive}
 
 
 
@@ -223,10 +261,12 @@ Last week, Michai has worked on OneDrive folder and file representation. Now imp
 
 \subsection{Paris Hackfest.}
 
-After the hackfest from Paris (Montreuil) hold on June 27-28th (thanks
-Charles-H Schultz and Sophie Gautier), Toulouse has been confirmed to hold
-a hackfest on November 15-16th\cite{hackfestToulouse} (thanks Arnaud Versini).
-More to come at \cite{hackfestToulouseWiki}.
+The Paris hackfest (Montreuil) will be hold on June 27-28th (thanks
+again Charles-H Schultz and Sophie Gautier), please add yourself to the wiki if you want to participate\cite{parisHackfestWiki}.
+
+\subsection{Toulouse Hackfest.}
+
+As Toulouse has been confirmed to hold a hackfest on November 15-16th (thanks again Arnaud Versini), as for all hackfests, attenders are asked to add themselves on the wiki\cite{hackfestToulouseWiki}.
 
 \subsection{LibO Conf.}
 
@@ -242,9 +282,30 @@ Last week, we said LibreOffice will not have a dedicated booth during the confer
 
 
 
-\section{Design team.}
+\section{UX / Design team.}
 
-According to 
+The UX chat have been quite unproductive lately, seeing the number of contributors decreasing over time: weekly design meetings became 14 days meeting, and now monthly.
+According to the current few contributors, the lack of motivation might have a huge factor and is the main reason why contributors are leaving out the design ship. This lack of interest has led to the need of a massive reorganisation of the design team.
+
+For a common contributor, the purpose of a design team should be: be at the service of the whole community when the latter needs a new design for the website and online developers instances (gerrit, wiki,\ldots), event banners for the website and social networks, and be be the leader on the UX side. UI implementations made by developers should be approved by the UX team first. All the aforementioned tasks are the usual work of a design team, at least in a corporate environment.
+
+In the LibreOffice community and, a fortiori, in the Document Foundation, the design team was not in charge of the current website redesign, nor the developer web tool instances. The website is currently managed by 2 contracted companies: a French one for the website specification and an Italian for the design (maybe we do not have enough web skilled profiles into the design team, this should explain this decision). The web instances are managed by the infrastructure team. The UX is not playing a leading role\cite{uxFiasco}, the UI will be designed most of the time according to what the developer coding the UI at that time has in head. When a mockup is designed, it is, broadly speaking, quite well respected\cite{startCenter}. Currently the design team is mostly focusing on user interface tests and design.
+
+When the design team has a simple wish to implement, most of the time, she got no positive answer\cite{noPositiveAnswer} or no answer at all from the developer team. Such wishes are often let open or marked as WONTFIX until someone fix it by himself. Some bugs are considered as easy hacks\cite{easyHacks}. Easy hacks are quite easy starting points for junior developers joining the project. 
+
+In order for the design team to have a more important role, a reorganisation is vital. Mirek, one of the yet active design contributor, proposed the following organisation in a dictatorial way, the commitee solution does not work: "integration of software cannot be achieved by committee, where everyone has to put in
+their own additions (featuritis again). It must be controlled by dictatorial artists with full say on the final cut.``
+
+The proposed solution is having the following leaders:
+\begin{itemize}
+    \item UX lead
+    \item Visual design lead
+    \item User testing lead
+\end{itemize}
+
+For more description about each task, read the main thread\cite{reorganisation}. If you are interested, please apply!
+
+The design team could also devided into 2 main parts: one for the UX and another for the marketing/banner/website part\cite{reorganisationSplit}.
 
 
 
@@ -330,7 +391,7 @@ Even more interesting in comparison to fat-clients, if your presentation has vid
 \bibitem{gsocTemplateManager}
     \url{http://lists.freedesktop.org/archives/libreoffice/2014-June/061809.html}
 
-\bibitem{assertionUnitTest}
+\bibitem{assertionsUnitTest}
     \url{http://flosmind.wordpress.com/2014/06/15/assertion-errors-not-only-for-devs/}
 
 \bibitem{preReleaseLink}
@@ -423,6 +484,42 @@ Even more interesting in comparison to fat-clients, if your presentation has vid
 \bibitem{linuxConfAuckland2}
     \url{http://listarchives.libreoffice.org/global/marketing/msg16979.html}
 
+\bibitem{unoInterface}
+    \url{https://en.wikipedia.org/wiki/Universal_Network_Objects}
+
+\bibitem{ppapiNotSuitable}
+    \url{http://www.firebreath.org/display/documentation/Browser+Plugins+in+a+post-NPAPI+world}
+
+\bibitem{parisHackfestWiki}
+    \url{https://wiki.documentfoundation.org/Hackfest/Paris2014}
+
+\bibitem{parisHackfestWiki}
+    \url{https://wiki.documentfoundation.org/Hackfest/Toulouse2014}
+
+\bibitem{startCenter}
+    \url{https://wiki.documentfoundation.org/Design/Whiteboards/Start_Center#Mockups}
+
+\bibitem{noPositiveAnswer}
+    \url{https://bugs.freedesktop.org/show_bug.cgi?id=80054}
+
+\bibitem{easyHacks}
+    \url{https://wiki.documentfoundation.org/Development/Easy_Hacks#Welcome}
+
+\bibitem{uxFiasco}
+    \url{http://nabble.documentfoundation.org/Welcome-graphics-for-the-Startcenter-in-4-2-td4077497i20.html#a4079836}
+
+\bibitem{reorganisationSplit}
+    \url{http://listarchives.libreoffice.org/global/design/msg06660.html}
+
+\bibitem{reorganisation}
+    \url{http://listarchives.libreoffice.org/global/design/msg06657.html}
+
+\bibitem{qaWebchat}
+    \url{http://webchat.freenode.net/?channels=libreoffice-qa}
+
+\bibitem{hackfestToulouseWiki}
+    \url{https://wiki.documentfoundation.org/Hackfest/Toulouse2014}
+ 
 
 \end{thebibliography}
 
