@@ -1,23 +1,19 @@
 #!/usr/bin/env bash
 
+# Using shopt changes the way Bash parses the code. Placing this command
+# further in the code (inside a case, condition, function,...) will trigger an
+# error since the bang (!) used in the rm command will enable the Bash history
+# feature: a bang expands the last command which begins with the text following
+# the bang.
+shopt -s extglob
 
 while [ 1 ]; do
-    read -p "[?] This script will remove all non .tex, .wiki or .pdf files. Do you want to continue? [y/N] " answer
+    read -p "[?] This script will remove all non .sh, .tex, .wiki or .pdf files. Do you want to continue? [y/N] " answer
     case $answer in
         [Yy]*)
 
-            # Need to enbale extglob as the remove command we use needs this feature.
-            shopt extglob
-            extglobStatus=$(shopt extglob)
-            extglobStatus=${extglobStatus##extglob }
-            if [ "$extglobStatus" == "off" ]; then
-                echo "[+] extglob (Extended Pattern Matching) is disabled in Bash, enabling it..."
-                shopt -s extglob
-            fi
-            shopt extglob
-
             echo "[+] Removing..."
-            rm !(*.tex|*.wiki|*.pdf)
+            rm !(*.sh|*.tex|*.wiki|*.pdf)
 
             break;;
         [Nn]*|"")
