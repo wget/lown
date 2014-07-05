@@ -1,4 +1,7 @@
-{{DISPLAYTITLE:<u>L</u>ibre<u>O</u>ffice <u>W</u>eekly <u>N</u>ews #2 }}
+{{TopMenu}}
+{{Menu}}
+{{Menu.Development}}
+{{OrigLang|<u>L</u>ibre<u>O</u>ffice <u>W</u>eekly <u>N</u>ews #2}}
 
 ''LibreOffice Weekly News gathers interesting developments from discussions on mailing lists and IRC, updates in QA and git commits, and combines them into a tidy publication at the end of each week. This summary will emphasize a developer's point of view. This week in LibreOffice...''
 
@@ -10,6 +13,10 @@
 |Publication date
 |:
 |June 21, 2014
+|-
+|PDF-Version
+|:
+|[https://raw.githubusercontent.com/wget/lown/master/LibreOffice_Weekly_News_0002.pdf available here]
 |}
 
 __TOC__
@@ -109,13 +116,12 @@ You might wonder how LibreOffice is cross-compiled for all majors OS? I asked th
 
 === Build on Windows. ===
 
-\label{fixWindowsBuildInstructions}
-According to the reaction we had on the mailing list, building LibreOffice with Visual Studio for contributors who are unfamiliar with Linux isn't as straightforward as we can think<ref name=visualStudioProject />. After a look at the wiki, we can understand this contributor's disarray: the ``Build on Windows'' article<ref name=windowsBuildMess /> is split in several parts and doesn't take the newcomer by the hand. We should rewrite it. Help is welcome on this topic.
+According to the reaction we had on the mailing list, building LibreOffice with Visual Studio for contributors who are unfamiliar with Linux isn't as straightforward as we can think<ref name=visualStudioProject />. After a look at the wiki, we can understand this contributor's disarray: the ''Build on Windows'' article<ref name=windowsBuildMess /> is split in several parts and doesn't take the newcomer by the hand. We should rewrite it. Help is welcome on this topic.
 
 
 === MinGW port. ===
 
-The MinGW port of LibreOffice is now dead<ref name=mingwDead />, the only way to generate LibreOffice builds for Windows is to compile it on Windows itself using the Visual C++ compiler from Visual Studio (at least 2010). Yet another reason why upgrading the Windows build instruction on the wiki is so important.[[#Build on Windows.]]
+The MinGW port of LibreOffice is now dead<ref name=mingwDead />, the only way to generate LibreOffice builds for Windows is to compile it on Windows itself using the Visual C++ compiler from Visual Studio (at least 2010). Yet another reason why upgrading the [[#Build on Windows Windows build instruction on the wiki is so important]].
 
 
 === Reduce compilation time on Windows. ===
