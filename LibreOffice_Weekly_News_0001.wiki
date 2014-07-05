@@ -311,3 +311,5 @@ day<ref name=linuxConfAuckland2 />.
 
 <ref name=tiledRenderingArticle>http://www.ahunt.org/2014/05/tiled-rendering-with-libreofficekit/</ref>
 </references>
+
+[[Category:LOWN]]
