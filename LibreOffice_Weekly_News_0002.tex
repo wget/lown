@@ -38,10 +38,8 @@
 
 \begin{document}
 
-\title{\underline{L}ibre\underline{O}ffice \underline{W}eekly \underline{N}ews \#2}
-\author{William Gathoye}
-\date{June 21, 2014}
-\maketitle
+\title{\underline{L}ibre\underline{O}ffice \underline{W}eekly \underline{N}ews \#2}\author{William
+Gathoye}\date{June 21, 2014}\maketitle
 
 
 \emph{LibreOffice Weekly News gathers interesting developments from discussions on mailing lists and IRC, updates in QA and git commits, and combines them into a tidy publication at the end of each week. This summary will emphasize a developer's point of view. This week in LibreOffice\ldots}
@@ -164,9 +162,9 @@ An user has reported that LibreOffice couldn't work with DEVONThink, a FOSS docu
 
 \subsection{Assertions and invariance.}
 
-Florian Reisinger wrote a trivial document explaining why assertions (which could be used in unit tests) are so much important to avoid and detect bugs. He gave the example of a linked list. To manipulate this list, we have methods like \lstinline{addElement}.
+Florian Reisinger wrote a trivial document explaining why assertions (which could be used in unit tests) are so much important to avoid and detect bugs. He gave the example of a linked list. To manipulate this list, we have methods like \lstinline|addElement|.
 
-Three conditions are playing a role in a method: the precondition (the input), the postcondition (output) and the invariance. Invariance is typically what should be valid at the beginning and at the end of the method. Invariance is playing a huge role in this bug hunting context. These 2 locations (begin and end of method) will be used to put an \lstinline{assert} and detect if an error occurred.
+Three conditions are playing a role in a method: the precondition (the input), the postcondition (output) and the invariance. Invariance is typically what should be valid at the beginning and at the end of the method. Invariance is playing a huge role in this bug hunting context. These 2 locations (begin and end of method) will be used to put an \lstinline|assert| and detect if an error occurred.
 
 In this example, if the linked list had 9 elements, after we called the method, the list should have still 9 elements (if the argument was invalid for example; in Object-Oriented Programming, object's methods must check inputs to protect the object integrity, see encapsulation) or more element, otherwise, something goes wrong\cite{assertionsUnitTest}.
 
@@ -176,7 +174,7 @@ In this example, if the linked list had 9 elements, after we called the method, 
 
 \subsection{Bug hunting.}
 
-A first round of bug hunting has been organized before the beta of LibreOffice 4.3. As the latter is now out, a new bug hunting session will be held before the first release candidate gets released. To get involved, just play with a pre-release builds you can install from here\cite{preReleaseLink}. ``If you detects a bug, just report it on the \hyperref[bugTracker]bug tracker''\cite{bugHuntingRc11}\cite{bugHuntingRc12}.
+A first round of bug hunting has been organized before the beta of LibreOffice 4.3. As the latter is now out, a new bug hunting session will be held before the first release candidate gets released. To get involved, just play with a pre-release builds you can install from here\cite{preReleaseLink}. ``If you detects a bug, just report it on the \link{bug tracker}[~\Cite]{bugTracker}''\cite{bugHuntingRc11}\cite{bugHuntingRc12}.
 
 You can also join our webchat, 15 contributors are able to help you report bugs, please join us NOW!\cite{qaWebchat}
 
@@ -489,7 +487,7 @@ Even more interesting in comparison to fat-clients, if your presentation has vid
 \bibitem{parisHackfestWiki}
     \url{https://wiki.documentfoundation.org/Hackfest/Paris2014}
 
-\bibitem{parisHackfestWiki}
+\bibitem{hackfestToulouseWiki}
     \url{https://wiki.documentfoundation.org/Hackfest/Toulouse2014}
 
 \bibitem{startCenter}
@@ -513,9 +511,8 @@ Even more interesting in comparison to fat-clients, if your presentation has vid
 \bibitem{qaWebchat}
     \url{http://webchat.freenode.net/?channels=libreoffice-qa}
 
-\bibitem{hackfestToulouseWiki}
-    \url{https://wiki.documentfoundation.org/Hackfest/Toulouse2014}
- 
+\bibitem{bugTracker}
+    \url{https://www.libreoffice.org/get-help/bug/}
 
 \end{thebibliography}
 
