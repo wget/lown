@@ -2,26 +2,31 @@
 {{Menu}}
 {{Menu.Development}}
 {{OrigLang|<u>L</u>ibre<u>O</u>ffice <u>W</u>eekly <u>N</u>ews #1}}
-<!-- As recommended on #mediawiki on Freenode, the following command has beenpreviously used, but should be avoided 
-{{DISPLAYTITLE:<u>L</u>ibre<u>O</u>ffice <u>W</u>eekly <u>N</u>ews #2 }} -->
+<!-- As recommended on #mediawiki on Freenode, the following command has been previously used, but should be avoided
+{{DISPLAYTITLE:<u>L</u>ibre<u>O</u>ffice <u>W</u>eekly <u>N</u>ews #1 }} -->
 {|
-|Author|:
+|Author
+|:
 |William Gathoye (wget)
 |-
-|Publication date|:
+|Publication date
+|:
 |June 14, 2014
 |-
-|PDF-Version|:
+|PDF-Version
+|:
 |[https://raw.githubusercontent.com/wget/lown/master/LibreOffice_Weekly_News_0001.pdf available here]
 |}
 
-__TOC__== Welcome to this first edition of <u>L</u>ibre<u>O</u>ffice <u>W</u>eekly <u>N</u>ews ==
+__TOC__
+
+== Welcome to this first edition of <u>L</u>ibre<u>O</u>ffice <u>W</u>eekly <u>N</u>ews! ==
 
 LibreOffice has plenty of communication channels for its developers and contributors to exchange messages: mailing lists, social networks, wiki and an ask (question/answers) instance. This configuration is not ideal for the developer to see a global overview of the progress made in the LibreOffice development. Since I subscribed most of the LibreOffice mailing lists and usually take the time to read all messages I receive in my mailbox, and after a request made by Michael Meeks, I decided to take up this challenge.
 
 Like ''Linux Weekly News'' at its early life, LibreOffice Weekly News consists of a weekly issue gathering interesting development reported in discussions (mailing lists or IRC), Q/A and git commits made over the past week. This summary will emphase on the developer point of view; so do not expect to have a popularized article, and please do not complain about nerdy stuff (if any), since it is written by a computer science student (me) for developers. 
 
-I will publish this summary on the LibreOffice developer mailing list each week on Sunday nights. In that way, developers not working on LibreOffice during the week-end can even get the evolution made throughout the weekend. A beta version of the article will be made available on my github account<ref name=wgetGithub /> on Fridays evening. In that way, if someone wants to proofread this writing andapply corrections before the final version released on Sundays, he is more than welcome.
+I will publish this summary on the LibreOffice developer mailing list each week on Sunday nights. In that way, developers not working on LibreOffice during the week-end can even get the evolution made throughout the weekend. A beta version of the article will be made available on my github account<ref name=wgetGithub /> on Fridays evening. In that way, if someone wants to proofread this writing and apply corrections before the final version released on Sundays, he is more than welcome.
 
 This week in LibreOffice...
 
@@ -45,8 +50,7 @@ OpenSSL patches from Fedora have been committed<ref name=opensslPatches /> (Caol
 
 Since Chrom(e|ium) dropped the old NPAPI and Firefox is moving away from browser extensions<ref name=npapiMozilla />, it was high time for LibreOffice to remove that old code<ref name=removeNpapiPatch /> (thanks Bryan Quigley), not working in some scenarios<ref name=npapiLibONotWorking />.
 
-There is still a bunch of features that are copied/implemented at different locations in the LibreOffice code base. We saw some progress on a copy/paste code detector tool<ref name=copyPasteDetectorBug />. The tool "CCFinderX core"
-available on github under MIT license could suit LibreOffice nicelly<ref name=copyPasteDetectorGithub />.
+There is still a bunch of features that are copied/implemented at different locations in the LibreOffice code base. We saw some progress on a copy/paste code detector tool<ref name=copyPasteDetectorBug />. The tool "CCFinderX core" available on github under MIT license could suit LibreOffice nicelly<ref name=copyPasteDetectorGithub />.
 
 Access2Base (see <ref name=access2BaseDefinition /> for a definition) is now included in libreoffice 4.2 and later. In order to keep extension compatibility with other LibreOffice/OO.o forks, Access2Base will be provided as an extension to them. It was not possible to provide Access2Base as an extension for LibreOffice 4.2 and latter because, LibreOffice is refusing to override internal parts of LibreOffice (this still generates discussions with great argumentation weighing pros and cons<ref name=coreOverrideArguments />). Thanks to this patch<ref name=access2BaseOverridePatch /> (Lionel Elie Mamane), it is now possible for extensions to override Access2Base.
 
@@ -54,11 +58,11 @@ Access2Base (see <ref name=access2BaseDefinition /> for a definition) is now inc
 
 This week, we have seen an initial discussion about reducing build time onWindows by using more native tools.
 
-To be built on Windows, LibreOffice still uses Cygwin. As Cygwin providesa rather great package management, installing dependencies on Windows is quite easy<ref name=winBuildDependencies />. So dropping Cygwin in favor of smaller/native tools like GnuWin32 or busybox is out of scope for now (otherwize this would require the dev of a one-click tool to install the needed dependencies<ref name=winBuildDependenciesTool /> and maybe reopen this bug<ref name=winBuildDependenciesInstall />.
+To be built on Windows, LibreOffice still uses Cygwin. As Cygwin provides a rather great package management, installing dependencies on Windows is quite easy<ref name=winBuildDependencies />. So dropping Cygwin in favor of smaller/native tools like GnuWin32 or busybox is out of scope for now (otherwize this would require the dev of a one-click tool to install the needed dependencies<ref name=winBuildDependenciesTool /> and maybe reopen this bug<ref name=winBuildDependenciesInstall />.
 
 Providing upstream patches to 'make' came up during the discussion.
 
-But now, the discussion seems limited to this question: are we gonna replace gmake from a Cygwin-running version to a native-version provided by GnuWin32 which should provide speedup improvement over Cygwin. If it works on Windows tinderbuilds, this could be added as an autodetection option to autogen: defining MAKE or a GNUMAKE environment variable manually could do the trick. In this case there is no need fora synchronization/d-day<ref name=winBuildGmakeReplaceGnuWin32 />.
+But now, the discussion seems limited to this question: are we gonna replace gmake from a Cygwin-running version to a native-version provided by GnuWin32 which should provide speedup improvement over Cygwin. If it works on Windows tinderbuilds, this could be added as an autodetection option to autogen: defining MAKE or a GNUMAKE environment variable manually could do the trick. In this case there is no need for a synchronization/d-day<ref name=winBuildGmakeReplaceGnuWin32 />.
 
 Cross compilation on Linux with MinGW is rather annoying since it break compatibility with ABI and extensions used on Cygwin/VisualC++ builds. And we can see how this compatibility problem of extensions could be critical<ref name=extensionsCompatibility />.
 
@@ -107,7 +111,7 @@ As a reminder, tiled rendering is the ability to be able to paint (render) a spe
 After the hackfest from Paris (Montreuil) hold on June 27-28th (thanks Charles-H Schultz and Sophie Gautier), Toulouse has been confirmed to hold a hackfest on November 15-16th<ref name=hackfestToulouse /> (thanks Arnaud Versini).
 More to come at <ref name=hackfestToulouseWiki />.
 
-In 2015 linux.conf.au will be held 12-16 January in Auckland, New Zealand, at the University of Auckland Business School. Call for Proposals opened 9 June 2014, closes 13 July 2014<ref name=linuxConfAuckland1 />. There will not have a LibreOffice booth during the conference itself, only on the openday<ref name=linuxConfAuckland2 />.
+In 2015 linux.conf.au will be held 12-16 January in Auckland, New Zealand, at the University of Auckland Business School. Call for Proposals opened 9 June 2014, closes 13 July 2014<ref name=linuxConfAuckland1 />. There will not have a LibreOffice booth during the conference itself, only on the open day<ref name=linuxConfAuckland2 />.
 
 <references>
 <ref name=wgetGithub>https://github.com/wget/lown</ref>
