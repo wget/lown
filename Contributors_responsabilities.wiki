@@ -1,0 +1,16 @@
+{{TopMenu}}
+{{Menu}}
+{{Menu.Development}}
+{{OrigLang|Contributors responsabilities}}
+
+''This page aims to link contributors from the [[Development/Developers developers/contrbitor list]] and detail the task they are responsible for. This is rather interesting when we need to contact someone responsible for social network account and we want something related to LibreOffice to be published.''
+
+{|
+|sophi
+|:
+|Maintaining the YouTube channel for TDF
+|:
+|[http://listarchives.libreoffice.org/global/users/msg40753.html 1]
+|}
+
+[[Category:Development]]
