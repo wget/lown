@@ -1,0 +1,267 @@
+{{TopMenu}}
+{{Menu}}
+{{Menu.Development}}
+{{OrigLang|<u>L</u>ibre<u>O</u>ffice <u>W</u>eekly <u>N</u>ews #3}}
+
+''LibreOffice Weekly News gathers interesting developments from discussions on mailing lists and IRC, updates in QA and git commits, and combines them into a tidy publication at the end of each week. This summary will emphasize a developer's point of view. This week in LibreOffice...''
+
+{|
+|Author
+|:
+|William Gathoye (wget)
+|-
+|Publication date
+|:
+|July 21, 2014
+|}
+
+[[File:Germany champions 2014 FIFA World Cup.jpg|200px|thumb|left]]First of all, congratulations to all Germans for their World Cup win! It was really a stressfull competition, but the 113th minute really was really a sigh of relief.
+
+[[File:Flag_of_France.svg|200px|thumb|right]]Also, happy National Days to all French! July 14th marks the start of the World War I commemoration, under the banner of international brotherhood. In open source software, especially in The Document Foundation, we are accustomed to this philosophy: joining our forces regardless of political point of view, belief, origins or sexual orientation for a same single goal. 
+
+Today is the Belgium National Day. With it, as a tradition, we have the National Rainstorm. The English have not to complain about their weather ;-). But I assume this will not be for Belgians a barrier to not go partying. Happy National Day to all of them![[File:Flag_of_Belgium.svg|200px|thumb|right]]
+
+Since the last LOWN publication, holidays have started, most of people should be on vacation too. This is not the case of the LibreOffice project though (nor the case for yours truly ;-) ). We have thus a bunch of news to report (I wasn't able to make my previous summary earlier, sorry about that). Enough writing, let's start...
+
+__TOC__
+
+== Because we love what is mature ==
+
+I remember having seen a pretty long discussion last year about the naming of the "mature" vs "fresh" branch. The old "stable" name has been ditched and replaced by "mature" for several reasons. This change has however never been committed on the website, nor used in discussions...
+
+Indeed, the website is still using the old naming convention. A year later, comments like this on mailing list [http://lists.freedesktop.org/archives/libreoffice/2014-June/061941.html come up regularly on the table]. Using the "stable" keyword is still subject to rather [http://listarchives.libreoffice.org/global/users/msg39521.html long discussions] which could have been avoided. Let's have thus some energy and stop procrastinate. ;-) Let's use the new naming convention NOW.
+
+== LibreOffice crashes are figments of your imagination ==
+
+According to a recent Coverity scan, LibreOffice [http://caolanm.blogspot.be/2014/07/libreoffice-coverity-defect-density.html has only 13 defects / 100.000 lines of code]. This number seems high, you said? Equivalent rather big projects, like the Linux kernel, have about 65 defects / 100.000 lines of code. This is actually a really pretty good score for LibreOffice and a huge improvement compared to [http://www.coverity.com/press-releases/libreoffice-improves-software-quality-coverity-scan the last (public) analysis from the 14th November 2013] which scored at 84/100k lines. The improvement was even more important if we make a comparison from the moment The Document Foundation picked up the code from the defunct OpenOffice.org project.
+
+That being said, I do not want to be a killjoy, but this gives still ~1,235 problems to solve as LibreOffice has 9MM lines of code. You can thus [https://www.libreoffice.org/community/get-involved contribute to the project] and lower down even more this number.
+
+== Security issues in LibreOffice? ==
+
+=== Document protection ===
+
+Protecting ODF documents with LibreOffice is not supported with MS Office which opens them without asking for a password. The opposite occurs with protected DOC opened with LibreOffice. This issue is potentialy a security flaw.<ref name=odfProtection /> Though this issue has to be checked. More to come next week.
+
+=== VBA Macro ===
+
+The CVE-2014-0247 is reported to have been fixed in LibreOffice 4.2.5 (fresh branch)<ref name=cveVba />, but the patch has not been backported to LibreOffice mature branch (4.1.x). At the time of the OpenSSL bug fixes, patches have been packported (see previous LOWN report).
+
+This situation regarding security is inadmissible especially as the LibreOffice 4.1.x is dedicated towards entreprise users. CVE-2014-0247 patches should have been backported too. Users have complained that [http://listarchives.libreoffice.org/global/users/msg39773.html LibreOffice was reported as a vulnerability by they antimalware software].
+
+Now, it is a bit too late since the 4.3 fresh branch will be released in a few days.
+
+== A new font for LibreOffice ==
+
+A new font, KACST, has been discussed to be included in a future LibreOffice version for Arabic language. This font is GPLv2 licensed.<ref name=newFont />
+
+Keep in mind bundling font for LibreOffice is exceptional and are only allowed for the top ten languages requiring it.
+
+== The Design team has a new workflow ==
+
+The problem we talked about recently regarding the design team organization is that often developers are most of the time not interested in fixing a UX problem with the help of the designers. Most of the mockups are left without implementations. When developers try to fix an issue with the UI, they made what they think it is best to do, but often without consulting the design team first.<ref name=newDesignWorkflow />
+
+"Waiting for a developer to appear and take up a design problem stifles the design itself"<ref name=notWaitForDevs />
+
+"Whiteboard are not a place to brainstorm, there are user pages and websites like Deviantart for that. Whiteboards should be designed with implementation in mind, and that requires dev cooperation."<ref name=designBrainstorm />
+
+Mailing lists seems not appropriate for designers-developers communication. GlitterGallery<ref name=glitterMention />, an open source platform aiming at improving collaboration between devs and designers has been mentionned, but seems complicated to set up. KDE Design Group has been given as an exemple<ref name=kdeDesignGroup />: things get done and they are simply using a forum. Since LibreOffice forums are actually mailing list, why not use nabble?
+
+== Performance improvements ==
+
+Thanks and welcome to Tobias Lippert for his great new contribution attempting to solve an issue affecting ODS file save. The UI was indeed freezed and we had to kill the LibreOffice process<ref name=odsSaveFreezing />. According to his commit<ref name=listenerBroadcastCommit />, the problem was due to the fact that registration of new listeners were taking a lot of time to be taken into consideration by the broadcaster. Each time we wanted to add a listener, the method browsed the whole list of listeners to see if it has been previously removed. As we are using C++ vectors, why not use <code>push_back()</code> to add element at the end of the vector and <code>pop_back(int position)</code> to remove the element from the desired position. This is the main idea of the patch.
+
+== M{i,a}cro... everywhere ==
+
+=== Last file autoload ===
+
+What we sometimes forget is that we can write macros with LibreOffice. As a recent example on the user mailing list, someone asked to have the ability to autoload the last used document when the LibreOffice suite starts up<ref name=autoLoadAsk />. This seems trivial, but when you are a new user, it isn't. See [http://listarchives.libreoffice.org/global/users/msg39905.html the solution here].
+
+When we have to debug such a macro, tools like XRayTool comes sometimes in handy<ref name=xRayTool /> to see which values we have in an object for example.
+
+As we can see, the help regarding LibreOffice Basic language and the associated tools is far from being complete, we had to link to AOO. [[#Managing the LibreOffice help a nightmare?|But read further about future improvements on the LibreOffice help side]].
+
+=== First character bold ===
+
+Another question regarding macro was asked in the mailing list. This time, asking the ability to write a macro to make the first character of the cell bold. [http://listarchives.libreoffice.org/global/users/msg39879.html See the solution here]. According to Andrew Pitonyak, the macro recorder needs to be "reworked from the start". If any one has more information on which parts/what needs to be rewritten, please answer to this LibreOffice Weekly News announce on the mailing list.
+
+=== Hyperlinks in Base tables ===
+
+We have seen a bunch of questions regarding features of LibreOffice Base and rather very long threads on the user mailing lists. These questions were mostly asked by users not accustomed to use databases or by tech guys who have not used one for a bunch of years.
+
+A rather good question from a guy who was seemingly migrating away from MS Office<ref name=dbLinkQuestion />: "does LibreOffice Base have a feature to store files as hyperlink in database field?". The answer is unfortunate: "no"<ref name=dbLinkAnswer />, but [https://forum.openoffice.org/en/forum/viewtopic.php?f=13&t=4778&p=29999#p207950 we can use this macro] ;-). 
+
+== Yet another migration to LibreOffice ==
+
+[[File:LOWN_3_Kerala_Legislative_Assembly_migares_to_Free_Software.png|200px|thumb|left|Announce from Zyxware Technologies]] 
+
+Anivar Aravind is a secretary working at the Swathanthra Malayalam Computing (SMC). "Swathanthra Malayalam Computing (SMC) is a free software collective engaged in development, localization, standardization and popularization of various Free and Open Source Softwares in Malayalam language"<ref name=smcMeaning />.
+
+He reported in our mailing list last week <ref name=newMigration /> that Kerala Legislative Assembly (Kerala is one of the 29 States in India) will migrate to FOSS solutions, including LibreOffice ([http://listarchives.libreoffice.org/global/marketing/msg17046.html see these news links in English publications]).
+
+This is rather great news but not astonishing as Windows XP expired from extended grace support period on April 8. We will see more migrations like this one in the near future. Indeed, as Microsoft current software solutions are asking much more computational power, old machines (we assume) cannot follow this "macrosoft" trend. Instead of getting rid of all the computer hardware, FOSS operating systems and applications can be a solution, in addition to provide work to local FOSS companies.
+
+== "Let's get trained about LibreOffice" ==
+
+This is a statement school headmasters from Laos could have said when they accepted to conduct an Open Source software training in their public secondary school.
+
+Thanks to Anousak Souphavanh, who is pushing Open Source in Laos for about 15 years, the first ever Open Source training in public schools for both students and teachers is organized from 14 to 30 July. This training was titled 'Free Open Source Software adoption in secondary schools' and namely 10 major high schools in the capital of Laos participated in.
+
+LibreOffice has been chosen as the major office suite application. This initiation to LibreOffice will cover Writer, Calc, Impress, and Math and concentrates 10% of the time on technical theory and the ramining 90% on practice.
+
+"The Ministry of Post and Telecommunications' Department of Planning and Cooperation received funding from ASEAN ICT and we are the main partner for the training." said Mr. Souphavanh. This is clearly showing that his goal was reached, after having spent so much time trying to convince people to further support Open Source development even since the old days of OpenOffice<ref name=trainingOldDays />. Congratulations to him for his hard work<ref name=training />.
+
+== Compilation on Windows ==
+
+=== Still not easy for newcomers ===
+
+Indeed, aside the problem he has to reach the mailing list, Yonggang Chen, a new contributor wanting to contribute on the PDF side, was unable to get a Visual Studio project working. The compilation instructions hosted on the wiki are indeed still useless. As we raised this problem in a last edition, help in restructuring/rewriting the Windows compilation instructions is highy welcome. Having to watch a video to be able to compile a build for Windows is definitely not the easiest way and the more up-to-date solution.<ref name=windowsCompilation />
+
+=== Reduce compilation time on Windows ===
+
+Seems like the native make version we discussed in previous editions is now showing its full potential.<ref name=nativeMake /> LibreOffice developers working on Windows or Windows tinderbox maintainers can now get their builds faster from now.
+
+The following trick only works on master and from 4.4 for now. The 4.3 branch and below must still use the standard Cygwin build.
+
+*First download a Win32 version of the make utility, like [http://people.freedesktop.org/~mst/make-85047eb-msvc.exe from here]
+*Then, add a line to <code>autogen.input</code>:
+<pre>MAKE=C:/path/to/make.exe</pre>
+
+For the reasons why it is recommended to switch to a native Win32 of the make utility for future releases, read [http://lists.freedesktop.org/archives/libreoffice/2014-June/061727.html this great summary]. Thanks again Michael Stahl!
+
+=== Compilation with Visual Studio 2013 ===
+
+As a reminder, in the previous LOWN editions, we made a summary of the toolchains used for each LibreOffice builds, at least for Windows, OS X and GNU/Linux platforms. Since LibreOffice 4.3, the Windows compilation is performed thanks to Visual Studio 2012. Since the 2013 version is now out and Visual Studio will be updated continuously, it has been discussed about the ability to upgrade to this toolchain for future Windows builds.
+
+== LibreOffice for Mobile will be soon a reality ==
+
+[[File:LibreOffice on Android tiled rendering.png|thumb|LibreOfficeKit tiled rendering implementation in LibreOffice for Android.]] This week too, we saw a rather huge announcement<ref name=mobileLibO />. As a reminder, at the first LibreOffice conference, The Document Foundation announced plans to migrate LibreOffice to mobile devices. Not by rewriting our office suite from scratch, but by reusing 90% of the code base and only writing 10% exclusively for the target platform. The migration of the 90% of the code base was actually already made. What we need is to work on the 10% native code side: which concerns the user interface. [https://www.youtube.com/watch?v=E2vNTkTQi60 A Michael Meeks interview at FOSDEM 2013] (until 2m25s) showed in which direction the development was going on. 
+
+As you can see in the afore mentionned video and according to what [https://twitter.com/willubuntu/status/362977920454635520 I could actually test on my mobile device a year ago], the LibreOffice code is currently compiling great on Android (and on iOS too), but the UI is clearly not adapted. Android has currently a working viewer which has to be improved to integrate the UI allowing document to be modified. Until now, progress on this side was community driven and thus improvement were rather low. But this is gonna change.
+
+Indeed, Smoose, a company from Netherlands, driven by open source projects, provided, publicly, funding for LibreOffice to run on Android.
+
+Ideas from the previous LibreOffice Android Viewer (showed in the above video) were taken back and merged with the Fennec browser (Firefox Mobile). Because rendering a webpage or rendering an office document is basically the same, LibreOffice used Mozilla's work as they already fixed most of the developpement problems LibreOffice would need to solve. Why reivent the wheel? At this stage, a working tiled viewer is already provided. I have not had the opportunity to test it by myself on my own device yet, but the first impressions were actually great, because the app is quite reactive and smooth as it is accelerated by OpenGL. We see here the first positive effects of the LibreOfficeKit interface we wrote about in one of the previous LibreOffice Weekly report. 
+
+According to the developers working on this side of the LibreOffice project, thanks to the funding brought by Smoose, a working viewer for LibreOffice 4.4 may already be released this fall.
+
+== PDF export ==
+
+On the 7th June, Michael Meeks and me discussed a PDF export problem I raised up after [https://twitter.com/willubuntu/status/475243345665851392 a comment on my twitter account]. When you embed an ODF document inside a PDF export file thanks to the Hybrid PDF feature ([http://blogs.computerworlduk.com/simon-says/2012/03/the-magic-of-editable-pdfs/index.htm read more here]), if your document has images in it, these are actually saved twice. Read this unequivocal Michael Meeks' answer:
+
+<pre>
+(03:11:10 PM) mmeeks: wget: the pictures are saved twice (sadly)
+(03:11:21 PM) mmeeks: wget: if we could solve that it'd be awesome - and improve export speed I guess =)
+(03:11:30 PM) mmeeks: wget: image handling takes a lot of time, but of course, profile before optimisation =)
+(03:11:45 PM) mmeeks: wget: certainly from a size perspective it would be great; I had a look at this in the deeper past.
+(03:12:15 PM) wget: mmeeks: Ok nice ;-) François and me were discussing this on Twitter thus my question ;-) https://twitter.com/willubuntu/status/475243345665851392
+(03:12:19 PM) mmeeks: wget: one problem is that the PDF export can downgrade images, also that PDF uses its own random/mangled/awful set of image/compression formats that are (different (TM))
+(03:12:26 PM) mmeeks: wget: patches gratefully recieved ! =)
+</pre>
+
+Last week, another problem I was not aware of yet, was raised on the LibreOffice user mailing list. What if we export a range of pages of the document using the Hybrid PDF feature? According to the tests volunteers on the users mailing list have performed<ref name=hybridPdfOdfTest />, LibreOffice has no idea which range from the bundled ODF file to export and will therefore embed the whole ODF document in the PDF without brining any modification to the ODF file.
+
+== The Document Liberation project will give birth to some more import filters ==
+
+According to Charles Henry Schultz<ref name=oldImportRemoved /> (and after confirmation I asked on <code>#libreoffice-dev</code> today), old versions of LibreOffice (version 4.0. actually) get rid of some old StarOffice formats because they were breaking some other parts of the code.
+
+But the Document Liberation Project has ideas for redeveloping these removed filters. Only import will be provided obviously (who would still save documents in this undocumented nor maintained format?). This is great news especially when we are recovering some old floppy drives and we need to convert old documents from it to modern (and long supported) formats like ODF<ref name=oldFloppyFormat />.
+
+But Tor Lillqvist precised "having ideas" is far from being "having plans" to. Let's wait and see thus. [http://www.documentliberation.org/contribute But the future belongs to you too and you are free to make these import filters happens].
+
+== Managing the LibreOffice help a nightmare? ==
+
+[http://nabble.documentfoundation.org/libreoffice-l10n-Amending-and-enhancing-the-help-files-td4114245.html Some discussion has been initiated recently] about the ability to enhance the help files.
+
+The LibreOffice help is provided via two channels:
+* an online help system stored on the wiki;
+* for those who cannot access the wiki (restrictions at work, connection not reliable,...) an offline help is provided as a standalone package.
+
+Basically it is the same information but stored and displayed into 2 different formats: a wiki and hlp files. Both channels requires different syntax (especially the wiki).
+
+Also the help files have to be translated. English has to be the reference version. When changes are made in the English version, translators (actually native language contributors) must receive a notification of the change in order for them to update their translations.
+
+Changes made on the wiki, must replicate on the .po files hosted on the Pootle instance. Changes between syntax must be handled too. On Pootle, changes are made by approved language team members, basically the wiki is more open and technically, registered users could make changes. We have thus to find a way to provide the same approbation system than Pootle, but for the wiki.
+
+As you see, this is not so easy as it sounds like.
+
+Help is also welcome on improving [https://bugs.freedesktop.org/show_bug.cgi?id=80430 undocumented features]. Thanks to Olivier Hallot for his initiative <ref name=helpContribMode /><ref name=helpContribMsBinom /><ref name=helpContribConfidence /><ref name=helpContribDist /><ref name=helpContribF /><ref name=helpContribT />.
+
+== LibreOffice, an alternative to MS Visio? ==
+
+Most of the time, when someone writes about the website which stores LibreOffice extensions and templates, we can see that most reactions are actually pretty bad. The user interface uglyness and the usability are subjects often brought back on the table either on mailing lists or on social websites like on the Google+ LibreOffice Design community. But it is true we have to correct this situation, but we are lacking means. As a temporary fix, as Bill Gates might have said: "If you can't make it good, at least make it look good." Webintegrators this is a call for you, if you want to help for free, come and bring your talent! ;-)
+
+Comments and review about the extensions and the templates themselves are not legion. But things are maybe going to change in the near future. When great extensions and templates are being released, it is always great to announce them. This week precisely, Mark Oellerman, a LibreOffice user, published<ref name=visioShapes /> on the LibreOffice Community page, network equiments shapes, designed to be used in network diagrams. You know, the king of diagram designed easily with MS Visio. This contribution is rather huge: we have more than 150 vector shapes that can be used easily in LibreOffice. Draw templates are provided too. You can download this LibreOffice extension [http://extensions.libreoffice.org/extension-center/vrt-network-equipment from the extension website]. This extension allows LireOffice to catch up in term of diagram. This is why this should be tested asap! Thanks again, Mark!
+
+== LibreOffice is not forgotten by other design projects! ==
+
+The Numix Project released last week<ref name=numixIcons /> customized LibreOffice icons that perfectly suit their new design themes. For those of you would do not know what this Numix project is about yet: the Numix project is a design team which begins to be widely known among the GNU/Linux users who actually care about their user interface. This project aims to improve the look and feel of desktop GNU/Linux distributions. They already released several variants of their well know icon theme which conforms to the flat design guidelines.
+
+Until now, the LibreOffice icons were simply variants of the one designed by The Document Foundation. Which is different now and justifies the presence of this news in the LibreOffice Weekly report is that they released icons designed from scratch. [https://plus.google.com/+NumixprojectOrg/posts/A2EoRvj9kV I suggest you to see the result]. 
+
+== "Open standards are the way to go..." ==
+
+This is a lapalissade for LibreOffice devs and FOSS advocates, but for governments and managers it is [http://www.theregister.co.uk/2014/02/22/microsoft_uk_odf_response far from being the case]. Indeed, having to choose an open format between a specification called (falsy) "Open XML" and another unfortunately less known "ODF" seems improperly trivial. Considering the most open solution is even more difficult when lobbies' pressure becomes very important.
+
+Although OOXML has not been explicitely mentionned, European experts have reported implementation problems with it: [http://www.digitalmeetsculture.net/article/long-term-sustainability-through-open-source-software-implementations-of-open-file-formats "technical specification of file formats and their implementation in software are inherently incorrect, vague, and incomplete"]. We can think directly to the differences between the 2 versions of the OOXML format (ECMA-376 and ISO/IEC 29500:2008), sometimes breaking compatibility between each others.
+
+"The Internet has been built on [open standards]" said Charles Henry Schultz in [http://standardsandfreedom.net/index.php/2014/07/06/whats-up-with-open-standards his recent summary of the situation]. It is not his own opinion talking, but history and the fact themselves. The network stack TCP/IP is the biggest exemple we can give. 
+
+== What were you doing at the Paris Hackfest? ==
+
+Well, actually, I was not present by myself, but [https://wiki.documentfoundation.org/Hackfest/Paris2014#Achievement according to the wiki], they made some sunbathing as participants needed a towel. Indeed, some developpers have actually a too white skin because of coding inside in the long run...
+
+Joke aside, the following great hacks have been performed.
+
+[[File:LOWN_3_Paris_Hackfest_by_Charles_Henry_Schultz.jpg|200px|thumb|left|Paris Hackfest|link=http://standardsandfreedom.net/index.php/2014/06/29/hacking-libreoffice-in-paris]] 
+
+Some optimization startup and performance speedups have been brought on the writerfilter/DOCX format and shutdown time has been improved too (Michael Meeks), some ODBC crashes have been fixed (thanks Lionel Elie Mamane and Norbert Thiebaud), the problem when connecting with a JDBC driver when the class name has spaces in it (you know things like <code>Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");</code> when connecting to a DataBase in Java) has been partially fixed (Laurent Balland-Poirier), a memory corruption in chart 2 has been fixed too and work on the Data Table Calc feature has started (thanks Markus Mohrhard), Jan Holesovsky integrated the LibreOfficeKit made by Andrzej Hunt to the Android port ([[#LibreOffice for Mobile will be soon a reality|we were talking about earlier]]).
+
+As a reminder, the latter integration made the tilling feature possible in the Android application. This is why the Android app is reported to have a great smooth reactivity. The tilling rendering allows only parts of the displayed document zones to be rendered. For non dev-savvy readers, we could vulgarize this like a kind of visual paging having a positive impact on performance.
+
+But the work conducted was not only related to code improvements. Markus Mohrhard, Jan Holešovský, Sophie Gautier discussed about the organization of the work that will be made to enhance and maintain the LibreOffice help ([[#Managing the LibreOffice help a nightmare?|see point above]]).
+
+== Meet LibreOffice Volunteer Robinson Tryon ==
+
+Last edition of TXLF, short word for Texas Linux Fest, took place on June 13-14. The LibreOffice booth has a stand there, and Robinson Tryon, community outreach herald [http://news.slashdot.org/story/14/07/17/1820239/meet-libreoffice-volunteer-robinson-tryon-video has been interviewed]. A transcription is available below the video, on the same page.
+
+What Robinson was speaking about can be summed in a few words. He discussed his volunteer job for the LibreOffice project, how he get involved, the LibreOffice presence in schools and the benefits for students to be able to take a software and evolve with it without paying attention to licenses and fees, the vision change of Microsoft: supports standards, and a possible collaboration between ODF/LibreOffice with the previously mentionned company.
+
+If you have hackfests and events you want to organize, please contact Robinson, he is our remote backdoor to the US.
+
+== References ==
+
+<references>
+<ref name=nativeMake>https://people.gnome.org/~michael/blog/2014-07-08.html</ref>
+<ref name=visioShapes>https://plus.google.com/+MarkOellermann/posts/7SESEsJGxqL</ref>
+<ref name=mobileLibO>http://tomazvajngerl.blogspot.be/2014/07/libreoffice-on-android.html</ref>
+<ref name=numixIcons>https://github.com/numixproject/numix-icon-theme-circle/commit/5c1490ebdff4ac597de52b2e5c540750daf72b26</ref>
+<ref name=odfProtection>http://listarchives.libreoffice.org/global/users/msg39551.html</ref>
+<ref name=newFont>http://lists.freedesktop.org/archives/libreoffice/2014-June/061974.html</ref>
+<ref name=windowsCompilation>http://lists.freedesktop.org/archives/libreoffice/2014-June/062002.html</ref>
+<ref name=newDesignWorkflow>http://listarchives.libreoffice.org/global/design/msg06687.html</ref>
+<ref name=notWaitForDevs>http://listarchives.libreoffice.org/global/design/msg06690.html</ref>
+<ref name=designBrainstorm>http://listarchives.libreoffice.org/global/design/msg06691.html</ref>
+<ref name=glitterMention>http://listarchives.libreoffice.org/global/design/msg06695.html</ref>
+<ref name=kdeDesignGroup>http://listarchives.libreoffice.org/global/design/msg06699.html</ref>
+<ref name=helpContribMode>https://gerrit.libreoffice.org/10411</ref>
+<ref name=helpContribMsBinom>https://gerrit.libreoffice.org/10409</ref>
+<ref name=helpContribConfidence>https://gerrit.libreoffice.org/10408</ref>
+<ref name=helpContribDist>https://gerrit.libreoffice.org/#/c/10423</ref>
+<ref name=helpContribF>https://gerrit.libreoffice.org/#/c/10424</ref>
+<ref name=helpContribT>https://gerrit.libreoffice.org/#/c/10426</ref>
+<ref name=odsSaveFreezing>https://bugs.freedesktop.org/show_bug.cgi?id=76754</ref>
+<ref name=listenerBroadcastCommit>https://gerrit.libreoffice.org/#/c/10344/</ref>
+<ref name=autoLoadAsk>http://listarchives.libreoffice.org/global/users/msg39768.html</ref>
+<ref name=xRayTool>https://wiki.openoffice.org/wiki/Extensions_development_basic#Xray_tool</ref>
+<ref name=smcMeaning>http://smc.org.in/</ref>
+<ref name=newMigration>http://listarchives.libreoffice.org/global/users/msg39852.html</ref>
+<ref name=hybridPdfOdfTest>http://listarchives.libreoffice.org/global/users/msg39865.html</ref>
+<ref name=oldImportRemoved>http://listarchives.libreoffice.org/global/users/msg39607.html</ref>
+<ref name=oldFloppyFormat>http://listarchives.libreoffice.org/global/users/msg39593.html</ref>
+<ref name=cveVba>https://www.libreoffice.org/about-us/security/advisories/cve-2014-0247/</ref>
+<ref name=dbLinkQuestion>http://listarchives.libreoffice.org/global/users/msg39709.html</ref>
+<ref name=dbLinkAnswer>http://listarchives.libreoffice.org/global/users/msg39734.html</ref>
+<ref name=training>http://listarchives.libreoffice.org/global/marketing/msg17054.html</ref>
+<ref name=trainingOldDays>http://listarchives.libreoffice.org/global/marketing/msg17059.html</ref>
+</references>
