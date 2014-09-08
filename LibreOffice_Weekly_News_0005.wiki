@@ -1,0 +1,27 @@
+{{TopMenu}}
+{{Menu}}
+{{Menu.Development}}
+{{OrigLang|<u>L</u>ibre<u>O</u>ffice <u>W</u>eekly <u>N</u>ews #5}}
+
+''LibreOffice Weekly News gathers interesting developments from discussions on mailing lists and IRC, updates in QA and git commits, and combines them into a tidy publication at the end of each week. This summary will emphasize a developer's point of view. This week in LibreOffice...''
+
+{|
+|Author
+|:
+|William Gathoye (wget)
+|-
+|Publication date
+|:
+|Unpublished yet
+|}
+
+== References ==
+
+<references>
+
+<ref name=keySigning>http://listarchives.libreoffice.org/global/marketing/msg17073.html</ref>
+
+<ref name=uiConversion>http://caolanm.blogspot.be/2014/08/dialog-conversion-status-4-to-go.html</ref>
+
+</references>
+[[Category:LOWN]]
