@@ -1,0 +1,621 @@
+{{TopMenu}}
+{{Menu}}
+{{Menu.Development}}
+{{OrigLang|<u>L</u>ibre<u>O</u>ffice <u>W</u>eekly <u>N</u>ews #4}}
+
+''LibreOffice Weekly News gathers interesting developments from discussions on mailing lists and IRC, updates in QA and git commits, and combines them into a tidy publication at the end of each week. This summary will emphasize a developer's point of view. This week in LibreOffice...''
+
+{|
+|Author
+|:
+|William Gathoye (wget)
+|-
+|Publication date
+|:
+|September 8, 2014
+|}
+
+== Holidays are now behind us ==
+
+Those believing there is no development progress or activity in an open source project like LibreOffice during holidays are completely wrong. I never saw so much mails in my mailbox and news about LibreOffice since I started this summary project. 2k mails is the number of mails I needed to read carefully to prepare this new LOWN issue.
+
+I still need to catch up with 700 mails and in order to not delay this publication I decided to summarize them for next edition. This selection is mainly focused on non technical development subjects.
+
+Here are the best I have tried to summarize.
+
+== Getting ready for LibOCon ==
+
+This year, the annual gathering of the LibreOffice Community was held in the Bern University, in Switzerland, from September 2 to 5. On the LibOCon website (yes, we love abbreviations ;-] ), you can check [http://libocon.org/2014/program all the details] about accomotation, talks, a description of each speakers. Participants were [http://libocon.org/2014/registration asked to fill a registration] for organization purpose to determine number of goodies needed, etc. While the website says the conference started on September 2, the first keynotes are actually starting from September 3. September 2 was dedicated to internal meetings (Board, ESC meetings) and community gathering.
+
+If you could not make it this year, please do not cry ;-), the slides will be made available shortly (some are actually already downloadable from the authors' website/blog) and conferences were video recorded<ref name=liboconRecorded />. If we have access to all slides/videos, we are gonna provide a summary in our next LOWN edition.
+
+== The Mature branch becomes Still. Still, what? ==
+
+In our last edition, we raised the issue of the Fresh/Mature naming convention which had a decided solution but not applied yet. We saw a new turnaround in the naming and this issue is still on the table.
+
+A new naming convention has been applied and, as far as we know, reflected on all LibreOffice websites: the lastest branch of LibreOffice will be called "Fresh" and the old one, previously known as "mature", will be called "Still".
+
+An outcry was rapidly and understandably triggered in the mailing list. How do the "fresh" and "still" words have to be translated: these words are even absent in some languages... Even in English, it has been reported these two words could lead to confusion too.
+*Fresh is often used when we ask an user to perform a "fresh install". This basically means to uninstall the product completely then, remove some old configuration files and tracks the uninstallation process could leave (mainly [[User Profile|the user profile folder]]), and finally proceed to a reinstallation.
+*Still can also lead to confusion: "Foo: have you still installed?", "Bar: which still? I'm still on Windows yes" and be considered as a stagnant, no longer developped, abandonned and thus non-recommended branch.<ref name=stillConfusion1 /> 
+
+Why did we have to change the "mature/stable" branch?
+*The old "mature" term was often unfortunatelly associated with sexual preferences;
+*And "stable" is often more appealing for the end-user who thinks, stricto sensu, the version is exempt of any crasher bugs.
+
+We need to see these 2 branches not as the old stable vs unstable paradigm, but simply as 2 branches frozen at different states of the developement. Both branches are relatively stable regarding the moment when they were frozen.
+
+As a summary, here are the terms have been suggested in the discussion:
+*"Young" brings the same problem as mature;
+*"Fresh" means it is more willing to crash and be unstable;
+*"Patched" is often considered as a patch-up work by non tech-savvy people and even in the developer community;
+*"Long-term"/"LTS" like in other FOSS projects cannot be applied to LibreOffice since the old version becomes outdated/non-maintained as the new one is becoming old after a new branch has been released, each version is thus not supported longer than the normal period;
+*The "Dev" tag cannot be used since it will add confusion with the regular alpha, beta, rc which are development released and the final known states.
+*Others solutions were brought on the table, the couple "recommended/early adopters" we previously adopted in 2012<ref name=stillConfusion3 />.
+[[File:LibOReleaseLifecycle.png|center|450px]]
+*Others suggested to opt for the naming convention adopted by the Debian project: testing, oldstable or take the traditional development workflow (Development > Test > Production)<ref name=stillConfusion4 /><ref name=stillConfusion5 />.
+*Some, who might have watched too much MasterChef, a TV kitchen programme, suggested the term "cooking"<ref name=stillConfusionCooking /> and even apple/orange red/green terminology. This is not a bad idea per se, as LibreOffice releases are actually made every 6 months, we have an analogy with the fruit picking period<ref name=stillConfusionOrange />.
+*"Current"/"Latest"<ref name=stillConfusionCurrentLatest />;
+*The Arch Linux community named the old branch as the "Maintenance branch".
+
+Choosing the right term is indeed rather complicated, especially when it needs to be localized<ref name=stillConfusion2 />.
+
+What we realized when writing this summary is that the recurrent explanation to explain the aforementionned terms was "XXX is the newer release" and "YYY is the older one". Why not choosing between "Old"/"New" then? On the marketing side this is excellent, exactly like a company did to present its new iteration of tablet: "the New iTablet is here", for LibreOffice "The New version of LibreOffice is here", and the old simply becomes LibreOffice.
+
+It has been criticized<ref name=stillConfusionNonSense /> the final decisions were mainly led on the marketing (private) mailing list, while the whole argumentation with the rest of the community was performed on libreoffice-users<ref name=stillConfusionPrivate />. For the non well-informed reader, you have to know that The Document Foundation has several private lists and marketing is no exception. This private marketing list is used mostly for press/announcement preparations, otherwise news and text elements would be disclosed before due date. The LibreOffice project is said to be a community and not a company, there is no need to hide anything. This feeling of keeping things confidential is maybe not well understood by our users, who are ou future contibutors<ref name=privateMarketingList />.
+
+Some might think this discussion is really a fiasco and lets remember the never-ending arguments the community had when giving feedback about the new start screen released with LibreOffice 4.2. The community is currently facing the same problem each new parents have when they need to choose a first name for their progeny. But ultimately, isn't LibreOffice the little baby of The Document Foundation?
+
+The risk of choosing terms which is meaningless for end-users, to the extend that some people within the LibreOffice community do not understand them neither, could make the user skip the product and choose another one he knows better. The end-user does usually not spend much time in trying to understand a solution, especially the difference between two developpement branches<ref name=stillConfusionMeaningless />. If a solution is too complex, he switchs to another one. To be honest, the current download page does not help in this regard. Several layers of complexity are actually present: the different way to download LibreOffice (direct download/torrent), the operating system version, the langage packs and finally the 2 meaningless branches. KISS (Keep It Simple Stupid) should be our credo. The old branch should not even appear directly as a dedicated flashy button on the download page, old versions should still be available but below via a sublink to change the version. Such a reation clearly shows the wish to bring back the [https://web.archive.org/web/20131231021742/http://www.libreoffice.org/downloa dold download page we have in last December]<ref name=stillConfusionNonSense />.  
+
+The naming convention for these 2 branches can play a role in the developpement too. Indeed "we need to find the bugs earlier in the release process. Bugs not found in the new version, will land in the old version when they will be rolled out. So the quality of the old version, which is mainly used by enterprises and administrations, will decrease overtime if the vast majority choose the old one and not the new LibreOffice versioni".<ref name=stillConfusionQualityRolling /> Thinking like this is practically a non sense. If most of the user base actually choose the old version branch, bugs will still be reported but with just a time shift and the old branch will not decrease over time. Avoiding most of our userbase to be on the old branch is yet another argument in favour of hiding that branch. At daily use, we even even consider that having two branches, especially if one is NOT long term supported, is non sense. This only adds an artificial "more stable" value to the branch because it has ~less features.
+
+=== Two branches impact on the Arch Linux distribution ===
+
+Before this new naming convention for the LibreOffice branches was adopted by The Document Foundation and actually since the start of the LibreOffice project, the Arch Linux distribution had only a single LibreOffice branch. Arch Linux did not need to have several branches, it is a rolling release distribution: as soon a new version of piece of software is out, asap it is packaged and pushed to the mirrors. This distribution has no outdated packages, excepted when the upstream project chooses to have several branches like Python. Some packages are coeexisting in their Python 2 and 3 version. 
+
+Since this new change and taking benefit of the LibreOffice 4.3 release, Trusted Users and Developers have decided to apply the same logic to the LibreOffice packages.
+
+Previously, LibreOffice was split accross these packages:
+
+ extra/libreoffice-base 4.2.6-3 (libreoffice)
+ extra/libreoffice-calc 4.2.6-3 (libreoffice)
+ extra/libreoffice-common 4.2.6-3 (libreoffice)
+ extra/libreoffice-draw 4.2.6-3 (libreoffice)
+ extra/libreoffice-gnome 4.2.6-3 (libreoffice)
+ extra/libreoffice-impress 4.2.6-3 (libreoffice)
+ extra/libreoffice-kde4 4.2.6-3 (libreoffice)
+ extra/libreoffice-math 4.2.6-3 (libreoffice)
+ extra/libreoffice-postgresql-connector 4.2.6-3 (libreoffice)
+ extra/libreoffice-sdk 4.2.6-3 (libreoffice)
+ extra/libreoffice-sdk-doc 4.2.6-3 (libreoffice)
+ extra/libreoffice-writer 4.2.6-3 (libreoffice)
+ + all localized contents as dedicated packages: e.g. extra/libreoffice-fr, extra/libreoffice-de,...
+
+These packages without the localized content could be installed in a burst as they were considered together via the libreoffice group.
+
+When the new branch arrived, all aforementionned packages were renamed with a "still" substring in it: e.g. libreoffice-still-common and changed from the (libreoffice) group to (libreoffice-still).
+
+To reflect the [[ReleaseNotes/4.2#Installer (Windows only)|new installation process from LibreOffice 4.2]] which removed the ability to install LibreOffice by modules, the new branch was brought as a simple extra/libreoffice-fresh package bundling all aforementionned packages together, excepted the sdk, which is available as a dedicated package extra/libreoffice-fresh-sdk. The localized content is still available as dedicated packages too: e.g. extra/libreoffice-fresh-fr, extra/libreoffice-fresh-de,... As now, we do not have any group for the fresh branch yet.
+
+Upgrading from LibreOffice 4.2 to 4.3 was rather rough. All installed packages were first considered as conflict and needed to be removed first. This is quite obvious since there were package name changes.
+
+ resolving dependencies...
+ looking for inter-conflicts...
+ :: libreoffice-fresh and libreoffice-still-common are in conflict (libreoffice-common). Remove libreoffice-still-common? [y/N] y
+ :: libreoffice-fresh and libreoffice-still-base are in conflict (libreoffice-base). Remove libreoffice-still-base? [y/N] y
+ :: libreoffice-fresh and libreoffice-still-draw are in conflict (libreoffice-draw). Remove libreoffice-still-draw? [y/N] y
+ :: libreoffice-fresh and libreoffice-still-gnome are in conflict (libreoffice-gnome). Remove libreoffice-still-gnome? [y/N] y
+ :: libreoffice-fresh and libreoffice-still-impress are in conflict (libreoffice-impress). Remove libreoffice-still-impress? [y/N] y
+ :: libreoffice-fresh and libreoffice-still-kde4 are in conflict (libreoffice-kde4). Remove libreoffice-still-kde4? [y/N] y
+ :: libreoffice-fresh and libreoffice-still-math are in conflict (libreoffice-math). Remove libreoffice-still-math? [y/N] y
+ :: libreoffice-fresh and libreoffice-still-writer are in conflict (libreoffice-writer). Remove libreoffice-still-writer? [y/N] y
+ :: libreoffice-fresh and libreoffice-still-postgresql-connector are in conflict (libreoffice-postgresql-connector). Remove libreoffice-still-postgresql-connector? [y/N] y
+ :: libreoffice-fresh and libreoffice-still-calc are in conflict. Remove libreoffice-still-calc? [y/N] y
+ error: failed to prepare transaction (could not satisfy dependencies)
+ :: libreoffice-still-sdk: requires libreoffice-still-common
+ :: libreoffice-still-sdk-doc: requires libreoffice-still-common
+
+but the inter-dependency with libreoffice-sdk and libreoffice-common broke the transaction. I needed to remove libreoffice-still-sdk and libreoffice-still-sdk-doc, then rexecute the above command: the previous packages were removed and the new one installed in a row.
+
+== New contributors ==
+
+A bunch of new contributors have subscribed and published a license statement to the LibreOffice project in August. Welcome to them!
+
+*Tobias Madl<ref name=contributorMadl />
+*Jennifer Liebel <ref name=contributorLiebel />
+*Daniel Sikeler<ref name=contributorSikeler />
+*Stefan Weiberg<ref name=contributorWeiberg />
+*Hiroto Kagotani<ref name=contributorKagotani />
+*Matthew J. Francis<ref name=contributorFrancis />
+*Deena P. Francis<ref name=contributorDeena />
+*Thomas Viehmann<ref name=contributorViehmann />
+*Spiros Georgaras<ref name=contributorGeorgaras />
+*Michael Jaumann<ref name=contributorJaumann />
+
+== Migrations to LibreOffice continue ==
+
+=== We have got nothing Toulouse ===
+
+The Urban Community of Greater Toulouse (Toulouse Metropole) is an intercommuncal structure gathering the city of Toulouse and some of the suburbs, including schools and hospitals. This location of France has been always avant-gardist regarding FOSS adoptions: member of the April and Adullact organizations, work with SoLibre, and open data is positioned in the hear to its digital policy built on open source solutions. Toulouse is also the basement of ODF, Open Data France (not the file format), the French Association for the Open Data Community. But this time, on the pragmatic side, Toulouse recently migrated 90% of their desktops to LibreOffice. According to our understanding, the 10% comes from the workstations that are granted to keep the Microsoft Office suite installed side-by-side LibreOffice for periods of up to several years in order to solve compatibility issues with Word macros and VBA Excel files.
+
+''"Several thousands of people out of the 10,000 who work for the city and Toulouse Métropole"'' where concerned. The exact number of PCs is not disclosed, but we can evaluate ithem to several thousands, since not all 10,000 workers are employees.
+
+This migration was agreed in 2011 according to a cost-saving policy and started in 2012. Since this project started in 2012 and the same LibreOffice version is installed on each workstations, the version available at that time was the 3.5. which means the LibreOffice version that is likely to be installed is unfortunatelly the old 3.5.
+
+''“Software licenses for productivity suites cost Toulouse 1.8 million euro every three years. Migration cost us about 800,000 euro, due partly to some developments. One million euro has actually been saved in the first three years."''. As the migration is partially completed, this project is likely to not require so much efforts in the future and the financial charges will be even more reduced in the years to come. Migrating to FOSS does not only include the financial benefits, it has also an impact on the local economy by promoting development and employment in the region.
+
+Previously, the FOSS solutions were not rejected, even "''some applications were developed internally and shared with the free software community''", but the Chief Information Officier (CIO) took whatever solution, free or not, he thought was best. With the creation of Toulouse Métropole, all IT departements were merged allowing large scope migration projects to become a reality without having the cumbersome interoperability problems. Now this new IT departement is now prefering free software.<ref name=migrationToulouse /><ref name=migrationToulouseFr />
+
+What about the migration process itself? On 2nd August, we had some questions on this subject on the #libreoffice-fr IRC channel:
+*has Toulouse contacted companies like Collabora/Lanedo to help in fixing bugs they were enountering;
+*were fixes made internally;
+*how the IT department was contributing back to the LibreOffice community
+*if they modified the software internally and have not used an installater packaged by The Document Foundation, how have they repackaged the software;
+*how LibreOffice has been installed;
+*how was conducted the user formations.
+While we were not able to answer all questions the guy under the john45 nickname was asking (the press releases never specify how the migration was made technically), we had the following precisions. This migration process was made internally by the IT department. The migration was made department by department. Volunteers from each department received a simple training and helped other members of their departments to use the software. Which says the impact on local employment is thus rather limited.
+
+=== UK Government adopts Open Document Format ===
+
+We have some news about the issue discussed in our [[LOWN/3#"Open standards are the way to go|last report]]<ref name=migrationUkGovOpenSelected />: a decision has finally been taken by the UK governement. The Open Document Format has been chosen as the default and mandatory format that will be used for correspondance between the governement and citizens. This is good news for LibreOffice which uses and promote this truly open format. This also means the Government chose to not listen to Microsoft lobbies and took into account [http://www.digitalmeetsculture.net/article/long-term-sustainability-through-open-source-software-implementations-of-open-file-formats implementation problems of OOXML noted by European European experts] and [https://people.gnome.org/~michael/blog/2014-02-26-cabinet-office.html developers]. Microsoft has just failed to impose citizens and users to keep their proprietary Microsoft Office vendor locked piece of software.<ref name=migrationUkGovOpen />
+
+Unfortunately, we do not have precision about the ODF version which has been adopted<ref name=migrationUkGovOpenFormatVersion />. 
+
+=== Some transition work for the French Work Ministry ===
+
+The French Work Ministry was using proprietary solutions as office suites, and intends to withdraw progressively from these solutions for a 4-6 years period from 2014. If we decode this stonewalling political press release, this means, FOSS solutions like LibreOffice and Thunderbird will be favoured in the years to come.<ref name=migrationFrenchMinistry />
+
+Globally, the French administration is globally migrating to FOSS, but there is still a huge work to do.<ref name=migrationFranceFuture /> 
+
+=== Moose Jaw ===
+
+This week, an employe from the Municipality of City of [[Wikipedia:Moose Jaw|Moose Jaw]], a city in the center of Canada, has DRAWwn an interest in using LibreOffice, especially Draw. Maybe another future migration for this city?<ref name=migrationCanadaFuture />
+
+== Documentation ==
+
+=== Help and documentation improvements coordination ===
+
+In our last edition we wrote about possible improvements in the LibreOffice help thanks with coordination between wiki edits and translation on Pootle.
+
+But the LibreOffice help isn't limited to help file, aside communities on social networks websites, we have an ask bot instance where users asks their questions and other users travelling by can answer them. But sometimes, in the long term, users are asking sometimes the same question over and over agin. In order to tidy up and keep some organization between topics, The Document Foundation has been heard by Askbot developers, to the extent that some of our feature request have been implemented.
+
+In one world, we are now able to merge questions<ref name=documentationAskBotMerge />
+
+=== New documentation guides ===
+
+During these holiday periods, while some are enjoying sun at the water's edge, others are doing excellent work, like rewritting and greatly enhancing some documentation guides for their favourite office suite: LibreOffice. Here is the work performed in details.
+
+The version 4.2 of the Impress Guide wrt chapters 7, 8, 9, 10, 11 and appendix A have been written/rewritten by 
+PeeWee and proof-read by Tom Davies, Jean Weber, and Hazel Russman. Thanks a lot to them!<ref name=documentationImpressGuide1 /><ref name=documentationImpressGuide2 />
+
+After a call for recruits to update the Base guide<ref name=documentationBaseRecruit />, we are now beginning to see the first effects: the chapter 3 has been published for review<ref name=documentationBaseFirstRelease />. A new appeal for contributors has just been addressed. The following LibreOffice user can help<ref name=documentationBaseCallForContributors />:
+* Proof-readers who maybe have no idea about how to use Base, in order to help de-geekify it.
+* People who understand Base well enough to follow through the written instructions. This reviewing process is to make sure that the instructions really do show exactly what normal readers would experience if they tried to work through the guide.
+* People who are on non-Windows platforms, preferably Linux, who are able to take screen-shots.
+* 
+
+The "LibreOffice: Getting Started Guide" has been translated this week to Slovak thanks to Milos Sramek<ref name=documentationGettingStartedSkTrans />.
+
+And finally, we might see a new updated guide for Draw in the coming weeks/months, as some work has started in this regard.<ref name=documentationDrawGuide />
+
+=== Bug-reports reached an all-time low recently ===
+
+Opened bug reports have reached a all-time low recently, even lower than the Linux kernel.<ref name=documentationLowBugReports1 /><ref name=documentationLowBugReports2 />
+
+== Websites ==
+
+=== A new extension and template website is on the way ===
+
+A the beginning of August, we saw some udpates from Andreas Mantke about the new Extensions and Templates website. The new version will still use Plone with some addons<ref name=extNewSite />. For more info, please [http://listarchives.libreoffice.org/global/website/msg13279.html read the development status update].
+
+=== A TDF account ===
+
+Jean Spiteri proposed to offer his experience in providing The Document Foundation with a Single Sign On technology. Basically this would mean we would just need to connect via a one of the web tools used by The Document Foundation and we will remain connected on the other tools as well. This will remove all the required burden when contributing to the project. No need to create several accounts is a big step forwards for new comers too<ref name=websiteSsoAdvantages />.
+
+Hopefully, people at Gnome have already performed such a work recently with tools The Document Foundation is also using: Bugzilla and ownCloud.
+
+But creating an LDAP will require to merge all accounts we have from our different tool first. On this subject, it has been proposed not to force users' permission, SSO will thus be pushed for new contributors only, and afterwards, The Document Foundation will ask existing users if their accounts can be merged and converted to SSO<ref name=websiteSsoDoNotForceUsers />.
+
+=== Wiki updates ===
+* The Russian community is heavily translating the Russian [[Faq/ru]] pages ([[User:Tagezi]] and [[User:Bormant‎]])
+* The template {{tl|Wikipedia}} gets rolled out to get a better visual hint that the external links goes to {{enwp|Wikipedia}}
+* Ongoing cleanup tasks adding "top menus" and categories by multiple people ([[User:Fitoschido]], [[User:dennisroczek]], [[User:Tagezi]])
+* the "new" LibreOffice website design is being adapted in the wiki. Not all existing color codes have been replaced until now. ([[User:CleanupBot]], run by [[User:dennisroczek]])
+* old Litmus and "Manual Testing" pages were deleted and their references were directed to [[MozTrap]] ([[User:dennisroczek]])
+
+== Marketing ==
+
+=== LibreOffice and The Document Foundation are improving their communication ===
+
+A few weeks ago, on the LibreOffice marketing mailing list, Eliane Domingos de Sousa posted a LibreOffice promotional video made by a partner company in Bresil. This video is in Portuguese, but an English version is on the way<ref name=marketingVideo1 />. 
+
+Rapidly, some native language team members showed their interest in obtaining the spoken-script in order to make this video available in even more language<ref name=marketingVideo2 /><ref name=marketingVideo3 /><ref name=marketingVideo4 />. 
+
+The result looks so professional that this same company may be involved for future LibreOffice animation projects.<ref name=marketingVideo5 />
+
+[[File:LOWN_4_Animation_marketing_video.png|thumb|450px|center|[https://www.youtube.com/watch?v=rYoLBPAGLbo&hd=1 Animação sobre o LibreOffice]|link=https://www.youtube.com/watch?v=rYoLBPAGLbo&hd=1]]
+
+=== Books writers are using LibreOffice too ===
+
+Out a question on the LibreOffice user mailing list<ref name=marketingPiersAnthony1 />, we learned that [[Wikipedia:Piers Anthony|Piers Anthony]], a highly regarded SciFi and Fantasy writer, used LibreOffice for writing his books<ref name=marketingPiersAnthony2 />. Although his old age (mid 70's) he is still able to adapt easily to new technologies and is even using his own macros to make his writing easier. "He seems to be a big "fan" of having multiple documents open at the same time and editing across those documents."
+
+=== LibreOffice on TV! ===
+
+To all TV series addicts from the community or other horizons: if you spot some images shots with LibreOffice, please inform Sophie Gautier, sophi on IRC, responsible for the LibreOffice and The Document Foundation Youtube accounts.<ref name=marketingTv />
+
+== Quality Assurance ==
+
+If you are interested in seeing what has been discussed during the last IRC meeting, please read [https://wiki.documentfoundation.org/QA/Meetings/2014/August_27#IRC_Minutes the last report]. No need to make a summary here, since that report is already one. If you want to help confirming bugs, the QA team is the group to join!
+
+== Development ==
+
+=== Access2Base ===
+
+Incorporating Access2Base to LibreOffice allowed advanced do develop macros more easily. An Access2Base user reported this integration helped in one of his recent projects and provided a clearer approch to program database access instead of using the UNO API, he considered as a labyrinth.
+
+While Access2Base provides a more consistent, cleaner and easier approach, the only drawback he found is the lack of tutorial and the the documentation not enough detailled for the end-user<ref name=devAccess2BaseSatisfaction />. He also wondered about the absence of discussion about Access2Base in the user mailing list, maybe yet another evidence this project is not widely known.
+
+If you do not know what Access2Base is, please read [http://www.access2base.com/access2base.html the description from the official website].
+
+== In the meantime, on the user support mailing list... ==
+
+=== Password-protected documents with LibreOffice ===
+
+In our last LOWN edition, we raised an issue regarding a potential security flaw. According to Florian Reisinger<ref name=supportPasswordProtect />, protecting ODF documents with LibreOffice is not supported by MS Office and LibreOffice cannot open password protected DOC documents saved by MS Office. We wanted to know what he meant by "not supported". Is MS Office not asking a password at all for protected ODF documents? In this way, this is potentialy a security flaw.
+
+As we had an Office 2013 suite at hand, we decided to make some deeper tests. Actually the situation is a bit more complex as you can see in this comparison table.
+
+{| class="wikitable"
+!Document type
+!Format
+!Saved on
+!Read on
+!Result
+!Comments
+|-
+|Text
+|ODT
+|LibreOffice
+|LibreOffice
+|OK
+|
+|-
+|Text
+|ODT
+|LibreOffice
+|Word
+|style="background-color:gray;"|No
+|"<code>Cannot open NAME_OF_THE_FILE_HERE: This file has been protected with a password and cannot be opened.</code>"
+|-
+|Text
+|ODT
+|Word
+|LibreOffice
+|style="background-color:gray;"|No.
+|Word cannot save password protected ODT files, we get the following warning "<code>This document is password protected. Saving this document in a format other than a Word document will result in the loss of this protection. Do you want to continue?</code>"
+|-
+|Text
+|DOC 97-2003
+|LibreOffice
+|LibreOffice
+|OK.
+|This is weird as LibreOffice is said to do not support password protected DOC files.
+|-
+|Text
+|DOC 97-2003
+|LibreOffice
+|Word
+|OK.
+|But Word is experiencing issues to read the last line of the document. The last line is not visible and we have to make some line breaks or double-click below that line to solve the problem. A bug in Word? The problem does not appear when saving without password.
+|-
+|Text
+|DOC 97-2003
+|Word
+|LibreOffice
+|style="background-color:gray;"|No.
+|We got the following error message on LibreOffice: "<code>Read error. The encryption method used in this document is not supported. Only Microsoft Office 97/2000 compatible password encryption is supported.</code>" and the document is not opened.
+|-
+|Text
+|DOCX ECMA-376 1st edition (2006) or ISO/IEC 29500:2008 
+|LibreOffice
+|LibreOffice
+|OK
+|
+|-
+|Text
+|DOCX ECMA-376 1st edition (2006) or ISO/IEC 29500:2008 
+|LibreOffice
+|Word
+|OK
+|
+|-
+|Text
+|DOCX ECMA-376 1st edition (2006) or ISO/IEC 29500:2008 
+|Word
+|LibreOffice
+|OK
+|
+|-
+|Spreadsheet
+|ODS
+|LibreOffice
+|LibreOffice
+|OK
+|
+|-
+|Spreadsheet
+|ODS
+|LibreOffice
+|Excel
+|style="background-color:gray;"|No
+|The file cannot be opened on Excel, "<code>This file has been protected with a password and cannot be opened.</code>"
+|-
+|Spreadsheet
+|ODS
+|Excel
+|LibreOffice
+|style="background-color:gray;"|No
+|Excel has 2 grayed (inactive) text boxes as input for the password, cannot thus specify it.
+|-
+|Spreadsheet
+|XLS 97-2003
+|LibreOffice
+|LibreOffice
+|OK
+|This is weird as LibreOffice is said to do not support password protected XLS files.
+|-
+|Spreadsheet
+|XLS 97-2003
+|LibreOffice
+|Excel
+|OK
+|
+|-
+|Spreadsheet
+|XLS 97-2003
+|Excel
+|LibreOffice
+|style="background-color:gray;"|No
+|Got this error message "<code>Read-Error.
+The encryption method used in this document is not supported. Only Microsoft Office 97/2000 compatible password encryption is supported."<code>
+|-
+|Spreadsheet
+|XLSX ECMA-376 1st edition (2006) or ISO/IEC 29500:2008 
+|LibreOffice
+|LibreOffice
+|OK
+|
+|-
+|Spreadsheet
+|XLSX ECMA-376 1st edition (2006) or ISO/IEC 29500:2008 
+|LibreOffice
+|Excel
+|OK
+|
+|-
+|Spreadsheet
+|XLSX ECMA-376 1st edition (2006) or ISO/IEC 29500:2008 
+|Excel
+|LibreOffice
+|OK
+|
+|-
+|Presentation
+|ODP
+|LibreOffice
+|LibreOffice
+|OK
+|
+|-
+|Presentation
+|ODP
+|LibreOffice
+|PowerPoint
+|style="background-color:gray;"|No
+|Got this error message in Excel: "<code>Sorry, PowerPoint can't read FILE</code>" where file is the full path and filename of the file tried to be read.
+|-
+|Presentation
+|ODP
+|PowerPoint
+|LibreOffice
+|style="background-color:gray;"|No
+|Get this warning on PowerPoint: "<code>FILE may contain features that are not compatible with this format. Do you want to continue to save in this format?</code>" where file is the full pathname of the file we are trying to save. If we accept we got a second warning: "<code>This document is password protected. Saving the document in another format, or for an earlier version of PowerPoint will result in the loss of this protection. Do you want to continue?</code>". The file is then saved without password.
+|-
+|Presentation
+|PPT 97-2003
+|LibreOffice
+|LibreOffice
+|style="background-color:gray;"|No
+|The checkbox to "Save with password" is inactive and the document cannot be saved without a password.
+|-
+|Presentation
+|PPT 97-2003
+|LibreOffice
+|PowerPoint
+|NO
+|As LibreOffice cannot save password protected PPT files...
+|-
+|Presentation
+|PPT 97-2003
+|PowerPoint
+|LibreOffice
+|style="background-color:gray;"|No
+|Got this error on LibreOffice: "<code>Version Incompatibility. Incorrect file version.</code>"
+|-
+|Presentation
+|PPTX ECMA-376 1st edition (2006) or ISO/IEC 29500:2008 
+|LibreOffice
+|LibreOffice
+|OK
+|
+|-
+|Presentation
+|PPTX ECMA-376 1st edition (2006) or ISO/IEC 29500:2008 
+|LibreOffice
+|PowerPoint
+|OK
+|
+|-
+|Presentation
+|PPTX ECMA-376 1st edition (2006) or ISO/IEC 29500:2008 
+|PowerPoint
+|LibreOffice
+|OK
+|
+|}
+
+=== Allow direct click on link without using Ctrl key ===
+
+An user asked if this was possible to click directly on a link (mostly URL links) in Writer instead of having to press in the Ctrl key simultaneously. That current behavior could instead be annoying and waste of time especially if you have a bunch of link you want to access in your document.
+
+This behaviour is actaully defined by the LibreOffice security policy. You can redifine this bahavior in {{bc|Options|LibreOffice|Security|Options...|Security options and warning|Ctrl-click required to follow hyperlinks}} and that it!<ref name=supportCtrlClickLink />
+
+This is a pretty good tip but pay attention, if you receive some documents by mail from untrusted senders. Some text paragraphs could be formatted to look like norma text, but when you will try to position your cursor to edit that piece of text, a specially crafted URL could be opened and harm your computer, exploiting a vulnerability in your web browser to install malware. Proceed thus at your own risk.<ref name=supportCtrlClickLinkWarning />
+
+=== Search in multiple documents ===
+
+A rather interesting question (actually we could say the most interesting of all found up to now) was asked about the ability to search a content in several document and have the context around in the results.<ref name=supportSearchInMultipleDocuments />
+
+LibreOffice does not provide an option for this directly. The first solution proposed was to use a shell script which uncompresses each odt files (since they are just ZIP compressed files after all) and use grep with some option to get the context around the searched string "<code>unzip -ca "$file" content.xml | grep -qC 10 "$1"</code>".<ref name=supportSearchInMultipleDocumentsScript />
+
+Another solution was to gather all documents in one big with {{bc|Insert|Document}} or with drag-and-drop, then do a search.
+
+=== Network open dialog ===
+
+LibreOffice is reported to have problem in opening documents stored to remote Samba servers. The problem appear in the own LibreOffice open/save dialogs ("Use Libreoffice dialogues" is selected in options), the mount point of the Samba storage is not visible in the dialog, althought the mount point has been successfully mounted with the file manager (KDE Dolphin and Gnome Nautilus are explicitely named).
+
+The office documents can be opened with successfull when opened via these file managers and the problem is not reproductible on Windows platforms.
+
+We are currently investiging the issue. If the problem is confirmed and is related to LibreOffice, a bug report will be filled, if not already present.<ref name=supportNetworkShares /><ref name=supportNetworkSharesExplanation />
+
+After some tests, it appear the problem might be due to the fact Dolphin or Nautilus do not mount the location at astandard Gnu/Linux mount point, but rather uses a mount point located in memory. The mount point is thus just a bookmark. This assumption is made based on how Dolphin works.
+
+A few days later another discussion has been opened on the same topic<ref name=supportNetworkShares2 />, LibreOffice 4.2 seems to crash on Kubuntu, just after the splashscreen when it tries to open a file located on a network space. Ohers have confirmed this was woerking from the file manager and not from the LibreOffice open dialogs, and working on locally mounted disks but not when browsing them remotelly from the LibreOffice open dialog. Even if the problems reported are not clearly defined, it seems there are some issue with remote folders.
+
+=== Table protection has lack of consistance ===
+
+A question has been asked on the user mailing list regarding the inability to unprotect a table cell in Writer. This question was legitimate and not due to the user inability to use LibreOffice. When you protect a cell via the menu, if you want to unprotect it, the "Protect" menu item is disabled and there is no way to unprotect these cells, excepted if you do a right-click and click on "Unprotect". This is clearly a lack of consistance in the LibreOffice table menu<ref name=supportTableMenuInconsistance />. A bug has been filled<ref name=supportTableMenuInconsistanceBug />, and should be considered as an easy hack.
+
+=== Send document as mail ===
+
+In Writer, when you try the send feature from File > Send, the latter should open a new mail dialog with the text you wrote in your document. Although on Ubuntu, this accurately opens the new mail dialog, the message dialog is actually empty. We retested on Arch Linux with KDE, and there the message dialog did not even open. It seems that this niche feature has actually a problem.<ref name=supportSendAsMail />
+
+When you need to communicate between two different pieces of software, you should make sure is this is still working after some time: both programs evolve independently and changes in their API might break the shared feature. As this send feature is actually rather old, this clearly shows how some parts of the LibreOffice code are still under the old unmaintained code inheritancy from the now defunct OpenOffice.org project.
+
+=== Editing Word Equation (MathType) in Writer ===
+
+Microsoft enjoys to provide universities with cheaper versions of their products. While the initial purpose might seems interesting to the extent that most of academics institutions are attracted by these more affordable prices, this has often has consequence to lock them in using these products.
+
+Recently, we learned that even students from mathematics faculties were dropping LaTeX in favour of Office to write technical documents with formula in them. This is actually a pity because LaTeX was clearly crafted in that scope: correctly typesetting scientific documents and add the ability to edit them afterwards since the TeX document format is basically pure text files.<ref name=supportMathTypeEquation />
+
+MS documents with equations are edited with the MathType format on Office. Word 2013 can save the file with equations as DOCX, DOC or ODT. Even if you might receive a warning stating the format could be lost when saving in ODT, the equations are kept intact and can still be edited when your document is saved by Word 2013 as DOCX or ODT. If you save your document as the old DOC binary format, the equation will be converted as a picture and you will not be able to edit it any more.
+
+We need to say, contrary to what the mailing list reports, ''LibreOffice'', at least tested in the latest 4.3.1 iteration, ''can import and edit flawlessly equations from documents saved by Word as DOCX or ODT''. As we stated just above, the old DOC format is out of race here since the equation has been saved as a picture and therefore LibreOffice Writer cannot edit it again. 
+
+=== Dialog focus ===
+
+It has been reported when LibreOffice has some problem to give focus to some of its dialog boxes:
+
+* When some LibreOffice documents are open, and we click on a document requiring some import question from the user, the dialog box asking this question does not get the focus, and the user needs to manage the opened windows himself to take the right one<ref name=supportDialogFocus />.
+* THe problem has been reported on KDE too. Each time the user wants to open a password document, he needs to look in his task bar and click on LibreOffice because the dialog box does not focus automatically in front
+of all other windows<ref name=supportDialogFocus2 />
+
+=== Unsatisfied with auto correction? ===
+
+If you are unsatisfied with the auto correction LibreOffice just made, instead of disabling the feature, you can just hit Ctrl+Z or Cmd+Z on a Mac to undo the auto correction performed on the text you just typed.<ref name=supportAutoCorrection />
+
+This is only true if you are not typing a word and then doing a line break immediatelly, which makes a new paragraph. In this use case, undoing will undo the paragraph not the capitalisation of the first letter of the word you just typed. An enhancement request has already been filled (which could maybe be considered as an easy hack?)<ref name=supportAutoCorrectionBug />. We also learned that the autocorrect rules are saved language-specific and stored under {{bc|share|autocorr|}} in the install location<ref name=supportAutoCorrectionLocation /> and in {{bc|<user profile>|autocorr}}<ref name=supportAutoCorrectionLocation2 />.
+
+Obviously, if you need to undo several times the auto correction, this can become somewhat harrassing, then turn the feature off via {{bc|Tools|AutoCorrect Options}}.
+
+You can also tweak the auto correction and let it enabled, this is by far the most interesting solution and sometimes needed in some use cases<ref name=supportAutoCorrectionTweak />.
+
+== References ==
+
+<references>
+
+<ref name=liboconRecorded>https://plus.google.com/116265564718884370181/posts/dGWQF2JZY3B</ref>
+
+<ref name=stillConfusion1>http://listarchives.libreoffice.org/global/users/msg40140.html</ref>
+<ref name=stillConfusion2>http://listarchives.libreoffice.org/global/users/msg40150.html</ref>
+<ref name=stillConfusion3>http://listarchives.libreoffice.org/global/users/msg40164.html</ref>
+<ref name=stillConfusion4>http://listarchives.libreoffice.org/global/users/msg40166.html</ref>
+<ref name=stillConfusion5>http://listarchives.libreoffice.org/global/users/msg40406.html</ref>
+<ref name=stillConfusionPrivate>http://listarchives.libreoffice.org/global/users/msg40167.html</ref>
+<ref name=stillConfusionCooking>http://listarchives.libreoffice.org/global/users/msg40168.html</ref>
+<ref name=stillConfusionOrange>http://listarchives.libreoffice.org/global/users/msg40290.html</ref>
+<ref name=stillConfusionMeaningless>http://listarchives.libreoffice.org/global/users/msg40348.html</ref>
+<ref name=stillConfusionCurrentLatest>http://listarchives.libreoffice.org/global/users/msg40322.html</ref>
+<ref name=stillConfusionQualityRolling>http://listarchives.libreoffice.org/global/users/msg40334.html</ref>
+<ref name=stillConfusionNonSense>http://listarchives.libreoffice.org/global/users/msg40361.html</ref>
+<ref name=privateMarketingList>http://listarchives.libreoffice.org/global/users/msg40363.html</ref>
+
+<ref name=contributorMadl>http://lists.freedesktop.org/archives/libreoffice/2014-September/063116.html</ref>
+<ref name=contributorLiebel>http://lists.freedesktop.org/archives/libreoffice/2014-August/063059.html</ref>
+<ref name=contributorSikeler>http://lists.freedesktop.org/archives/libreoffice/2014-August/063050.html</ref>
+<ref name=contributorWeiberg>http://lists.freedesktop.org/archives/libreoffice/2014-August/063047.html</ref>
+<ref name=contributorKagotani>http://lists.freedesktop.org/archives/libreoffice/2014-August/062922.html</ref>
+<ref name=contributorFrancis>http://lists.freedesktop.org/archives/libreoffice/2014-August/063000.html</ref>
+<ref name=contributorDeena>http://lists.freedesktop.org/archives/libreoffice/2014-August/062869.html</ref>
+<ref name=contributorViehmann>http://lists.freedesktop.org/archives/libreoffice/2014-August/062845.html</ref>
+<ref name=contributorGeorgaras>http://lists.freedesktop.org/archives/libreoffice/2014-August/062688.html</ref>
+<ref name=contributorJaumann>http://lists.freedesktop.org/archives/libreoffice/2014-September/063121.html</ref>
+
+<ref name=migrationToulouse>http://nabble.documentfoundation.org/Toulouse-saves-1-million-euro-with-LibreOffice-td4116762.html</ref>
+<ref name=migrationToulouseFr>http://www.nextinpact.com/news/88935-toulouse-economie-million-deuros-en-basculant-doffice-a-libreoffice.htm</ref>
+<ref name=migrationUkGovOpen>https://gds.blog.gov.uk/2014/07/22/making-things-open-making-things-better/</ref>
+<ref name=migrationUkGovOpenSelected>https://www.gov.uk/government/news/open-document-formats-selected-to-meet-user-needs</ref>
+<ref name=migrationUkGovOpenFormatVersion>http://listarchives.libreoffice.org/global/users/msg40261.html</ref>
+<ref name=migrationFrenchMinistry>http://www.nextinpact.com/news/89239-le-ministere-travail-va-basculer-vers-logiciels-bureautique-libres.htm</ref>
+<ref name=migrationFranceFuture>https://www.nextinpact.com/news/83970-linterieur-vante-economies-dues-au-passage-d-outlook-a-thunderbird.htm</ref>
+<ref name=migrationCanadaFuture>http://listarchives.libreoffice.org/global/users/msg40943.html</ref>
+
+<ref name=documentationAskBotMerge>http://listarchives.libreoffice.org/global/projects/msg01405.html</ref>
+<ref name=documentationImpressGuide1>http://listarchives.libreoffice.org/global/documentation/msg17383.html</ref>
+<ref name=documentationImpressGuide2>http://listarchives.libreoffice.org/global/documentation/msg17412.html</ref>
+<ref name=documentationBaseCallForContributors>http://listarchives.libreoffice.org/global/users/msg40983.html</ref>
+<ref name=documentationDrawGuide>http://listarchives.libreoffice.org/global/documentation/msg17406.html</ref>
+<ref name=documentationBaseRecruit>http://listarchives.libreoffice.org/global/users/msg40414.html</ref>
+<ref name=documentationBaseFirstRelease>http://listarchives.libreoffice.org/global/documentation/msg17458.html</ref>
+<ref name=documentationGettingStartedSkTrans>http://listarchives.libreoffice.org/global/website/msg13335.html</ref>
+<ref name=documentationLowBugReports1>http://listarchives.libreoffice.org/global/users/msg40927.html</ref>
+<ref name=documentationLowBugReports2>http://listarchives.libreoffice.org/global/users/msg39932.html</ref>
+
+<ref name=marketingVideo1>http://listarchives.libreoffice.org/global/marketing/msg17074.html</ref>
+<ref name=marketingVideo2>http://listarchives.libreoffice.org/global/marketing/msg17077.html</ref>
+<ref name=marketingVideo3>http://listarchives.libreoffice.org/global/marketing/msg17080.html</ref>
+<ref name=marketingVideo4>http://listarchives.libreoffice.org/global/marketing/msg17083.html</ref>
+<ref name=marketingVideo5>http://listarchives.libreoffice.org/global/marketing/msg17076.html</ref>
+<ref name=marketingPiersAnthony1>http://listarchives.libreoffice.org/global/users/msg40898.html</ref>
+<ref name=marketingPiersAnthony2>http://www.thepowerbase.com/2011/11/piers-anthony-an-ogre-and-a-penguin</ref>
+<ref name=marketingTv>http://listarchives.libreoffice.org/global/users/msg40753.html</ref>
+
+<ref name=devAccess2BaseSatisfaction>http://listarchives.libreoffice.org/global/users/msg40547.html</ref>
+
+<ref name=extNewSite>http://listarchives.libreoffice.org/global/website/msg13279.html</ref>
+<ref name=websiteSsoAdvantages>http://listarchives.libreoffice.org/global/website/msg13185.html</ref>
+<ref name=websiteSsoDoNotForceUsers>http://listarchives.libreoffice.org/global/website/msg13310.html</ref>
+
+<ref name=supportPasswordProtect>http://listarchives.libreoffice.org/global/users/msg39551.html</ref>
+<ref name=supportCtrlClickLink>http://listarchives.libreoffice.org/global/users/msg40797.html</ref>
+<ref name=supportCtrlClickLinkWarning>http://listarchives.libreoffice.org/global/users/msg40833.html</ref>
+<ref name=supportSearchInMultipleDocuments>http://listarchives.libreoffice.org/global/users/msg40770.html</ref>
+<ref name=supportSearchInMultipleDocumentsScript>http://www.techrepublic.com/blog/linux-and-open-source/how-to-search-for-text-inside-many-opendocument-files/</ref>
+<ref name=supportNetworkShares>http://listarchives.libreoffice.org/global/users/msg40935.html</ref>
+<ref name=supportNetworkSharesExplanation>http://listarchives.libreoffice.org/global/users/msg40950.html</ref>
+<ref name=supportNetworkShares2>http://listarchives.libreoffice.org/global/users/msg40866.html</ref>
+<ref name=supportTableMenuInconsistance>http://listarchives.libreoffice.org/global/users/msg40766.html</ref>
+<ref name=supportTableMenuInconsistanceBug>https://bugs.freedesktop.org/show_bug.cgi?id=83011</ref>
+<ref name=supportSendAsMail>http://listarchives.libreoffice.org/global/users/msg40783.html</ref>
+<ref name=supportMathTypeEquation>http://listarchives.libreoffice.org/global/users/msg40646.html</ref>
+<ref name=supportDialogFocus>http://listarchives.libreoffice.org/global/users/msg40777.html</ref>
+<ref name=supportDialogFocus2>http://listarchives.libreoffice.org/global/users/msg40954.html</ref>
+<ref name=supportAutoCorrection>http://listarchives.libreoffice.org/global/users/msg40658.html</ref>
+<ref name=supportAutoCorrectionBug>https://bugs.freedesktop.org/show_bug.cgi?id=70520</ref>
+<ref name=supportAutoCorrectionLocation>http://listarchives.libreoffice.org/global/users/msg40731.html</ref>
+<ref name=supportAutoCorrectionLocation2>http://listarchives.libreoffice.org/global/users/msg40740.html</ref>
+<ref name=supportAutoCorrectionTweak>http://listarchives.libreoffice.org/global/users/msg40960.html</ref>
+
+</references>
+[[Category:LOWN]]
