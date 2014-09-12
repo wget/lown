@@ -17,9 +17,9 @@
 
 == Holidays are now behind us ==
 
-Those believing there is no development progress or activity in an open source project like LibreOffice during holidays are completely wrong. I never saw so much mails in my mailbox and news about LibreOffice since I started this summary project. 2k mails is the number of mails I needed to read carefully to prepare this new LOWN issue.
+Those believing there is no development progress or activity in an open source project like LibreOffice during holidays are completely wrong. I never saw so much mails in my mailbox and news about LibreOffice since I started this summary project. 2k is the number of mails I needed to read carefully to prepare this new LOWN issue.
 
-I still need to catch up with 700 mails and in order to not delay this publication I decided to summarize them for next edition. This selection is mainly focused on non technical development subjects.
+I still need to catch up with 700 mails and in order to not delay this publication I decided to summarize them for the next edition. This selection is mainly focused on non technical development subjects.
 
 Here are the best I have tried to summarize.
 
@@ -158,7 +158,7 @@ While we were not able to answer all questions the guy under the john45 nickname
 
 === UK Government adopts Open Document Format ===
 
-We have some news about the issue discussed in our [[LOWN/3#"Open standards are the way to go|last report]]<ref name=migrationUkGovOpenSelected />: a decision has finally been taken by the UK governement. The Open Document Format has been chosen as the default and mandatory format that will be used for correspondance between the governement and citizens. This is good news for LibreOffice which uses and promote this truly open format. This also means the Government chose to not listen to Microsoft lobbies and took into account [http://www.digitalmeetsculture.net/article/long-term-sustainability-through-open-source-software-implementations-of-open-file-formats implementation problems of OOXML noted by European European experts] and [https://people.gnome.org/~michael/blog/2014-02-26-cabinet-office.html developers]. Microsoft has just failed to impose citizens and users to keep their proprietary Microsoft Office vendor locked piece of software.<ref name=migrationUkGovOpen />
+We have some news about the issue discussed in our [[LOWN/3#"Open standards are the way to go|last report]]<ref name=migrationUkGovOpenSelected />: a decision has finally been taken by the UK governement. The Open Document Format has been chosen as the default and mandatory format that will be used for correspondance between the governement and citizens. This is good news for LibreOffice which uses and promotes this truly open format. The Document Foundation, the home of LibreOffice, congratulates them<ref name=migrationUkGovOpenCongratulations />. This also means the Government chose to not listen to Microsoft lobbies and took into account [http://www.digitalmeetsculture.net/article/long-term-sustainability-through-open-source-software-implementations-of-open-file-formats implementation problems of OOXML noted by European European experts] and [https://people.gnome.org/~michael/blog/2014-02-26-cabinet-office.html developers]. Microsoft has just failed to impose citizens and users to keep their proprietary Microsoft Office vendor locked piece of software.<ref name=migrationUkGovOpen />
 
 Unfortunately, we do not have precision about the ODF version which has been adopted<ref name=migrationUkGovOpenFormatVersion />. 
 
@@ -199,9 +199,9 @@ The "LibreOffice: Getting Started Guide" has been translated this week to Slovak
 
 And finally, we might see a new updated guide for Draw in the coming weeks/months, as some work has started in this regard.<ref name=documentationDrawGuide />
 
-=== Bug-reports reached an all-time low recently ===
+=== Unconfirmed bugs reached an all-time low recently ===
 
-Opened bug reports have reached a all-time low recently, even lower than the Linux kernel.<ref name=documentationLowBugReports1 /><ref name=documentationLowBugReports2 />
+The number of unconfirmed bugs was worked below 700 before the LibreOffice 4.3.x release, an major achievement by the QA team<ref name=documentationLowBugReports />.
 
 == Websites ==
 
@@ -469,9 +469,9 @@ The encryption method used in this document is not supported. Only Microsoft Off
 
 An user asked if this was possible to click directly on a link (mostly URL links) in Writer instead of having to press in the Ctrl key simultaneously. That current behavior could instead be annoying and waste of time especially if you have a bunch of link you want to access in your document.
 
-This behaviour is actaully defined by the LibreOffice security policy. You can redifine this bahavior in {{bc|Options|LibreOffice|Security|Options...|Security options and warning|Ctrl-click required to follow hyperlinks}} and that it!<ref name=supportCtrlClickLink />
+This behaviour is actaully defined by the LibreOffice security policy. You can redifine this bahavior in {{bc|Options|LibreOffice|Security|Options...|Security options and warning|Ctrl-click required to follow hyperlinks}} and that's it!<ref name=supportCtrlClickLink />
 
-This is a pretty good tip but pay attention, if you receive some documents by mail from untrusted senders. Some text paragraphs could be formatted to look like norma text, but when you will try to position your cursor to edit that piece of text, a specially crafted URL could be opened and harm your computer, exploiting a vulnerability in your web browser to install malware. Proceed thus at your own risk.<ref name=supportCtrlClickLinkWarning />
+This is a pretty good tip, but pay attention, if you receive some documents by mail from untrusted senders. Some text paragraphs could be formatted to look like norma text, but when you will try to position your cursor to edit that piece of text, a specially crafted URL could be opened and harm your computer, exploiting a vulnerability in your web browser to install malware. Proceed thus at your own risk.<ref name=supportCtrlClickLinkWarning />
 
 === Search in multiple documents ===
 
@@ -501,7 +501,7 @@ A question has been asked on the user mailing list regarding the inability to un
 
 In Writer, when you try the send feature from File > Send, the latter should open a new mail dialog with the text you wrote in your document. Although on Ubuntu, this accurately opens the new mail dialog, the message dialog is actually empty. We retested on Arch Linux with KDE, and there the message dialog did not even open. It seems that this niche feature has actually a problem.<ref name=supportSendAsMail />
 
-When you need to communicate between two different pieces of software, you should make sure is this is still working after some time: both programs evolve independently and changes in their API might break the shared feature. As this send feature is actually rather old, this clearly shows how some parts of the LibreOffice code are still under the old unmaintained code inheritancy from the now defunct OpenOffice.org project.
+When you need to communicate between two different pieces of software, you should make sure if this is still working after some time: both programs evolve independently and changes in their API might break the shared feature. As this send feature is actually rather old, this clearly shows how some parts of the LibreOffice code are still under the old unmaintained code inheritancy from the now defunct OpenOffice.org project.
 
 === Editing Word Equation (MathType) in Writer ===
 
@@ -566,6 +566,7 @@ You can also tweak the auto correction and let it enabled, this is by far the mo
 <ref name=migrationToulouseFr>http://www.nextinpact.com/news/88935-toulouse-economie-million-deuros-en-basculant-doffice-a-libreoffice.htm</ref>
 <ref name=migrationUkGovOpen>https://gds.blog.gov.uk/2014/07/22/making-things-open-making-things-better/</ref>
 <ref name=migrationUkGovOpenSelected>https://www.gov.uk/government/news/open-document-formats-selected-to-meet-user-needs</ref>
+<ref name=migrationUkGovOpenCongratulations>http://listarchives.documentfoundation.org/www/announce/msg00194.html</ref>
 <ref name=migrationUkGovOpenFormatVersion>http://listarchives.libreoffice.org/global/users/msg40261.html</ref>
 <ref name=migrationFrenchMinistry>http://www.nextinpact.com/news/89239-le-ministere-travail-va-basculer-vers-logiciels-bureautique-libres.htm</ref>
 <ref name=migrationFranceFuture>https://www.nextinpact.com/news/83970-linterieur-vante-economies-dues-au-passage-d-outlook-a-thunderbird.htm</ref>
@@ -579,8 +580,7 @@ You can also tweak the auto correction and let it enabled, this is by far the mo
 <ref name=documentationBaseRecruit>http://listarchives.libreoffice.org/global/users/msg40414.html</ref>
 <ref name=documentationBaseFirstRelease>http://listarchives.libreoffice.org/global/documentation/msg17458.html</ref>
 <ref name=documentationGettingStartedSkTrans>http://listarchives.libreoffice.org/global/website/msg13335.html</ref>
-<ref name=documentationLowBugReports1>http://listarchives.libreoffice.org/global/users/msg40927.html</ref>
-<ref name=documentationLowBugReports2>http://listarchives.libreoffice.org/global/users/msg39932.html</ref>
+<ref name=documentationLowBugReports>http://nabble.documentfoundation.org/Libreoffice-qa-700-unconfirmed-bugs-milestone-broke-td4116907.html</ref>
 
 <ref name=marketingVideo1>http://listarchives.libreoffice.org/global/marketing/msg17074.html</ref>
 <ref name=marketingVideo2>http://listarchives.libreoffice.org/global/marketing/msg17077.html</ref>
