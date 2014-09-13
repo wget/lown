@@ -5,6 +5,9 @@
 
 ''This page aims to link contributors from the [[Development/Developers developers/contrbitor list]] and detail the task they are responsible for. This is rather interesting when we need to contact someone responsible for social network account and we want something related to LibreOffice to be published.''
 
+
+Maybe add contributors on a map as proposed by Florian Reisigner --> http://listarchives.libreoffice.org/global/projects/msg01376.html
+
 {|
 |sophi
 |:
