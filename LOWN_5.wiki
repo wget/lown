@@ -12,16 +12,340 @@
 |-
 |Publication date
 |:
-|Unpublished yet
+|September 14, 2014
 |}
+
+== Development ==
+
+=== New project from Document Liberation ===
+
+As a reminder, The Document Liberation Project aims to provide an ability to read back outdated or closed/proprietary file formats.
+
+We noticed that a new additional library called <code>libpagemaker</code> has been made available in version 0.0.1. This one allows to read back Aldus/Adobe PageMaker document. As this library is still in pre-alpha development state, only basic shapes and their attributes can be read for now, but we expect improvements in the future. Thanks Anurag Kanungo, Brennan Vincent, David Tardon, and Fridrich Strba for this initiative!
+
+As with any libraries from the Document Liberarion Project, they are crafted to work for LibreOffice but can be used in other projects too.<ref name=devDocLibPakeMaker />
+
+=== Better XHTML export ===
+
+Andrew Sayers, a new LibreOffice contributor, released mid-August 17 patches to improve the LibreOffice Calc export filter called XSLT.<ref name=devCalcExportXhtml />
+
+=== Document converter ===
+
+Soon after the birth of LibreOfficeKit, Olly Betts released a project called ''lloconv'', making use of LibreOfficeKit and allowing to call directly the rendering library LibreOffice uses. As a result, we do not neet to play with UNO, to have LibreOffice running and this is faster<ref name=devLibreOfficeKitConverter />.
+
+=== Android version ===
+
+The Document Foundation has decided to allocate a budget to develop the base framework for an Android version of LibreOffice with basic editing capabilities. Companies able to respect the [http://listarchives.documentfoundation.org/www/announce/msg00200.html requirements described in the call for offers] are pleased to apply and provide a timing and cost estimation. This call for offers is valid until February 2015.
+
+=== Remove inheritance on std::map and std::vector ===
+
+This week some more progress in removing inheritance on these std container classes: <code>std::map</code> and <code>std::vector</code> has been achieved by Takeshi Abe<ref name=devInheritanceStdContainBug />. Inheriting from container classes of the standard library is actually a bad practise, we should use a composition or weak aggregation instead. 
+
+''Standard library containers allow Inheritance. Nothing stops you from inheriting from a standard library container class. You will not get any compilation errors if you do so. But what they are not designed for is to allow the destruction of your derived class object through a Base class pointer. If you want to use inheritance in such a scenario (in short for dynamic polymorphism) then standard library containers are clearly not designed for it.'' <ref name=devInheritanceStdContain />
+
+=== Nearly the end of the German comments translation ===
+
+The translation of the German comments is still continuing, we should hit 100% pretty soon<ref name=devGermanCommentTrans />. This is actually difficult to predict if we are still far or not, since as far as we know, no one has computed how far we are with translating german comments. If you want help, a script <code>bin/find-german-comments</code> is still available to locate in the code these German comments.
+
+But comments are not the only location where we can still see German language tracks, some variables in the internal LibreOffice UNO API are still spelled in German. A bug report has been opened since the birth of LibreOffice project, and we begin to see again some progress in this regard. Thanks Jennifer Liebel.<ref name=devGermanApiVar />
+
+=== Maybe some more deprecation in the UNO::Writer API ===
+
+The Writer UNO methods <code>SwXTableColumns::getCount()</code> and <code>SwXTableColumns::getByIndex()</code> might be deprecated since we are able to get the same piece of information by ourself and they are all due to implementing <code>XIndexAccess</code><ref name=devWriterUnoApiDeprecate />.
+
+=== All OS X thinderboxes require a fresh build ===
+
+Since a recent commit, those building LibreOffice versions for OS X will be required to do a make clean before doing a buid again, an incremental build is very likely to fail<ref name=devCleanBuildOsx />.
+
+=== Some news for OS X builds ===
+
+Up to now LibreOffice was using <code>libstdc++</code> the standard C++ library from the 4.2 GCC shipped with OS X. This old 4.2 GCC version is deprecated and is not updated by Apple, like the rest of the UNIX-like tools of the OS (binutils, bash, etc.), for licensing reasons: these projects moved to GPLv3, while Apple is still using their GPLv2 counterparts. Since LibreOffice is migrating to a full 64 bits version on the OS X platform and is using more and more C++11 code, using <code>libc++</code> was a needed requirement.
+
+Since a recent commit, LibreOffice 4.4 and above built against the OS X SDK >= 10.8, and if no explicit <code>--with-macosx-version-min-required</code> configure flag is explicitly used, will make use of <code>libc++</code> instead of <code>libstdc++</code><ref name=devStandardLibOsx />.
+
+Since retina displays are now the default on OS X (excepted on the MacBook Air) and the 64 bits are now default for LibreOffice, the flags <code>--enable-retina</code> and <code>--enable-64bits</code> will be dropped and me mde the default<ref name=devConfigureDropOsx />.
+
+Requiring to have at least OS X 10.8 to build an OS X version is required for OpenGL support<ref name=devOsxMinConfOpengl />.
+
+=== Bibisect location for 4.3 has changed ===
+
+As a reminder, the bibisection is/are repositories of binary LibreOffice builds. If you want to locate the precise timeslice from when a bug appeared and thus determine if this is a regression or not, you do not need to recompile each commit by yourself. This has already been performed. Simply do a dichotomic search and you will find the commit responsible for the bug.
+
+The repository for all the binary builds (a build by commit) for the 4.3 branch has moved from Bitbucket and is now on the Document Foundation own server infrastructure. 
+
+If you were thus previously using <code><ssh://git@bitbucket.org/vmiklos/lo-daily.git></code> for your bibisections, please update the repository URL in your <code>.git/config</code> to the new one: <code><git://dev-downloads.libreoffice.org/lo-linux-dbgutil-daily.git></code>. Thanks Miklos Vajna!<ref name=dev43BibisectChanged />
+
+=== LibreOffice 4.3 is not usable on < SSE2 CPU ===
+
+Since the 4.3 branch, it has been reported LibreOffice cannot run on a Windows Platform if the processor does not support at least SSE2<ref name=devSse1Report />. 
+
+This is due to the fact LibreOffice is now using Visual Studio 2012 to produce binaries for Windows. Visual Studio 2012 is using the default compilation flag <code>/arch:SSE2</code><ref name=devSse1Vs2012Default />. The idea if we want to support older CPUs is to change this flag to "-arch:SSE"<ref name=devSse1ChangeFlag />.
+
+Some arguments have started regarding the need to be able to compile LibreOffice on a so old hardware, here an AMD K7 whose production started in mid-1999 and was discontinued in 2005, 9 years before LibreOffice 4.3 was released.
+
+The solution choosen was to get back to SSE1 compiler and improve algorithms and OpenCL usage. The latter will anyway detect and use the CPU feature automatically<ref name=devSse1UseOpenCl />.
+
+While the flag has been merged in master<ref name=devSse1Patch />, the bug is still not marked as solved, because it is not completely fixed. Michael Stahl<ref name=devSse1BugReport /> precised some external library might not take the <code>-arch:SSE</code> flag into account, so that we got sometimes exception, especially in <code>enabledExtension</code> from the Extension Manager. The solution to narrow the issue is to have a tool which inspects all LibreOffice ddl to see if some SSE2 extensions are present<ref name=devSse1BugReport />.
+
+*To disassemble on Windows, we found <code>dumpbin</code>. The syntax is <code>dumpbin /DISASM ''file.exe''</code>.
+*On Linux, as <code>objdump</code> can only work with ELF, the trick is to use MinGW which has an <code>objdump</code> version adapted to the PE format. On Arch Linux, simply install the <code>mingw-w64-binutils</code> package and use <code>i686-w64-mingw32-objdump</code>. The syntax is <code>i686-w64-mingw32-objdump -d ''file.exe''</code>.
+
+Then, we simply need to grep any SSE2 opcode on the command output from this [http://softpixel.com/~cwright/programming/simd/sse2.php list], if we got result, the exe/dll is using SSE2. A [http://dev.gentoo.org/~solar/misc/analyse-x86.pl Perl script] has already been created by the Gentoo community, you just need to change the l58 to reflect the exact MinGW objdump location on your system.
+
+=== A new tool for Vimmers ===
+
+If you are using YouCompleteMe, a rather new Vim plugin replacing omnicomplete, supertab, etc., you should be pleased to leanr a small tool <code>vim-ide-integration</code> has been merged in the LibreOffice repository, in master a month ago allowing you to use LibreOffice code with that extension.
+
+Basically, YouCompleteMe has several completion engines, the [https://github.com/Valloric/YouCompleteMe#c-family-semantic-completion-engine-usage C-family completion engine requires you to have a file <code>.ycm_extra_conf.py</code>] which contains the flags you need to build your project. These flags are used to locate headers and thus classes, method definitions, etc. This file is thus mendatory for YouCompleteMe to work properly. The tool that has been merged, actually create the needed flags for that file. Thanks to Markus Mohrhard for this initiative he performed while he was actually sick in his bed<ref name=devVimYouCompleteMe />.
+
+== ODF will not solve interoperability ==
+
+We often read/hear this statement in the context of users, mostly enterprises, using macros. As a reminder, for those who do not know because they are not using them, macros are actually instructions, functions and routines used to control the software in an automated way.
+
+As a simple example with LibreOffice, if you want to make a particular operation on each line of a document, but using a simple shortcut is impossible as the action is actually made of several ones, a macro could come in handy that time. You write your instructions either using the macro recorder or using the LibreOffice API, and bind the macro to a keyboard shortcut, allowing you to perform a long task at the speed of light.
+
+*The macro recorder converts actions made in LibreOffice into limited BASIC code; but this does not cover the whole interface and complicated actions might not be possible. This is why this option is advertised as limited. This solution uses UNO slots but takes you away from using the API which is much more evolved, but a bit more complicated to use for some tasks.
+:By default the macro recorder is not enabled, you have to check the checkbox <code>Enable macro recording (limited)</code> in {{bc|Tools|Options|LibreOffice|Advanced|Optional (unstable) options}}. Then, to use the recorder, simply go to {{bc|Tools|Macros|Record Macro}}, perform your actions, anc click on <code>Stop Recording</code> from the floating dialog box that appeared, choose a macro name and click on <code>Save</code>. 
+*The [https://help.libreoffice.org/Common/Programming LibreOffice API] allows you to interact completely with LibreOffice either using the LibreOffice own scripting language, LibreOffice BASIC, or using one of the supported language which has a binding for LibreOffice: C++, Python, Java, and [[Wikipedia:OLE Automation]]. But you can write your own UNO language binding to control LibreOffice with your favourite language too<ref name=macroInteropUnoBinding />.
+*Access2Base, we can consider it as an extension to the LibreOffice API, and since LibreOffice 4.2, even as a subset of the API as it is now bundled into LibreOffice. Access2Base simplifies the use of the API when trying to access and communicate with databases in Base in particular;
+*VBA (Visual Basic) macros are at the same time a language and an office object model which are saved inside Microsoft Office documents only (this means VBA cannot be saved in ODF documents: odt, ods,...). LibreOffice incorporates limited direct support for VBA. By default LibreOffice expects to have LibreOffice BASIC code, so you must start your code by
+ Option VBASupport 1
+ Option Compatible
+:if you want to use VBA script<ref name=macroInteropVbaMacro />.
+
+Although macro are saved in the user profile (or Normal.dotm in Microsoft Office), some can be saved inside the document itself and VBA macro are in all cases saved into the Office document structure itself. 
+
+After having explained above the steps to write macros, we can easily understand that writing macro requires to discuss with an SDK whose features depend heavily on the internal implementation<ref name=macroInteropInternalImpl2 /><ref name=macroInteropInternalImpl3 /> of the product we want to control: LibreOffice, Microsoft Office, Calligra, etc. So the objects we call in a macro might (and mostly will) not exist in another product<ref name=macroInteropInternalImpl />.
+
+We need to differenciate the document format from macros: the document (here ODF) saves and organise the data into a well structured archive while macros are process, designed to help the user, locked against a particuliar piece of software. We can make an analogy with web browser extensions. These depend also heavily on the platform for which they were crafted: you cannot use an extension created for Firefox on Chromium for example. This is why you will not see these macros standardized in either the ODF or OOXML document format specification.
+
+This is why you could potentially replace all macro you use by an extension. Since it require coding skills, the better way for interoperability is yet to do not use them, or at least, if they cannot be avoided, storing them in the user profile instead of the file itself and using textual macros rather than operating system specific COM or ActiveX components<ref name=macroInteropInternalImpl2 />.
+
+== New contributors ==
+
+Yet 7 new contributors to the LibreOffice project! Welcome to them!
+* Giuseppe Bilotta (Oblomov)<ref name=newContributorBilotta />
+* Sudarshan Rao (Sudarshan18)<ref name=newContributorRao />
+* Boris Egorov<ref name=newContributorEgorov />
+* Marco Lechner (mlechner)<ref name=newContributorLechner />
+* Michael Jaumann<ref name=newContributorJaumann />
+* Tobias Madl<ref name=newContributorMadl />
+* Michael Weghorn<ref name=newContributorWeghorn />
+ 
+Basing our number of contributors on the number of license statement is a bit unfair, as some have not published a statement yet, while others have published one but have left the project afterwards.
+
+* Robert Antoni Buj i Gelonch, for who we have not found any license statement yet, has recently published on our gerrit instance a bunch of patches to clean Java stuffs we still have. Thanks to him!<ref name=newGelonchPatches />
+* Stefan Weiberg, a new contributor, for who we reported the license statement last week, is now publishing his first patches related to the #fdo82088 easy-hack<ref name=newWeibergPatch1 /><ref name=newWeibergPatch2 /><ref name=newWeibergPatch3 />, congrats!
+* Matthew J. Francis, an new contributor from last week published his first patches too.<ref name=newFrancisPatches />
+* Jan-Marek Glogowski, a contributor who published a license statement in November 2013, recently published his first patches. Thanks for being back!<ref name=newGlogowskiPatches />
+* Jennifer Liebel, reported last week too, published her first patched too. Congrats!<ref name=newLiebelPatches />
+
+== Design team ==
+
+=== Bye bye mailing list ===
+
+During the last monthly IRC meeting, held on August 31th, the design team decided they will drop the mailing list [https://redmine.documentfoundation.org/projects/design in favour of Redmine]<ref name=designMlDropRedmine /> After a month of test, if there is no opposition, the deisng and ux-advise mailing list will be removed<ref name=designRemoveOldMl />.
+
+The main work platforms used by the Design team are
+* the [[Design|the Wiki]] to keep track of design propositions, user experience principles, artwork resources and track of previous IRC meetings
+*the aforementioned Redmine project to keep tracks and discussion about design bugs
+*and the IRC <code>#libreoffice-design</code> channel for the monthly meetings.
+
+== Documentation ==
+
+=== LibreOffice Base gets a new German guide ===
+
+Robert Großkopf has reported the previous 4.2 German guide has been updated to LibreOffice 4.3 expanding the number of page by 50 pages. You can see the changes [http://robert.familiegrosskopf.de/lo_hb_en/Vergleich_Base_Handbuecher.ods here].<ref name=docBaseGermanGuide />
+
+=== A guide to understand the plethora of Base guides ===
+
+LibreOffice has currently 3 guides for Base:
+
+*''Getting Started with Base'' which is the chapter 8 from the book ''Getting Started with LibreOffice''
+*''LibreOffice Base Handbook''
+*''LibreOffice Base Guide''
+
+The reason that there's both a Guide and a Handbook is that the German documentation team got tired of waiting around for the English team to finish the Base Guide, so they took the draft chapters, translated them, and rewrote (Robert Großkopf) some parts from information available in mailing list and forums<ref name=docBaseGermanHandbookAuthor />, finished the book, and published it as the ''Base-Handbuch''. That document was then translated back into English as the ''LibreOffice Base Handbook''<ref name=docBaseGuidesStates />. The English draft was renamed into ''LibreOffice Base Guide'' and left as-is, without much attention<ref name=docBaseEnglishDraftRename />.
+
+This is why contrary to the new comer belief, according to the meaning of the word "handbook" which suggests a reasonably comprehensive book that covers most simple use cases to nudge the user in the right direction, without going too much into the details and according to the meaning of "guide" which should be a complete manual covering all use cases<ref name=docHandbookVsGuideMeaning />, ''the Handbook is not intended to be shorter than the Guide''.
+
+The difference is that the German version of the Handbook is finished and updated to the version 4.2 of LibreOffice, while the English version is finished too, but still for LibreOffice 3.5.
+
+Alan Cook is now updating the English Handbook from the more up-to-date German version whose translation to English has been performed by Hazel Russman<ref name=docBaseGuidesStates />.
+
+Dan Lewis reported<ref name=docBaseHandbookCh2Review /> is is currentlty reviewing the chapter 2 of the Base Handbook. His work might overlap with the work Alan Cook is doing. The old unmaintained Base guide might even be removed in the future<ref name=docBaseGuideRemove />.
+
+During these holidays, Thomas Taylor, a retired engineering technician, Linux user and LibreOffice mailing list moderator, proposed his help.
+
+As an answer to any new contributor wanting to get involved in the documentation team, the Base Handbook is the clearly the content requiring the most of work from now, especially proof-reading. Indeed, even if the German ''LibreOffice Base Handbook'' is considered as completed, Alan Cook discovered some issues.
+
+Completing the screenshot is a huge task that needs to be performed. For license reasons, only GNU/Linux screenshots are allowed, publishing screenshots with OS X or Windows is risky on the legal point of view.
+
+=== Translation of LibreOffice Guides with OmegaT ===
+
+Milos Sramek, who gave a presentation about this subject at the LibreOffice conference from Bern, proposed that the documentation team uses OmegaT to improve the efficiency when translating manuals. This tools addresses what Alan Cook is doing (see the above subject): he is currently translating a new version of some text by taking advantage of the translation of an old version. In order to not break the current workflow, Alan decided to keep the tools he is currently using, but, maybe in the future, for the next round of translations, he will reconsider using this tool.
+
+Sophie Gautier gave it a trial but is expecting to write a tutorial because the installation and learning process is not so easy for a new comer<ref name=docOmegatIntroduction />
+
+=== Draw Guide for LibreOffice 4.3 ===
+
+Chapter One gets uploaded and is ready for review<ref name=docDrawDraft />.
+
+=== Writer guide gets updated ===
+
+The Writer guide for LibreOffice 4.2 has been delayed due to lack of contributors. As a reminder, you do not have to throw the documentation guides when their version are outdated. The documentation team is indeed skipping some LibreOffice version and updates the handbooks and guides after some time, when it is needed and changes in the interfaces requires it.
+
+Jean Weber recently updated the chapter 16. Only chapters 13, 14, and 15 need to be proofread and, if needed, updated before we could release this new updated guide<ref name=docWriter42 />.
+
+If you want to contribute, the best way is to follow [[Documentation/Development|this guide]], especially the document ''Joining the LibreOffice Documentation Team'' from the [[Documentation/Development#First steps with the Documentation team|First steps with the Documentation team]] section. Below, you will see the main way to contribute to the documentation team is to subscribe to the [http://www.odfauthors.org odfauthors website], hosted, here, at The Document Foundation. This website consists in writing documentation for projects making use of the ODF standard and is not limited to LibreOffice.
+
+Keep in mind the workflow the documentation team uses it to add content to the English version, than when it is finished, translate the content to other languages. Keeping a list of the changes performed in the English version allow the translator to directly focus their translation skills to specific location in his translation without specing much time in rereading all the text. The first translation takes usually a huge time, while updates are relatively way less time consuming.
+
+=== Wanted: team coordinator dead or alive (preferably alive) ===
+
+Out of this joke, the LibreOffice documentation team is currently having a coordination problem, and this is not the only team impacted, Apache OpenOffice and other teams of LibreOffice are also impacted. Up to now, Jean Weber de facto fullfilled this function due to this huge implication into the project. However his intentions were never to do it consistently. Althought he warned the team he will be doing even less in the future, nobody came up with a solution or applied to this function.
+
+The problem we have is not actracting new contributors, we had already 3 new contributors who have officially provided a license statement. Keeping them involved, and, in addition, active, is another and even more difficult challenge.
+
+Keeping objectives achieved for a well defined deadline is against the definition of ''volunteering''<ref name=docNewCoordinator />.
+
+=== Number of guides sold ===
+
+Sales figures for the printed books and eBooks sold by [http://www.friendsofopendocument.com/ Friends of OpenDocument, Inc.] via Lulu.com from January 1, 2011 to September 10, 2014 are available. This is rather interesting to see which books are mots popular, allowing the team to focus on a version in particular if needed.
+
+*478 Getting Started
+*198 Writer Guide
+* 93 Calc Guide
+* 87 Base Handbook
+* 50 Impress Guide
+* 57 Draw Guide
+* 31 Math Guide
+Total 994<ref name=docBookSoldNumbers />
+
+== Marketing ==
+
+=== The LibreOffice Magazine is becoming wider ===
+
+The next LibreOffice Magazine (it will be already the 13th version! congratulations!) is now calling for papers. Since the scope of languages has been widened from Portuguese to Spanish and English, and if you have tutorials, migration cases, achievements and tips, please submit them as ODF with a small picture and your resumé before October 6, 2014 to <code>redacao@libreoffice.org</code>.<ref name=marketMagazineCallPaper />
+
+=== Profesionalizing our communication ===
+
+In [[LOWN/4#LibreOffice and The Document Foundation are improving their communication|our last edition]], we noticed the Brazilian video trying to promote LibreOffice, we have some good news since an English translation [https://www.youtube.com/watch?v=f34WRUCfE1o has been made available]. This is not yet perfect as the application menu we can see in the video are still in Portugueuse, but this is a great start<ref name=marketProVideoEn />.
+
+== Meetings and conferences ==
+
+=== Brazil Conference ===
+
+Eliane Domingos de Sousa, a contributor from the Brazilian LibreOffice Community, who is also in charge of the [https://pt-br.libreoffice.org/projetos/revista LibreOffice Magazine], announced that the second National LibreOffice Meeting will be held this year from September 26, to 27 2007 iin the state of São Paulo at the UNESP University. More information is [http://encontro.libreoffice.org/ available here]<ref name=meetingBrazilConf />.
+
+=== OpenSUSE.Asia summit ===
+
+SUSE is a member of the Advisory Board and is [[Development/Developers|providing developers for LibreOffice]]. SUSE is also promoting the develoment of the community-supported OpenSUSE GNU/Linux distribution, and is therefore sometimes doing events like LibreOffice. Obviously since OpenSUSE is somewhat related to LibreOffice, they are calling for papers and participants. If you want to join feel free to answer [http://listarchives.libreoffice.org/global/marketing/msg17098.html this announcement].
+
+=== Seattle LibreFest ===
+
+Robinson Tryon, our remote backdoor to the USA, is organizing a community event about LibreOffice ([[Events/2014/Seattle_LibreFest|LibreFest]]) around, or at the same time of the SeaGL, a grassroots technical conference dedicated to spreading awareness and knowledge about GNU/Linux and FOSS software and hardware in general, on October 26th 2014.
+
+This LibreOffice related event, will introducte the LibreOffice project and community, explain how to use Bugzilla and do some bug triages.
+
+=== Toulouse Hackfest ===
+
+As a reminder, Arnaud Versini is organizing a [[Hackfest/Toulouse2014|LibreOffice hackfest]] on November 15th and 16th, 2014.
+
+[[File:ToulouseHackfest2014.png|thumb|450px|center]]
+
+=== Munich hackfest ===
+
+This bug squashing party is hosted and sponsored by the LiMux project, the project that created a GNU/linux distribution for the Munich Municipality, in order for them to have a tailor-made distribution fitting perfectly the needs of the Munich city.
+
+See [https://wiki.debian.org/BSP/2014/11/de/Munich this page for Doodle and coordination].
+
+== Document Foundation boards ==
+
+To get a refreshed view of the boards constituting The Document Foundation, please read [http://www.documentfoundation.org/foundation/ this summary first].
+
+=== A new member for the advisory Board ===
+
+ITOMIG, a company founded as a spin-off the of the German Tübiingen University in 2004, has developed an open source expertise, offered to French and German enterprises, and focused on free open source office suites, mainly LibreOffice. This expertise consists in migration support and development consulting. ITOMIG will provide the Advisory Board with consultants giving technical advices to the Board of Directors.<ref name=boardNewAdvisoryMember />
+
+== User tips and tricks ==
+
+=== Search in multiple documents ===
+
+Last week [[LOWN/4#Search in multiple documents|we raised an issue]] regarding the inability, on GNU/Linux at least, to be able to search in multiple document at one. After one week of intensive serach, Maurice, the user who asked initially the question, finally found a solution<ref name=userSearchMultipleDoc />. 
+
+The idea is to create a master document, using the navigator feature to add sub document, save the master document and then you will be able to search for content in all subdocuments at one. For details, [https://help.libreoffice.org/Writer/Working_with_Master_Documents_and_Subdocuments simply read here].
 
 == References ==
 
 <references>
 
-<ref name=keySigning>http://listarchives.libreoffice.org/global/marketing/msg17073.html</ref>
+<ref name=devDocLibPakeMaker>http://lists.freedesktop.org/archives/libreoffice/2014-August/062964.html</ref>
+<ref name=devCalcExportXhtml>http://lists.freedesktop.org/archives/libreoffice/2014-August/062853.html</ref>
+<ref name=devLibreOfficeKitConverter>http://lists.freedesktop.org/archives/libreoffice/2014-July/062461.html</ref>
+<ref name=devInheritanceStdContainBug>https://bugs.freedesktop.org/show_bug.cgi?id=75757</ref>
+<ref name=devInheritanceStdContain>http://stackoverflow.com/a/14089100</ref>
+<ref name=devGermanCommentTrans>https://bugs.freedesktop.org/show_bug.cgi?id=39468</ref>
+<ref name=devGermanApiVar>https://bugs.freedesktop.org/show_bug.cgi?id=39674</ref>
+<ref name=devWriterUnoApiDeprecate>http://lists.freedesktop.org/archives/libreoffice/2014-September/063195.html</ref>
+<ref name=devCleanBuildOsx>http://lists.freedesktop.org/archives/libreoffice/2014-September/063286.html</ref>
+<ref name=devStandardLibOsx>http://lists.freedesktop.org/archives/libreoffice/2014-September/063255.html</ref>
+<ref name=devConfigureDropOsx>http://lists.freedesktop.org/archives/libreoffice/2014-September/063265.html</ref>
+<ref name=devOsxMinConfOpengl>http://lists.freedesktop.org/archives/libreoffice/2014-August/062970.html</ref>
+<ref name=dev43BibisectChanged>http://lists.freedesktop.org/archives/libreoffice/2014-September/063207.html</ref>
+<ref name=devSse1Report>http://lists.freedesktop.org/archives/libreoffice/2014-August/062727.html</ref>
+<ref name=devSse1Vs2012Default>http://msdn.microsoft.com/en-us/library/vstudio/7t5yh4fd(v=vs.110).aspx</ref>
+<ref name=devSse1ChangeFlag>http://lists.freedesktop.org/archives/libreoffice/2014-August/062733.html</ref>
+<ref name=devSse1UseOpenCl>http://lists.freedesktop.org/archives/libreoffice/2014-August/062818.html</ref>
+<ref name=devSse1Patch>https://gerrit.libreoffice.org/#/c/10838/</ref>
+<ref name=devSse1BugReport>https://bugs.freedesktop.org/show_bug.cgi?id=82430</ref>
+<ref name=devVimYouCompleteMe>http://lists.freedesktop.org/archives/libreoffice/2014-August/062785.html</ref>
 
-<ref name=uiConversion>http://caolanm.blogspot.be/2014/08/dialog-conversion-status-4-to-go.html</ref>
+<ref name=macroInteropUnoBinding>https://wiki.openoffice.org/wiki/Documentation/DevGuide/AdvUNO/Implementing_UNO_Language_Bindings</ref>
+<ref name=macroInteropVbaMacro>http://ask.libreoffice.org/en/question/6621/import-ms-word-macros/?answer=6982#post-id-6982</ref>
+<ref name=macroInteropInternalImpl>http://listarchives.libreoffice.org/global/users/msg39985.html</ref>
+<ref name=macroInteropInternalImpl2>https://people.gnome.org/~michael/blog/2014-02-26-cabinet-office.html#macros</ref>
+<ref name=macroInteropInternalImpl3>http://listarchives.libreoffice.org/global/users/msg39986.html</ref>
+
+<ref name=newContributorBilotta>http://lists.freedesktop.org/archives/libreoffice/2014-September/063224.html</ref>
+<ref name=newContributorRao>http://lists.freedesktop.org/archives/libreoffice/2014-September/063208.html</ref>
+<ref name=newContributorEgorov>http://lists.freedesktop.org/archives/libreoffice/2014-September/063203.html</ref>
+<ref name=newContributorLechner>http://lists.freedesktop.org/archives/libreoffice/2014-September/063262.html</ref>
+<ref name=newContributorJaumann>http://lists.freedesktop.org/archives/libreoffice/2014-September/063189.html</ref>
+<ref name=newContributorMadl>http://lists.freedesktop.org/archives/libreoffice/2014-September/063116.html</ref>
+<ref name=newContributorWeghorn>http://lists.freedesktop.org/archives/libreoffice/2014-September/063251.html</ref>
+<ref name=newGelonchPatches>https://gerrit.libreoffice.org/#/q/owner:%22Robert+Antoni+Buj+i+Gelonch+%253Crobert.buj%2540gmail.com%253E%22,n,z</ref>
+<ref name=newFrancisPatches>https://gerrit.libreoffice.org/#/q/owner:mjay.francis%2540gmail.com,n,z</ref>
+<ref name=newGlogowskiPatches>https://gerrit.libreoffice.org/#/q/owner:%22Jan-Marek+Glogowski+%253Cglogow%2540fbihome.de%253E%22,n,z</ref>
+<ref name=newWeibergPatch1>https://gerrit.libreoffice.org/11294</ref>
+<ref name=newWeibergPatch2>https://gerrit.libreoffice.org/11295</ref>
+<ref name=newWeibergPatch3>https://gerrit.libreoffice.org/11260</ref>
+<ref name=newLiebelPatches>https://gerrit.libreoffice.org/#/q/owner:jliebel94%2540gmail.com+status:merged,n,z</ref>
+
+<ref name=designMlDropRedmine>http://listarchives.libreoffice.org/global/design/msg06714.html</ref>
+<ref name=designRemoveOldMl>http://lists.freedesktop.org/archives/libreoffice/2014-September/063149.html</ref>
+
+<ref name=docBaseGermanHandbookAuthor>http://listarchives.libreoffice.org/global/documentation/msg17487.html</ref>
+<ref name=docBaseGuidesStates>http://listarchives.libreoffice.org/global/documentation/msg17483.html</ref>
+<ref name=docBaseEnglishDraftRename>http://listarchives.libreoffice.org/global/documentation/msg17486.html</ref>
+<ref name=docHandbookVsGuideMeaning>http://listarchives.libreoffice.org/global/documentation/msg17485.html</ref>
+<ref name=docBaseGermanGuide>http://listarchives.libreoffice.org/global/documentation/msg17405.html</ref>
+<ref name=docBaseHandbookCh2Review>http://listarchives.libreoffice.org/global/documentation/msg17510.html</ref>
+<ref name=docBaseGuideRemove>http://listarchives.libreoffice.org/global/documentation/msg17518.html</ref>
+<ref name=docOmegatIntroduction>http://listarchives.libreoffice.org/global/documentation/msg17488.html</ref>
+<ref name=docDrawDraft>http://listarchives.libreoffice.org/global/documentation/msg17406.html
+<ref name=docWriter42>http://listarchives.libreoffice.org/global/documentation/msg17404.html</ref>
+<ref name=docNewCoordinator>http://listarchives.libreoffice.org/global/documentation/msg17417.html</ref>
+<ref name=docBookSoldNumbers>http://listarchives.libreoffice.org/global/documentation/msg17522.html</ref>
+
+<ref name=marketMagazineCallPaper>http://listarchives.libreoffice.org/global/marketing/msg17124.html</ref>
+<ref name=marketProVideoEn>https://www.youtube.com/watch?v=f34WRUCfE1o</ref>
+
+<ref name=meetingBrazilConf>http://listarchives.libreoffice.org/global/marketing/msg17094.html</ref>
+
+<ref name=boardNewAdvisoryMember>http://listarchives.documentfoundation.org/www/announce/msg00197.html</ref>
+
+<ref name=userSearchMultipleDoc>http://listarchives.libreoffice.org/global/users/msg41110.html</ref>
 
 </references>
 [[Category:LOWN]]
